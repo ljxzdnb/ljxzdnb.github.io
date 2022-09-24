@@ -1,33 +1,376 @@
-<!DOCTYPE html>
-<html>
-<body>
-<h2>The method Attribute</h2>
-<script>
-function httpGetAsync(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            console.log(xmlHttp.responseText);
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="I:C语言-哈希查找(HASH)-详解（完整代码）" href="data/hash/info.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.15"/>
+        <title>C data struct 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
     }
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-    xmlHttp.setRequestHeader("Accept", "application/html");
-    xmlHttp.setRequestHeader("Content-Type", "application/html");
-    // xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "localhost:8991");
-    xmlHttp.send(null);
-}
-</script>
-<p>This form will be submitted using the GET method:</p>
-  <!-- <label for="fname">First name:</label><br> -->
-  <input type="text" id="url" name="fname" value="https://mirrors.edge.kernel.org/pub/software/network/crda/"><br>
-  <input type="button" value="update" onclick="httpGetAsync(document.getElementById('url').value)">
-  <form action=""  method="get"><br>
-  <input type="submit" value="Submit" onclick="this.form.action = document.getElementById('url').value">
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">C data struct 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">C data struct 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
 </form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="data/hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/line/info.html">II:C语言描述数据结构 —— 顺序表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/linkmap/info.html">III:C语言描述数据结构 —— 单链表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/ring/info.html">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/tree/info.html">VI:平衡二叉树 C语言代码实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/time/info.html#id1">前言</a></li>
+</ul>
 
-<p>After you submit, notice that the form values is visible in the address bar of the new browser tab.</p>
+</div>
+</div>
 
-</body>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="c">
+<h1>欢迎来到 c 数据结构篇！<a class="headerlink" href="#c" title="Permalink to this headline">#</a></h1>
+<p><strong>数据结构</strong> 该界面介绍t31 fiks api使用方法：</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>该文档仍处于开发阶段。</p>
+</div>
+<section id="id1">
+<h2>目录:<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data/hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id1">原理：</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id2">实例解释</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id3">存储逻辑图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id4">需要的知识：</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id5">附加:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id6">完整代码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id7">执行结果</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/hash/info.html#id8">1.查找个不存在的</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data/hash/info.html#id9">2.查找个存在的</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data/line/info.html">II:C语言描述数据结构 —— 顺序表</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/line/info.html#id1">1. 线性表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/line/info.html#id2">2. 顺序表</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/line/info.html#id3">2.1 概念及结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/line/info.html#id4">2.2 顺序表各接口</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/line/info.html#id5">2.3 顺序表各接口实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data/line/info.html#id6">3. 顺序表完整代码</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/line/info.html#seqlist-h">3.1 SeqList.h 头文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/line/info.html#seqlist-c">3.2 SeqList.c 源文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/line/info.html#test-c">3.3 test.c 源文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data/linkmap/info.html">III:C语言描述数据结构 —— 单链表</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/linkmap/info.html#id1">3. 链表的分类</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/linkmap/info.html#id2">4. 链表的实现</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/linkmap/info.html#id3">5. 完整各文件代码</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/linkmap/info.html#test-c">test.c 源文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/linkmap/info.html#listlink-c">ListLink.c 源文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/linkmap/info.html#listlink-h">ListLink.h 头文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data/pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/pushpop/info.html#id1">1.栈</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/pushpop/info.html#id2">1.2 栈的实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data/pushpop/info.html#id3">2. 队列</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/pushpop/info.html#id4">2.1 队列的概念及结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/pushpop/info.html#id5">2.2 队列的实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data/ring/info.html">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/tree/info.html">VI:平衡二叉树 C语言代码实现</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/tree/info.html#id1">1. 什么是平衡二叉树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/tree/info.html#id2">2. 如何判断二叉树最小不平衡子树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/tree/info.html#id3">3. 二叉树不平衡情况</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/tree/info.html#id4">4. 判断不平衡二叉树哪边高</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/tree/info.html#id5">5. 如何调整平衡二叉树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/tree/info.html#id6">全部代码</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data/time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/time/info.html#id1">前言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/time/info.html#id2">定时器概述</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id3">定时器的使用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id4">定时器与其他组件的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data/time/info.html#id5">大量定时任务怎么处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/time/info.html#id6">定时器设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id7">接口设计</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data/time/info.html#id8">数据结构的抉择</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/time/info.html#id9">时间轮</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id10">时间轮的概念</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id11">设计单层级时间轮</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id12">2. 时间精度</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="data/time/info.html#id13">空推进问题</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id14">多层级时间轮</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#skynet">Skynet定时器实现方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id15">skynet中定时器数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id16">定时器初始化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id17">添加定时器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/time/info.html#id18">驱动方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="data/hash/info.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">I:C语言-哈希查找(HASH)-详解（完整代码）</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, ljx
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">欢迎来到 c 数据结构篇！</a><ul>
+<li><a class="reference internal" href="#id1">目录:</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    </body>
 </html>
-
-

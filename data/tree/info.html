@@ -1,0 +1,1144 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="VII:定时器方案之红黑树与最小堆、时间轮详解" href="../time/info.html" /><link rel="prev" title="V:裸机中环形队列与RTOS中消息队列的区别" href="../ring/info.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.15"/>
+        <title>VI:平衡二叉树 C语言代码实现 - C data struct 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">C data struct 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">C data struct 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../line/info.html">II:C语言描述数据结构 —— 顺序表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linkmap/info.html">III:C语言描述数据结构 —— 单链表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ring/info.html">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">VI:平衡二叉树 C语言代码实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../time/info.html#id1">前言</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="vi-c">
+<h1>VI:<a class="reference external" href="https://mp.weixin.qq.com/s/E7-_MdJxZu76xtVgR7rlWA">平衡二叉树 C语言代码实现</a><a class="headerlink" href="#vi-c" title="Permalink to this headline">#</a></h1>
+<section id="id1">
+<h2>1. 什么是平衡二叉树<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>平衡二叉树，我们也称【二叉平衡搜索树/AVL】,树中任何节点的两个子树的高度最大差别为1，巴拉巴拉。。。(<em>https://baike.baidu.com/item/AVL树/10986648?fr=aladdin</em>)</p>
+<p>但是有个注意的点: 平衡二叉树的前提是 二叉排序树(<em>https://baike.baidu.com/item/二叉搜索树/7077855?fr=aladdin</em>)</p>
+<p>这篇博客主要总结平衡二叉树，所以，二叉排序树知识不会提及，但是会用到。</p>
+<p>如果想要看 排序二叉树调整为 平衡二叉树 旋转相关内容的，调整至 第5节。</p>
+<p><strong>平衡二叉树</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1VbQdg7vUwLjCUdCBB5qRPvr7T1PbO6MLFuZ68Twevp9K2AhS8l9cng/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>非平衡二叉树</strong></p>
+<p>最小不平衡子树节点为 130</p>
+<p>左子树深度为 1，右子树深度为3 ，其差值大于1，所以不平衡</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia18Q18sgFspkWqGqIVnxmDy3k7o9qqDyicnbvShTKnrHz0cQ69Z1HiaBXw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+</section>
+<section id="id2">
+<h2>2. 如何判断二叉树最小不平衡子树<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<p>最小不平衡子树为 130 这颗子树(黄色标注)</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1y0Bv1nB7pNJerX8vhiaDtVumhv47zKibWH10iciciaWljPkUibtAleYibDFeg/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>判定最小不平衡子树的关键就在于，判断 <strong>这棵树的左子树 和 右字数 深度之差是否大于1，若大于1 ，则证明该树不平衡</strong></p>
+<p>检查二叉树是否平衡函数代码实现</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="c1">// 数据节点</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">left</span><span class="p">;</span><span class="w"> </span><span class="c1">// 指向左子树</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">right</span><span class="p">;</span><span class="w"> </span><span class="c1">// 指向右子树</span>
+<span class="p">}</span><span class="w"> </span><span class="n">TreeNode</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PTreeNode</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// 记录平衡二叉树</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">BalanceTrue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// 最小不平衡子树地址</span>
+<span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rjt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// 检查二叉树是否平衡，若不平衡 BalanceTrue 为 true</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">checkTreeBalance</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">checkTreeBalance</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">checkTreeBalance</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// 若检测到最小不平衡二叉树后，不进行后面的检查</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">BalanceTrue</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">xx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xx</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="c1">// 左子树 和 右子树 相差大于1 ， 二叉树不平衡</span>
+<span class="w">                </span><span class="n">BalanceTrue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="n">rjt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">         </span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="n">y</span><span class="o">?</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="o">:</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>程序执行结果</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># gcc -w -g -std=c11 BalanceTree.c </span>
+<span class="c1"># </span>
+<span class="c1"># ./a.out </span>
+当前二叉树遍历
+前序遍历: <span class="m">580</span>    <span class="m">130</span>     <span class="m">80</span>      <span class="m">160</span>     <span class="m">150</span>     <span class="m">158</span>     <span class="m">210</span>     <span class="m">1590</span>    <span class="m">900</span>     <span class="m">2100</span>    <span class="m">1900</span>
+中序遍历: <span class="m">80</span>     <span class="m">130</span>     <span class="m">150</span>     <span class="m">158</span>     <span class="m">160</span>     <span class="m">210</span>     <span class="m">580</span>     <span class="m">900</span>     <span class="m">1590</span>    <span class="m">1900</span>    <span class="m">2100</span>
+二叉树不平衡，不平衡子树根节点为: <span class="m">130</span>
+<span class="c1"># </span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>3. 二叉树不平衡情况<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h2>
+<p>在一颗平衡二叉树的前提下，插入和删除一个节点，都有可能会引起二叉树不平衡，不平衡的情况主要有以下四种</p>
+<p><strong>左左更高</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1HgicRSSGw8cTbQtT6j67keVfCibKibbiaMSLzXLV13mS2wLuz9s9oBUOBA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>左右更高</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1zXhDqiaicL9fkrW9kpAXxLDQ6iauGdtiaOkHUuNZGLofQNWDugfkooSpog/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>右左更高</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1xlAzfJX2uHSr412Joj9GCAPZwG9WdXJALIqxG702dRQoaVcibsyTR9Q/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>右右更高</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1uibQgYXJ1rAhnP87iatKmUQaib1C8lTBiaZ31PghbXSwMagNdibWl4VK1Rg/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+</section>
+<section id="id4">
+<h2>4. 判断不平衡二叉树哪边高<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h2>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1zgEy7RuQKr9UibGuT3TquibKvM7KpWkA3icRmDwvhm1KhDESgWunMZNnA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1qAMA063icvicVWYPS50cgbUjaUpL5hfRA1Dfczf5qBkCYYVhEYWwcZ7w/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>如上图红色所示，可以先根据最小不平衡二叉树<strong>左子树</strong>或者<strong>右子树</strong>高，上图所示，为右子树高，则将最小不平衡二叉树的右子树作为树根节点，继续判断子树的<strong>左子树</strong>或者<strong>右子树</strong>高。
+比如上图的结果是<strong>右左较高</strong>，若进行调整的话，为 <strong>先让不平衡子树右节点的树先向右旋转，然后再向左旋转</strong>。</p>
+<p><strong>判断不平衡二叉树哪边高代码实现</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="c1">// 数据节点</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">left</span><span class="p">;</span><span class="w"> </span><span class="c1">// 指向左子树</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">right</span><span class="p">;</span><span class="w"> </span><span class="c1">// 指向右子树</span>
+<span class="p">}</span><span class="w"> </span><span class="n">TreeNode</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PTreeNode</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// 记录平衡二叉树</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">BalanceTrue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// 最小不平衡子树地址</span>
+<span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rjt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// 返回二叉树树高</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">treeHeight</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="o">&gt;</span><span class="n">rr</span><span class="o">?</span><span class="n">ll</span><span class="o">+</span><span class="mi">1</span><span class="o">:</span><span class="n">rr</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/*  构建二叉树</span>
+<span class="cm">    	判断平衡，获取最小不平衡子树， 将数据存入 rjt 中</span>
+<span class="cm">    	输出二叉树 前序/中序</span>
+<span class="cm">    */</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">BalanceTrue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;二叉树不平衡，不平衡子树根节点为: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">};</span><span class="w"></span>
+
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;左子树高</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rjt_ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">child_ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt_ll</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">child_rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt_ll</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">child_ll</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">child_rr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;左子树更高</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">child_rr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">child_ll</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;右字数更高&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w">  </span><span class="n">rr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ll</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;右子数高</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rjt_rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">child_ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt_rr</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">child_rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt_rr</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">child_ll</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">child_rr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;左子树更高</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">child_rr</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">child_ll</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;右字数更高&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>输出</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># gcc BalanceTree.c -w -g -std=c11</span>
+<span class="c1"># </span>
+<span class="c1"># ./a.out </span>
+当前二叉树遍历
+前序遍历:130    <span class="m">80</span>      <span class="m">160</span>     <span class="m">150</span>     <span class="m">158</span>     <span class="m">210</span>
+中序遍历:80     <span class="m">130</span>     <span class="m">150</span>     <span class="m">158</span>     <span class="m">160</span>     <span class="m">210</span>
+二叉树不平衡，不平衡子树根节点为: <span class="m">130</span>
+右子数高
+左子树更高
+<span class="c1"># </span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2>5. 如何调整平衡二叉树<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h2>
+<p>所谓的旋转，其实是修改指针指向的值，仅此而已。</p>
+<p>二叉树不平衡有四种情况</p>
+<p><strong>左左更高</strong></p>
+<p>原始二叉树，若要调整为平衡二叉树，需要<strong>整棵树向右旋转</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1pS4GA6oAWPp907ribhbKoBOYfs7hER0r1gwAYmibtAmCO5GwicHbdgCHw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>调整1:<strong>整棵树向右旋转</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia13jvgke21yPHNxcxmF44exXicrMdEYqoy6icrDnYWiazKEvfevlS34qTuA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>左右更高</strong></p>
+<p>原始二叉树，若要调整为平衡二叉树，需要 <strong>先让不平衡子树左节点先向左旋转，然后再向右旋转</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1qvdITu1BJicwicWkv4axyAL1QIhUo9vjcfWicBczeWwHcnH8ncQcoWrhw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>调整1: 先让<strong>不平衡子树左节点的树</strong>先向左旋转</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1CIIJtWIOfKa9EunfNMI7xrxph28jPZBByQa5iajLNlVwhklxQLYEf2A/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>调整2: <strong>整棵树向右</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1ywSwric2icYfxPNIEQ8ia4vE2rRSTOHzp71Nz5ialuGozpUjkADd4UN3zA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>右左更高</strong></p>
+<p>原始二叉树，若要调整为平衡二叉树，需要 <strong>先让不平衡子树右节点的树先向右旋转，然后再向左旋转</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1ez6sonC5hibLNyzFjnibDhctllrM04dsicmWOSbKb4Qc8MxqErZemicfrQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>调整1: 先让<strong>不平衡子树右节点的树</strong>先向右旋转</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1DSuyR6H1rEklSZNpx7qrPG7vLG6ia3DfvDF2HKlKjmDALRcI1XUIR9Q/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>调整2: <strong>整棵树向左</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1DfriaINibwOXAROvOibAjZroJFeUib8ibv7JcLFxkNzDhGs8tcqZCkeX72g/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>右右更高</strong></p>
+<p>原始二叉树，若要调整为平衡二叉树，需要 <strong>整棵树向左旋转</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia1RoFJUHmofiaDoRq5S8BroK3llIROKI1E5jh7n5YRypZ4jpP1X0vEichA/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>调整1: <strong>整棵树向左旋转</strong></p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/mmbiz_png/wqfIPAmgib2VIRtyUPx7QpbARdFvYhFia18lxpuAVX2sOZRC2ImbfRBxgwVhZt8SBiaibEiaSSY6ufhiapWk31icD6bXw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+</section>
+<section id="id6">
+<h2>全部代码<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;stdbool.h&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#</span><span class="w"> </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="c1">// 数据节点</span>
+<span class="w">	</span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">left</span><span class="p">;</span><span class="w"> </span><span class="c1">// 指向左子树</span>
+<span class="w">	</span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">right</span><span class="p">;</span><span class="w"> </span><span class="c1">// 指向右子树</span>
+<span class="p">}</span><span class="w"> </span><span class="n">TreeNode</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">PTreeNode</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// 记录平衡二叉树</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">BalanceTrue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// 最小不平衡子树地址</span>
+<span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rjt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// 检查二叉树是否平衡，若不平衡 BalanceTrue 为 true</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">checkTreeBalance</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">checkTreeBalance</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">checkTreeBalance</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span>
+<span class="w">	</span><span class="c1">// 若检测到最小二叉树后，不进行后面的检查</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">BalanceTrue</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">xx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xx</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">// 左子树 和 右子树 相差大于1 ， 二叉树不平衡</span>
+<span class="w">		</span><span class="n">BalanceTrue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">rjt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	 </span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="n">y</span><span class="o">?</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="o">:</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 返回二叉树树高</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">treeHeight</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="o">&gt;</span><span class="n">rr</span><span class="o">?</span><span class="n">ll</span><span class="o">+</span><span class="mi">1</span><span class="o">:</span><span class="n">rr</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 父节点查询</span>
+<span class="n">TreeNode</span><span class="o">*</span><span class="w"> </span><span class="nf">queryTopData</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="c1">// 空地址异常抛出</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span>
+<span class="w">	</span><span class="c1">// top: 父节点 ，如果为Null, 该节点为父节点</span>
+<span class="w">	</span><span class="c1">// tmp: 遍历查询节点 </span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="c1">// 节点为 返回Null</span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">top</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">			</span><span class="k">return</span><span class="w"> </span><span class="n">top</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">		</span><span class="n">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 左左旋转</span>
+<span class="c1">//</span>
+<span class="c1">// 不平衡二叉树</span>
+<span class="c1">//       70</span>
+<span class="c1">//      /   \</span>
+<span class="c1">//    50    80</span>
+<span class="c1">//   /  \    </span>
+<span class="c1">//  40  60</span>
+<span class="c1">//  /</span>
+<span class="c1">// 30</span>
+<span class="c1">//</span>
+<span class="c1">// 旋转后平衡二叉树(向右旋转)</span>
+<span class="c1">//</span>
+<span class="c1">//    50</span>
+<span class="c1">//  /   \</span>
+<span class="c1">// 40    70</span>
+<span class="c1">// /     /  \</span>
+<span class="c1">//30   60    80</span>
+<span class="c1">//</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">turnLL</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">**</span><span class="n">root</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;左左旋转,非根节点</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="c1">// 非根节点</span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">lleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">lright</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">		</span><span class="c1">// 查找父节点</span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">fdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queryTopData</span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">),</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lright</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">// 根节点</span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;左左旋转,是根节点</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">lleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">absroot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">lright</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span>
+
+<span class="w">		</span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lright</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="p">(</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">absroot</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 左右旋转</span>
+<span class="c1">//不平衡二叉树</span>
+<span class="c1">//      70</span>
+<span class="c1">//     /   \</span>
+<span class="c1">//    50    80</span>
+<span class="c1">//    / \    </span>
+<span class="c1">//   40 60</span>
+<span class="c1">//  /   </span>
+<span class="c1">// 55</span>
+<span class="c1">//</span>
+<span class="c1">//左子树向左</span>
+<span class="c1">//      70</span>
+<span class="c1">//     /   \</span>
+<span class="c1">//    60    80</span>
+<span class="c1">//    /</span>
+<span class="c1">//   50</span>
+<span class="c1">//  /  \    </span>
+<span class="c1">// 40  55</span>
+<span class="c1">//                                                           </span>
+<span class="c1">//                                                                   </span>
+<span class="c1">// 整棵树向右</span>
+<span class="c1">// </span>
+<span class="c1">//     60</span>
+<span class="c1">//    /   \</span>
+<span class="c1">//   50    70</span>
+<span class="c1">//  /  \     \</span>
+<span class="c1">// 40  55    80</span>
+<span class="c1">//</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">turnLR</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">**</span><span class="n">root</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;左右旋转，非根节点&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">lleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">leftRight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">leftRightLeft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRight</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="c1">// 第一次调整</span>
+<span class="w">		</span><span class="n">leftRight</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRightLeft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRight</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="w">		</span><span class="c1">// 查找父节点</span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">fdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queryTopData</span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">),</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//if (NULL != fdata) printf(&quot;fdata: %d\n&quot;,fdata-&gt;data);</span>
+<span class="w">		</span>
+<span class="w">		</span><span class="c1">// 第二次调整</span>
+<span class="w">		</span><span class="n">lleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">leftRight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">		</span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRight</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;左右旋转，是根节点</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">lleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">leftRight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">leftRightLeft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRight</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="c1">// 第一次调整</span>
+<span class="w">		</span><span class="n">leftRight</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRightLeft</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRight</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">		</span><span class="c1">// 第二次调整</span>
+<span class="w">		</span><span class="n">lleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">leftRight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">		</span><span class="n">lleft</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">leftRight</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="p">(</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lleft</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 右左旋转</span>
+<span class="c1">//不平衡二叉树</span>
+<span class="c1">//   70</span>
+<span class="c1">//  /  \</span>
+<span class="c1">// 50   80</span>
+<span class="c1">//     /  \</span>
+<span class="c1">//    75  88</span>
+<span class="c1">//     \</span>
+<span class="c1">//     77</span>
+<span class="c1">//</span>
+<span class="c1">//左子树向右</span>
+<span class="c1">//   70</span>
+<span class="c1">//  /  \</span>
+<span class="c1">// 50   75</span>
+<span class="c1">//     /  \</span>
+<span class="c1">//    77  80</span>
+<span class="c1">//         \</span>
+<span class="c1">//         88</span>
+<span class="c1">//                                                                                                           </span>
+<span class="c1">//                                                                                                                  </span>
+<span class="c1">//                                                                                                                      </span>
+<span class="c1">//整棵树向左</span>
+<span class="c1">//     75</span>
+<span class="c1">//    /  \</span>
+<span class="c1">//   70  80</span>
+<span class="c1">//  /  \   \ </span>
+<span class="c1">// 50  77  88 </span>
+<span class="c1">//</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">turnRL</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">**</span><span class="n">root</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rright</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rightLeft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rightLeftRight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rightLeft</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">// 第一次调整</span>
+<span class="w">	</span><span class="n">rightLeft</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rightLeftRight</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rightLeft</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">// 查找父节点</span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">fdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queryTopData</span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">),</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//if (NULL != fdata) printf(&quot;fdata: %d\n&quot;,fdata-&gt;data);</span>
+
+<span class="w">	</span><span class="c1">// 第二次调整</span>
+<span class="w">	</span><span class="n">rright</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">rightLeft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rightLeft</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;右左旋转，非根节点</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span>
+<span class="w">	</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;右左旋转，是根节点</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="p">(</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 右右旋转</span>
+<span class="c1">// </span>
+<span class="c1">// 不平衡二叉树</span>
+<span class="c1">//  70</span>
+<span class="c1">// /  \</span>
+<span class="c1">//50   80</span>
+<span class="c1">//    /  \</span>
+<span class="c1">//   75  88</span>
+<span class="c1">//      /</span>
+<span class="c1">//     85</span>
+<span class="c1">//</span>
+<span class="c1">//</span>
+<span class="c1">//</span>
+<span class="c1">//向左旋转</span>
+<span class="c1">//    80</span>
+<span class="c1">//   /  \</span>
+<span class="c1">//  70   88</span>
+<span class="c1">// /  \   /  </span>
+<span class="c1">//50  75 85  </span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">turnRR</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">**</span><span class="n">root</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;右右旋转,非根节点&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rright</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="c1">// 查找父节点</span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">fdata</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queryTopData</span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">),</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">fdata</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;fdata: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rleft</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                        </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">notBalanceRoot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                        </span><span class="n">fdata</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w">				</span>
+
+<span class="w">	</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">// 右右旋转，是根节点</span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;右右旋转,是根节点</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rright</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">absroot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">rleft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="n">rright</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">notBalanceRoot</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">notBalanceRoot</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rleft</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="p">(</span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">absroot</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 二叉树前序遍历</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Print1</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print1</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print1</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 二叉树中序遍历</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Print2</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print2</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print2</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 二叉树后续遍历</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">Print3</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print3</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print3</span><span class="p">(</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span><span class="n">root</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 插入二叉树节点</span>
+<span class="n">TreeNode</span><span class="o">*</span><span class="w"> </span><span class="nf">addNode</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">// 头节点插入</span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">Node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">TreeNode</span><span class="p">));</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Node</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;新节点申请内存失败</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">			</span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="n">Node</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="n">Node</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">// 找到合适的最尾巴节点</span>
+<span class="w">	</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">tmp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;已经存在该节点，节点地址: %p</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">tmp</span><span class="p">);</span><span class="w"></span>
+<span class="w">			</span><span class="k">return</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">Node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">TreeNode</span><span class="p">));</span><span class="w"></span>
+<span class="w">	</span><span class="n">Node</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Node</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;申请新节点内存失败</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">// 链接节点</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">top</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">top</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Node</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">top</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">top</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Node</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="n">root</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+
+<span class="c1">// 删除二叉排序树节点</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">DeleteTreeNode</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">**</span><span class="n">TreeRoot</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">TreeRoot</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;删除节点: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">TreeRoot</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span>
+<span class="w">	</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="c1">// 叶子节点</span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">				</span><span class="c1">// 叶子节点</span>
+<span class="w">				</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">top</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">// 仅有根节点的叶子节点</span>
+<span class="w">					</span><span class="n">free</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span><span class="w"></span>
+<span class="w">					</span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">				</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">// 其他的叶子节点</span>
+<span class="w">					</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">lastNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">top</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">lastNode</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">lastNode</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tmp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">lastNode</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">lastNode</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="p">}</span><span class="w"></span>
+<span class="w">					</span><span class="n">free</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span><span class="w"></span>
+<span class="w">					</span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">				</span><span class="p">}</span><span class="w"></span>
+<span class="w">			</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">				</span><span class="c1">// 非叶子节点</span>
+<span class="w">				</span><span class="c1">// 算法为: </span>
+<span class="w">				</span><span class="c1">// 默认算法为: 1.  当删除该节点时，获取该树右子树最左子节点</span>
+<span class="w">				</span><span class="c1">//             2.  当右子树为空时，此时应该获取左子树最右端子节点</span>
+
+<span class="w">				</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">// 方案 1</span>
+<span class="w">					</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">top2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">					</span><span class="c1">// 找到最后一个节点</span>
+<span class="w">					</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">tmp2</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">top2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp2</span><span class="p">;</span><span class="w"></span>
+<span class="w">						</span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp2</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">					</span><span class="c1">// 删除老的节点</span>
+<span class="w">					</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp2</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="c1">// 只有右子树节点 没有左子树节点</span>
+<span class="w">					</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">top2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">					</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">top2</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="p">}</span><span class="w"></span>
+<span class="w">					</span><span class="n">free</span><span class="p">(</span><span class="n">tmp2</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">// 方案 2</span>
+<span class="w">					</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">top2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">					</span><span class="c1">// 找到最后一个节点</span>
+<span class="w">					</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">tmp2</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">tmp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp2</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">					</span><span class="c1">// 删除老的节点</span>
+<span class="w">					</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp2</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">top2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">						</span><span class="n">top2</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">					</span><span class="p">}</span><span class="w"></span>
+<span class="w">					</span><span class="n">free</span><span class="p">(</span><span class="n">tmp2</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span><span class="p">}</span><span class="w"></span>
+<span class="w">				</span>
+<span class="w">			</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span><span class="w"></span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">				</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">			</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">				</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">			</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 二叉树平衡调整</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">treeBalance</span><span class="p">(</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">**</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">checkTreeBalance</span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">));</span><span class="w"></span>
+<span class="w">	</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">BalanceTrue</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;二叉树不平衡,最小不平衡子树数据结点: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">tmp</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="c1">// 对于不平衡二叉树而言，左子树比右子树高</span>
+<span class="w">			</span><span class="c1">//</span>
+<span class="w">			</span><span class="c1">//printf(&quot;左\n&quot;);</span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">left</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">				</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">;</span><span class="w"></span>
+<span class="w">				</span><span class="kt">int</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span><span class="kt">int</span><span class="w"> </span><span class="n">rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span>
+<span class="w">				</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">// 对于不平衡子树 左子树 而言， 左子树比右子树高</span>
+<span class="w">					</span><span class="c1">// 左左旋转</span>
+
+<span class="w">					</span><span class="n">turnLL</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">rjt</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">				</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">// 对于不平衡子树 左子树 而言， 右子树比左子树高</span>
+<span class="w">					</span><span class="c1">// 左右旋转</span>
+<span class="w">					</span><span class="c1">//</span>
+<span class="w">					</span><span class="n">turnLR</span><span class="p">(</span><span class="n">root</span><span class="w"> </span><span class="p">,</span><span class="n">rjt</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span><span class="p">}</span><span class="w"></span>
+<span class="w">			</span><span class="p">}</span><span class="w"> </span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="c1">// 对于不平衡二叉树而言，右子树比左子树高</span>
+<span class="w">			</span><span class="c1">//</span>
+<span class="w">			</span><span class="c1">//printf(&quot;右\n&quot;);</span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">				</span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rjt</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">;</span><span class="w"></span>
+<span class="w">				</span><span class="kt">int</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span><span class="kt">int</span><span class="w"> </span><span class="n">rr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">treeHeight</span><span class="p">(</span><span class="n">tmp</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">				</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">//右左旋转</span>
+<span class="w">					</span><span class="n">turnRL</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">rjt</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="c1">//右右旋转</span>
+<span class="w">					</span><span class="n">turnRR</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">rjt</span><span class="p">);</span><span class="w"></span>
+<span class="w">				</span><span class="p">}</span><span class="w"></span>
+<span class="w">			</span><span class="p">}</span><span class="w">		</span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">		</span><span class="n">BalanceTrue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">checkTreeBalance</span><span class="p">((</span><span class="o">*</span><span class="n">root</span><span class="p">));</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;二叉树调整平衡后数据结点:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;前序遍历:&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">Print1</span><span class="p">(</span><span class="o">*</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;中序遍历:&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">Print2</span><span class="p">(</span><span class="o">*</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;平衡二叉树插入测试</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">nums</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">65</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">69</span><span class="p">,</span><span class="mi">66</span><span class="p">,</span><span class="mi">68</span><span class="p">,</span><span class="mi">77</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;插入数据: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">		</span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">addNode</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">NULL</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;首节点申请失败&quot;</span><span class="p">);</span><span class="w"> </span>
+<span class="w">			</span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">		</span><span class="n">treeBalance</span><span class="p">(</span><span class="o">&amp;</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">当前二叉树遍历</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;前序遍历:&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print1</span><span class="p">(</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;中序遍历:&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print2</span><span class="p">(</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//return 0;</span>
+
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">平衡二叉树删除测试</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">DeleteTreeNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">root</span><span class="p">,</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">		</span><span class="n">treeBalance</span><span class="p">(</span><span class="o">&amp;</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">当前二叉树遍历</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;前序遍历:&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print1</span><span class="p">(</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;中序遍历:&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">Print2</span><span class="p">(</span><span class="n">root</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>程序执行结果</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># gcc BalanceTree.c -w -g -std=c11</span>
+<span class="c1"># </span>
+<span class="c1"># ./a.out </span>
+平衡二叉树插入测试
+插入数据: <span class="m">65</span>
+插入数据: <span class="m">60</span>
+插入数据: <span class="m">70</span>
+插入数据: <span class="m">55</span>
+插入数据: <span class="m">40</span>
+二叉树不平衡,最小不平衡子树数据结点: <span class="m">60</span>
+左左旋转,非根节点
+二叉树调整平衡后数据结点:
+前序遍历:65     <span class="m">55</span>      <span class="m">40</span>      <span class="m">60</span>      <span class="m">70</span>
+中序遍历:40     <span class="m">55</span>      <span class="m">60</span>      <span class="m">65</span>      <span class="m">70</span>
+
+插入数据: <span class="m">63</span>
+二叉树不平衡,最小不平衡子树数据结点: <span class="m">65</span>
+左右旋转，是根节点
+二叉树调整平衡后数据结点:
+前序遍历:60     <span class="m">55</span>      <span class="m">40</span>      <span class="m">65</span>      <span class="m">63</span>      <span class="m">70</span>
+中序遍历:40     <span class="m">55</span>      <span class="m">60</span>      <span class="m">63</span>      <span class="m">65</span>      <span class="m">70</span>
+
+插入数据: <span class="m">69</span>
+插入数据: <span class="m">66</span>
+二叉树不平衡,最小不平衡子树数据结点: <span class="m">70</span>
+左左旋转,非根节点
+二叉树调整平衡后数据结点:
+前序遍历:60     <span class="m">55</span>      <span class="m">40</span>      <span class="m">65</span>      <span class="m">63</span>      <span class="m">69</span>      <span class="m">66</span>      <span class="m">70</span>
+中序遍历:40     <span class="m">55</span>      <span class="m">60</span>      <span class="m">63</span>      <span class="m">65</span>      <span class="m">66</span>      <span class="m">69</span>      <span class="m">70</span>
+
+插入数据: <span class="m">68</span>
+二叉树不平衡,最小不平衡子树数据结点: <span class="m">65</span>
+右左旋转，非根节点
+二叉树调整平衡后数据结点:
+前序遍历:60     <span class="m">55</span>      <span class="m">40</span>      <span class="m">66</span>      <span class="m">65</span>      <span class="m">63</span>      <span class="m">69</span>      <span class="m">68</span>      <span class="m">70</span>
+中序遍历:40     <span class="m">55</span>      <span class="m">60</span>      <span class="m">63</span>      <span class="m">65</span>      <span class="m">66</span>      <span class="m">68</span>      <span class="m">69</span>      <span class="m">70</span>
+
+插入数据: <span class="m">77</span>
+二叉树不平衡,最小不平衡子树数据结点: <span class="m">60</span>
+右右旋转,是根节点
+二叉树调整平衡后数据结点:
+前序遍历:66     <span class="m">60</span>      <span class="m">55</span>      <span class="m">40</span>      <span class="m">65</span>      <span class="m">63</span>      <span class="m">69</span>      <span class="m">68</span>      <span class="m">70</span>      <span class="m">77</span>
+中序遍历:40     <span class="m">55</span>      <span class="m">60</span>      <span class="m">63</span>      <span class="m">65</span>      <span class="m">66</span>      <span class="m">68</span>      <span class="m">69</span>      <span class="m">70</span>      <span class="m">77</span>
+
+
+当前二叉树遍历
+前序遍历:66     <span class="m">60</span>      <span class="m">55</span>      <span class="m">40</span>      <span class="m">65</span>      <span class="m">63</span>      <span class="m">69</span>      <span class="m">68</span>      <span class="m">70</span>      <span class="m">77</span>
+中序遍历:40     <span class="m">55</span>      <span class="m">60</span>      <span class="m">63</span>      <span class="m">65</span>      <span class="m">66</span>      <span class="m">68</span>      <span class="m">69</span>      <span class="m">70</span>      <span class="m">77</span>
+
+
+平衡二叉树删除测试
+删除节点: <span class="m">70</span>
+删除节点: <span class="m">55</span>
+删除节点: <span class="m">40</span>
+二叉树不平衡,最小不平衡子树数据结点: <span class="m">60</span>
+右左旋转，非根节点
+二叉树调整平衡后数据结点:
+前序遍历:66     <span class="m">63</span>      <span class="m">60</span>      <span class="m">65</span>      <span class="m">69</span>      <span class="m">68</span>      <span class="m">77</span>
+中序遍历:60     <span class="m">63</span>      <span class="m">65</span>      <span class="m">66</span>      <span class="m">68</span>      <span class="m">69</span>      <span class="m">77</span>
+
+
+当前二叉树遍历
+前序遍历:66     <span class="m">63</span>      <span class="m">60</span>      <span class="m">65</span>      <span class="m">69</span>      <span class="m">68</span>      <span class="m">77</span>
+中序遍历:60     <span class="m">63</span>      <span class="m">65</span>      <span class="m">66</span>      <span class="m">68</span>      <span class="m">69</span>      <span class="m">77</span>
+<span class="c1"># </span>
+</pre></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../time/info.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">VII:定时器方案之红黑树与最小堆、时间轮详解</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../ring/info.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">V:裸机中环形队列与RTOS中消息队列的区别</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, ljx
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">VI:平衡二叉树 C语言代码实现</a><ul>
+<li><a class="reference internal" href="#id1">1. 什么是平衡二叉树</a></li>
+<li><a class="reference internal" href="#id2">2. 如何判断二叉树最小不平衡子树</a></li>
+<li><a class="reference internal" href="#id3">3. 二叉树不平衡情况</a></li>
+<li><a class="reference internal" href="#id4">4. 判断不平衡二叉树哪边高</a></li>
+<li><a class="reference internal" href="#id5">5. 如何调整平衡二叉树</a></li>
+<li><a class="reference internal" href="#id6">全部代码</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    </body>
+</html>

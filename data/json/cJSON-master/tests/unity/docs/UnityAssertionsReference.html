@@ -1,0 +1,1261 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../../search.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.15"/>
+        <title>Unity Assertions Reference - C data struct 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../../index.html"><div class="brand">C data struct 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">C data struct 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../line/info.html">II:C语言描述数据结构 —— 顺序表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../linkmap/info.html">III:C语言描述数据结构 —— 单链表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../ring/info.html">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tree/info.html">VI:平衡二叉树 C语言代码实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time/info.html#id1">前言</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="unity-assertions-reference">
+<h1>Unity Assertions Reference<a class="headerlink" href="#unity-assertions-reference" title="Permalink to this headline">#</a></h1>
+<section id="background-and-overview">
+<h2>Background and Overview<a class="headerlink" href="#background-and-overview" title="Permalink to this headline">#</a></h2>
+<section id="super-condensed-version">
+<h3>Super Condensed Version<a class="headerlink" href="#super-condensed-version" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>An assertion establishes truth (i.e. boolean True) for a single condition.
+Upon boolean False, an assertion stops execution and reports the failure.</p></li>
+<li><p>Unity is mainly a rich collection of assertions and the support to gather up
+and easily execute those assertions.</p></li>
+<li><p>The structure of Unity allows you to easily separate test assertions from
+source code in, well, test code.</p></li>
+<li><p>Unity’s assertions:</p></li>
+<li><p>Come in many, many flavors to handle different C types and assertion cases.</p></li>
+<li><p>Use context to provide detailed and helpful failure messages.</p></li>
+<li><p>Document types, expected values, and basic behavior in your source code for
+free.</p></li>
+</ul>
+</section>
+<section id="unity-is-several-things-but-mainly-it-s-assertions">
+<h3>Unity Is Several Things But Mainly It’s Assertions<a class="headerlink" href="#unity-is-several-things-but-mainly-it-s-assertions" title="Permalink to this headline">#</a></h3>
+<p>One way to think of Unity is simply as a rich collection of assertions you can
+use to establish whether your source code behaves the way you think it does.
+Unity provides a framework to easily organize and execute those assertions in
+test code separate from your source code.</p>
+</section>
+<section id="what-s-an-assertion">
+<h3>What’s an Assertion?<a class="headerlink" href="#what-s-an-assertion" title="Permalink to this headline">#</a></h3>
+<p>At their core, assertions are an establishment of truth - boolean truth. Was this
+thing equal to that thing? Does that code doohickey have such-and-such property
+or not? You get the idea. Assertions are executable code (to appreciate the big
+picture on this read up on the difference between
+[link:Dynamic Verification and Static Analysis]). A failing assertion stops
+execution and reports an error through some appropriate I/O channel (e.g.
+stdout, GUI, file, blinky light).</p>
+<p>Fundamentally, for dynamic verification all you need is a single assertion
+mechanism. In fact, that’s what the <a class="reference external" href="http://en.wikipedia.org/en/wiki/Assert.h">assert() macro in C’s standard library</a>
+is for. So why not just use it? Well, we can do far better in the reporting
+department. C’s <code class="docutils literal notranslate"><span class="pre">assert()</span></code> is pretty dumb as-is and is particularly poor for
+handling common data types like arrays, structs, etc. And, without some other
+support, it’s far too tempting to litter source code with C’s <code class="docutils literal notranslate"><span class="pre">assert()</span></code>’s. It’s
+generally much cleaner, manageable, and more useful to separate test and source
+code in the way Unity facilitates.</p>
+</section>
+<section id="unity-s-assertions-helpful-messages-and-free-source-code-documentation">
+<h3>Unity’s Assertions: Helpful Messages <em>and</em> Free Source Code Documentation<a class="headerlink" href="#unity-s-assertions-helpful-messages-and-free-source-code-documentation" title="Permalink to this headline">#</a></h3>
+<p>Asserting a simple truth condition is valuable, but using the context of the
+assertion is even more valuable. For instance, if you know you’re comparing bit
+flags and not just integers, then why not use that context to give explicit,
+readable, bit-level feedback when an assertion fails?</p>
+<p>That’s what Unity’s collection of assertions do - capture context to give you
+helpful, meaningful assertion failure messages. In fact, the assertions
+themselves also serve as executable documentation about types and values in your
+source code. So long as your tests remain current with your source and all those
+tests pass, you have a detailed, up-to-date view of the intent and mechanisms in
+your source code. And due to a wondrous mystery, well-tested code usually tends
+to be well designed code.</p>
+</section>
+</section>
+<section id="assertion-conventions-and-configurations">
+<h2>Assertion Conventions and Configurations<a class="headerlink" href="#assertion-conventions-and-configurations" title="Permalink to this headline">#</a></h2>
+<section id="naming-and-parameter-conventions">
+<h3>Naming and Parameter Conventions<a class="headerlink" href="#naming-and-parameter-conventions" title="Permalink to this headline">#</a></h3>
+<p>The convention of assertion parameters generally follows this order:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_X( {modifiers}, {expected}, actual, {size/count} )
+</pre></div>
+</div>
+<p>The very simplest assertion possible uses only a single “actual” parameter (e.g.
+a simple null check).</p>
+<p>“Actual” is the value being tested and unlike the other parameters in an
+assertion construction is the only parameter present in all assertion variants.
+“Modifiers” are masks, ranges, bit flag specifiers, floating point deltas.
+“Expected” is your expected value (duh) to compare to an “actual” value; it’s
+marked as an optional parameter because some assertions only need a single
+“actual” parameter (e.g. null check).
+“Size/count” refers to string lengths, number of array elements, etc.</p>
+<p>Many of Unity’s assertions are apparent duplications in that the same data type
+is handled by several assertions. The differences among these are in how failure
+messages are presented. For instance, a <code class="docutils literal notranslate"><span class="pre">_HEX</span></code> variant of an assertion prints
+the expected and actual values of that assertion formatted as hexadecimal.</p>
+<section id="test-assert-x-message-variants">
+<h4>TEST_ASSERT_X_MESSAGE Variants<a class="headerlink" href="#test-assert-x-message-variants" title="Permalink to this headline">#</a></h4>
+<p><em>All</em> assertions are complemented with a variant that includes a simple string
+message as a final parameter. The string you specify is appended to an assertion
+failure message in Unity output.</p>
+<p>For brevity, the assertion variants with a message parameter are not listed
+below. Just tack on <code class="docutils literal notranslate"><span class="pre">_MESSAGE</span></code> as the final component to any assertion name in
+the reference list below and add a string as the final parameter.</p>
+<p><em>Example:</em></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_X( {modifiers}, {expected}, actual, {size/count} )
+</pre></div>
+</div>
+<p>becomes messageified like thus…</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_X_MESSAGE( {modifiers}, {expected}, actual, {size/count}, message )
+</pre></div>
+</div>
+</section>
+<section id="test-assert-x-array-variants">
+<h4>TEST_ASSERT_X_ARRAY Variants<a class="headerlink" href="#test-assert-x-array-variants" title="Permalink to this headline">#</a></h4>
+<p>Unity provides a collection of assertions for arrays containing a variety of
+types. These are documented in the Array section below. These are almost on par
+with the <code class="docutils literal notranslate"><span class="pre">_MESSAGE</span></code>variants of Unity’s Asserts in that for pretty much any Unity
+type assertion you can tack on <code class="docutils literal notranslate"><span class="pre">_ARRAY</span></code> and run assertions on an entire block of
+memory.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_TYPEX_ARRAY( expected, actual, {size/count} )
+</pre></div>
+</div>
+<p>“Expected” is an array itself.
+“Size/count” is one or two parameters necessary to establish the number of array
+elements and perhaps the length of elements within the array.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">_MESSAGE</span></code> variant convention still applies here to array assertions. The
+<code class="docutils literal notranslate"><span class="pre">_MESSAGE</span></code> variants of the <code class="docutils literal notranslate"><span class="pre">_ARRAY</span></code> assertions have names ending with
+<code class="docutils literal notranslate"><span class="pre">_ARRAY_MESSAGE</span></code>.</p></li>
+<li><p>Assertions for handling arrays of floating point values are grouped with float
+and double assertions (see immediately following section).</p></li>
+</ul>
+</section>
+</section>
+<section id="test-assert-each-equal-x-variants">
+<h3>TEST_ASSERT_EACH_EQUAL_X Variants<a class="headerlink" href="#test-assert-each-equal-x-variants" title="Permalink to this headline">#</a></h3>
+<p>Unity provides a collection of assertions for arrays containing a variety of
+types which can be compared to a single value as well. These are documented in
+the Each Equal section below. these are almost on par with the <code class="docutils literal notranslate"><span class="pre">_MESSAGE</span></code>
+variants of Unity’s Asserts in that for pretty much any Unity type assertion you
+can inject _EACH_EQUAL and run assertions on an entire block of memory.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EACH_EQUAL_TYPEX( expected, actual, {size/count} )
+</pre></div>
+</div>
+<p>“Expected” is a single value to compare to.
+“Actual” is an array where each element will be compared to the expected value.
+“Size/count” is one of two parameters necessary to establish the number of array
+elements and perhaps the length of elements within the array.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">_MESSAGE</span></code> variant convention still applies here to Each Equal assertions.</p></li>
+<li><p>Assertions for handling Each Equal of floating point values are grouped with
+float and double assertions (see immediately following section).</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">#</a></h3>
+<section id="floating-point-support-is-optional">
+<h4>Floating Point Support Is Optional<a class="headerlink" href="#floating-point-support-is-optional" title="Permalink to this headline">#</a></h4>
+<p>Support for floating point types is configurable. That is, by defining the
+appropriate preprocessor symbols, floats and doubles can be individually enabled
+or disabled in Unity code. This is useful for embedded targets with no floating
+point math support (i.e. Unity compiles free of errors for fixed point only
+platforms). See Unity documentation for specifics.</p>
+</section>
+<section id="maximum-data-type-width-is-configurable">
+<h4>Maximum Data Type Width Is Configurable<a class="headerlink" href="#maximum-data-type-width-is-configurable" title="Permalink to this headline">#</a></h4>
+<p>Not all targets support 64 bit wide types or even 32 bit wide types. Define the
+appropriate preprocessor symbols and Unity will omit all operations from
+compilation that exceed the maximum width of your target. See Unity
+documentation for specifics.</p>
+</section>
+</section>
+</section>
+<section id="the-assertions-in-all-their-blessed-glory">
+<h2>The Assertions in All Their Blessed Glory<a class="headerlink" href="#the-assertions-in-all-their-blessed-glory" title="Permalink to this headline">#</a></h2>
+<section id="basic-fail-and-ignore">
+<h3>Basic Fail and Ignore<a class="headerlink" href="#basic-fail-and-ignore" title="Permalink to this headline">#</a></h3>
+<section id="test-fail">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_FAIL()</span></code><a class="headerlink" href="#test-fail" title="Permalink to this headline">#</a></h4>
+<p>This fella is most often used in special conditions where your test code is
+performing logic beyond a simple assertion. That is, in practice, <code class="docutils literal notranslate"><span class="pre">TEST_FAIL()</span></code>
+will always be found inside a conditional code block.</p>
+<p><em>Examples:</em></p>
+<ul class="simple">
+<li><p>Executing a state machine multiple times that increments a counter your test
+code then verifies as a final step.</p></li>
+<li><p>Triggering an exception and verifying it (as in Try / Catch / Throw - see the
+<a class="reference external" href="https://github.com/ThrowTheSwitch/CException">CException</a> project).</p></li>
+</ul>
+</section>
+<section id="test-ignore">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_IGNORE()</span></code><a class="headerlink" href="#test-ignore" title="Permalink to this headline">#</a></h4>
+<p>Marks a test case (i.e. function meant to contain test assertions) as ignored.
+Usually this is employed as a breadcrumb to come back and implement a test case.
+An ignored test case has effects if other assertions are in the enclosing test
+case (see Unity documentation for more).</p>
+</section>
+</section>
+<section id="boolean">
+<h3>Boolean<a class="headerlink" href="#boolean" title="Permalink to this headline">#</a></h3>
+<section id="test-assert-condition">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT</span> <span class="pre">(condition)</span></code><a class="headerlink" href="#test-assert-condition" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-true-condition">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_TRUE</span> <span class="pre">(condition)</span></code><a class="headerlink" href="#test-assert-true-condition" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-false-condition">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FALSE</span> <span class="pre">(condition)</span></code><a class="headerlink" href="#test-assert-false-condition" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-unless-condition">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UNLESS</span> <span class="pre">(condition)</span></code><a class="headerlink" href="#test-assert-unless-condition" title="Permalink to this headline">#</a></h4>
+<p>A simple wording variation on <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FALSE</span></code>.The semantics of
+<code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UNLESS</span></code> aid readability in certain test constructions or
+conditional statements.</p>
+</section>
+<section id="test-assert-null-pointer">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_NULL</span> <span class="pre">(pointer)</span></code><a class="headerlink" href="#test-assert-null-pointer" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-not-null-pointer">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_NOT_NULL</span> <span class="pre">(pointer)</span></code><a class="headerlink" href="#test-assert-not-null-pointer" title="Permalink to this headline">#</a></h4>
+</section>
+</section>
+<section id="signed-and-unsigned-integers-of-all-sizes">
+<h3>Signed and Unsigned Integers (of all sizes)<a class="headerlink" href="#signed-and-unsigned-integers-of-all-sizes" title="Permalink to this headline">#</a></h3>
+<p>Large integer sizes can be disabled for build targets that do not support them.
+For example, if your target only supports up to 16 bit types, by defining the
+appropriate symbols Unity can be configured to omit 32 and 64 bit operations
+that would break compilation (see Unity documentation for more). Refer to
+Advanced Asserting later in this document for advice on dealing with other word
+sizes.</p>
+<section id="test-assert-equal-int-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-int-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int8-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT8</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-int8-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int16-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT16</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-int16-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int32-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT32</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-int32-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int64-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT64</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-int64-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-not-equal-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_NOT_EQUAL</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-not-equal-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-uint-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint8-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT8</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-uint8-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint16-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT16</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-uint16-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint32-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT32</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-uint32-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint64-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT64</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-uint64-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+</section>
+<section id="unsigned-integers-of-all-sizes-in-hexadecimal">
+<h3>Unsigned Integers (of all sizes) in Hexadecimal<a class="headerlink" href="#unsigned-integers-of-all-sizes-in-hexadecimal" title="Permalink to this headline">#</a></h3>
+<p>All <code class="docutils literal notranslate"><span class="pre">_HEX</span></code> assertions are identical in function to unsigned integer assertions
+but produce failure messages with the <code class="docutils literal notranslate"><span class="pre">expected</span></code> and <code class="docutils literal notranslate"><span class="pre">actual</span></code> values formatted
+in hexadecimal. Unity output is big endian.</p>
+<section id="test-assert-equal-hex-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-hex-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex8-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX8</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-hex8-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex16-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX16</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-hex16-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex32-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX32</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-hex32-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex64-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX64</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-hex64-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+</section>
+<section id="masked-and-bit-level-assertions">
+<h3>Masked and Bit-level Assertions<a class="headerlink" href="#masked-and-bit-level-assertions" title="Permalink to this headline">#</a></h3>
+<p>Masked and bit-level assertions produce output formatted in hexadecimal. Unity
+output is big endian.</p>
+<section id="test-assert-bits-mask-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BITS</span> <span class="pre">(mask,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-bits-mask-expected-actual" title="Permalink to this headline">#</a></h4>
+<p>Only compares the masked (i.e. high) bits of <code class="docutils literal notranslate"><span class="pre">expected</span></code> and <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameters.</p>
+</section>
+<section id="test-assert-bits-high-mask-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BITS_HIGH</span> <span class="pre">(mask,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-bits-high-mask-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts the masked bits of the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter are high.</p>
+</section>
+<section id="test-assert-bits-low-mask-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BITS_LOW</span> <span class="pre">(mask,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-bits-low-mask-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts the masked bits of the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter are low.</p>
+</section>
+<section id="test-assert-bit-high-bit-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BIT_HIGH</span> <span class="pre">(bit,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-bit-high-bit-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts the specified bit of the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is high.</p>
+</section>
+<section id="test-assert-bit-low-bit-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BIT_LOW</span> <span class="pre">(bit,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-bit-low-bit-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts the specified bit of the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is low.</p>
+</section>
+</section>
+<section id="integer-less-than-greater-than">
+<h3>Integer Less Than / Greater Than<a class="headerlink" href="#integer-less-than-greater-than" title="Permalink to this headline">#</a></h3>
+<p>These assertions verify that the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is less than or greater
+than <code class="docutils literal notranslate"><span class="pre">threshold</span></code> (exclusive). For example, if the threshold value is 0 for the
+greater than assertion will fail if it is 0 or less.</p>
+<section id="test-assert-greater-than-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-int-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-int-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-int8-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-int8-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-int16-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-int16-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-int32-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-int32-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-uint-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-uint-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-uint8-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-uint8-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-uint16-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-uint16-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-uint32-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-uint32-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-hex8-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_HEX8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-hex8-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-hex16-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_HEX16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-hex16-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-greater-than-hex32-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_HEX32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-greater-than-hex32-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-int-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-int-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-int8-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-int8-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-int16-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-int16-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-int32-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-int32-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-uint-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-uint-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-uint8-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-uint8-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-uint16-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-uint16-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-uint32-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-uint32-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-hex8-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_HEX8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-hex8-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-hex16-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_HEX16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-hex16-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-less-than-hex32-threshold-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_HEX32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-less-than-hex32-threshold-actual" title="Permalink to this headline">#</a></h4>
+</section>
+</section>
+<section id="integer-ranges-of-all-sizes">
+<h3>Integer Ranges (of all sizes)<a class="headerlink" href="#integer-ranges-of-all-sizes" title="Permalink to this headline">#</a></h3>
+<p>These assertions verify that the <code class="docutils literal notranslate"><span class="pre">expected</span></code> parameter is within +/- <code class="docutils literal notranslate"><span class="pre">delta</span></code>
+(inclusive) of the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter. For example, if the expected value is 10
+and the delta is 3 then the assertion will fail for any value outside the range
+of 7 - 13.</p>
+<section id="test-assert-int-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-int-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-int8-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT8_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-int8-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-int16-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT16_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-int16-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-int32-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT32_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-int32-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-int64-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT64_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-int64-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-uint-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-uint-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-uint8-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT8_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-uint8-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-uint16-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT16_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-uint16-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-uint32-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT32_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-uint32-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-uint64-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT64_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-uint64-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-hex-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-hex-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-hex8-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX8_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-hex8-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-hex16-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX16_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-hex16-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-hex32-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX32_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-hex32-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-hex64-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX64_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-hex64-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+</section>
+</section>
+<section id="structs-and-strings">
+<h3>Structs and Strings<a class="headerlink" href="#structs-and-strings" title="Permalink to this headline">#</a></h3>
+<section id="test-assert-equal-ptr-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_PTR</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-ptr-expected-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that the pointers point to the same memory location.</p>
+</section>
+<section id="test-assert-equal-string-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_STRING</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-string-expected-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that the null terminated (<code class="docutils literal notranslate"><span class="pre">'\0'</span></code>)strings are identical. If strings are
+of different lengths or any portion of the strings before their terminators
+differ, the assertion fails. Two NULL strings (i.e. zero length) are considered
+equivalent.</p>
+</section>
+<section id="test-assert-equal-memory-expected-actual-len">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_MEMORY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">len)</span></code><a class="headerlink" href="#test-assert-equal-memory-expected-actual-len" title="Permalink to this headline">#</a></h4>
+<p>Asserts that the contents of the memory specified by the <code class="docutils literal notranslate"><span class="pre">expected</span></code> and <code class="docutils literal notranslate"><span class="pre">actual</span></code>
+pointers is identical. The size of the memory blocks in bytes is specified by
+the <code class="docutils literal notranslate"><span class="pre">len</span></code> parameter.</p>
+</section>
+</section>
+<section id="arrays">
+<h3>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> and <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameters are both arrays. <code class="docutils literal notranslate"><span class="pre">num_elements</span></code> specifies the
+number of elements in the arrays to compare.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_HEX</span></code> assertions produce failure messages with expected and actual array
+contents formatted in hexadecimal.</p>
+<p>For array of strings comparison behavior, see comments for
+<code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_STRING</span></code> in the preceding section.</p>
+<p>Assertions fail upon the first element in the compared arrays found not to
+match. Failure messages specify the array index of the failed comparison.</p>
+<section id="test-assert-equal-int-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-int-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int8-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT8_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-int8-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int16-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT16_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-int16-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int32-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT32_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-int32-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-int64-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT64_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-int64-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-uint-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint8-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT8_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-uint8-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint16-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT16_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-uint16-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint32-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT32_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-uint32-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-uint64-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT64_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-uint64-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-hex-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex8-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX8_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-hex8-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex16-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX16_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-hex16-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex32-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX32_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-hex32-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-hex64-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX64_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-hex64-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-ptr-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_PTR_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-ptr-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-string-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_STRING_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-string-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-equal-memory-array-expected-actual-len-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_MEMORY_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">len,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-memory-array-expected-actual-len-num-elements" title="Permalink to this headline">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">len</span></code> is the memory in bytes to be compared at each array element.</p>
+</section>
+</section>
+<section id="each-equal-arrays-to-single-value">
+<h3>Each Equal (Arrays to Single Value)<a class="headerlink" href="#each-equal-arrays-to-single-value" title="Permalink to this headline">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> are single values and <code class="docutils literal notranslate"><span class="pre">actual</span></code> are arrays. <code class="docutils literal notranslate"><span class="pre">num_elements</span></code> specifies
+the number of elements in the arrays to compare.</p>
+<p><code class="docutils literal notranslate"><span class="pre">_HEX</span></code> assertions produce failure messages with expected and actual array
+contents formatted in hexadecimal.</p>
+<p>Assertions fail upon the first element in the compared arrays found not to
+match. Failure messages specify the array index of the failed comparison.</p>
+<section id="test-assert-each-equal-int-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-int-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-int8-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT8</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-int8-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-int16-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT16</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-int16-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-int32-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT32</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-int32-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-int64-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT64</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-int64-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-uint-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-uint-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-uint8-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT8</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-uint8-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-uint16-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT16</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-uint16-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-uint32-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT32</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-uint32-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-uint64-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT64</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-uint64-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-hex-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-hex-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-hex8-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX8</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-hex8-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-hex16-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX16</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-hex16-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-hex32-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX32</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-hex32-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-hex64-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX64</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-hex64-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-ptr-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_PTR</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-ptr-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-string-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_STRING</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-string-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="test-assert-each-equal-memory-expected-actual-len-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_MEMORY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">len,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-each-equal-memory-expected-actual-len-num-elements" title="Permalink to this headline">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">len</span></code> is the memory in bytes to be compared at each array element.</p>
+</section>
+</section>
+<section id="floating-point-if-enabled">
+<h3>Floating Point (If enabled)<a class="headerlink" href="#floating-point-if-enabled" title="Permalink to this headline">#</a></h3>
+<section id="test-assert-float-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-float-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that the <code class="docutils literal notranslate"><span class="pre">actual</span></code> value is within +/- <code class="docutils literal notranslate"><span class="pre">delta</span></code> of the <code class="docutils literal notranslate"><span class="pre">expected</span></code> value.
+The nature of floating point representation is such that exact evaluations of
+equality are not guaranteed.</p>
+</section>
+<section id="test-assert-equal-float-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_FLOAT</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-float-expected-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that the ?actual?value is “close enough to be considered equal” to the
+<code class="docutils literal notranslate"><span class="pre">expected</span></code> value. If you are curious about the details, refer to the Advanced
+Asserting section for more details on this. Omitting a user-specified delta in a
+floating point assertion is both a shorthand convenience and a requirement of
+code generation conventions for CMock.</p>
+</section>
+<section id="test-assert-equal-float-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_FLOAT_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-float-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+<p>See Array assertion section for details. Note that individual array element
+float comparisons are executed using T?EST_ASSERT_EQUAL_FLOAT?.That is, user
+specified delta comparison values requires a custom-implemented floating point
+array assertion.</p>
+</section>
+<section id="test-assert-float-is-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is equivalent to positive infinity floating
+point representation.</p>
+</section>
+<section id="test-assert-float-is-neg-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NEG_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-neg-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is equivalent to negative infinity floating
+point representation.</p>
+</section>
+<section id="test-assert-float-is-nan-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NAN</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-nan-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a Not A Number floating point representation.</p>
+</section>
+<section id="test-assert-float-is-determinate-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_DETERMINATE</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-determinate-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that ?actual?parameter is a floating point representation usable for
+mathematical operations. That is, the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is neither positive
+infinity nor negative infinity nor Not A Number floating point representations.</p>
+</section>
+<section id="test-assert-float-is-not-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-not-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a value other than positive infinity floating
+point representation.</p>
+</section>
+<section id="test-assert-float-is-not-neg-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_NEG_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-not-neg-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a value other than negative infinity floating
+point representation.</p>
+</section>
+<section id="test-assert-float-is-not-nan-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_NAN</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-not-nan-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a value other than Not A Number floating
+point representation.</p>
+</section>
+<section id="test-assert-float-is-not-determinate-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_DETERMINATE</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-float-is-not-determinate-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is not usable for mathematical operations. That
+is, the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is either positive infinity or negative infinity or
+Not A Number floating point representations.</p>
+</section>
+</section>
+<section id="double-if-enabled">
+<h3>Double (If enabled)<a class="headerlink" href="#double-if-enabled" title="Permalink to this headline">#</a></h3>
+<section id="test-assert-double-within-delta-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-double-within-delta-expected-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that the <code class="docutils literal notranslate"><span class="pre">actual</span></code> value is within +/- <code class="docutils literal notranslate"><span class="pre">delta</span></code> of the <code class="docutils literal notranslate"><span class="pre">expected</span></code> value.
+The nature of floating point representation is such that exact evaluations of
+equality are not guaranteed.</p>
+</section>
+<section id="test-assert-equal-double-expected-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_DOUBLE</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code><a class="headerlink" href="#test-assert-equal-double-expected-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that the <code class="docutils literal notranslate"><span class="pre">actual</span></code> value is “close enough to be considered equal” to the
+<code class="docutils literal notranslate"><span class="pre">expected</span></code> value. If you are curious about the details, refer to the Advanced
+Asserting section for more details. Omitting a user-specified delta in a
+floating point assertion is both a shorthand convenience and a requirement of
+code generation conventions for CMock.</p>
+</section>
+<section id="test-assert-equal-double-array-expected-actual-num-elements">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_DOUBLE_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code><a class="headerlink" href="#test-assert-equal-double-array-expected-actual-num-elements" title="Permalink to this headline">#</a></h4>
+<p>See Array assertion section for details. Note that individual array element
+double comparisons are executed using <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_DOUBLE</span></code>.That is, user
+specified delta comparison values requires a custom implemented double array
+assertion.</p>
+</section>
+<section id="test-assert-double-is-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is equivalent to positive infinity floating
+point representation.</p>
+</section>
+<section id="test-assert-double-is-neg-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NEG_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-neg-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is equivalent to negative infinity floating point
+representation.</p>
+</section>
+<section id="test-assert-double-is-nan-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NAN</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-nan-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a Not A Number floating point representation.</p>
+</section>
+<section id="test-assert-double-is-determinate-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_DETERMINATE</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-determinate-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a floating point representation usable for
+mathematical operations. That is, the ?actual?parameter is neither positive
+infinity nor negative infinity nor Not A Number floating point representations.</p>
+</section>
+<section id="test-assert-double-is-not-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-not-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a value other than positive infinity floating
+point representation.</p>
+</section>
+<section id="test-assert-double-is-not-neg-inf-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_NEG_INF</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-not-neg-inf-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a value other than negative infinity floating
+point representation.</p>
+</section>
+<section id="test-assert-double-is-not-nan-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_NAN</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-not-nan-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is a value other than Not A Number floating
+point representation.</p>
+</section>
+<section id="test-assert-double-is-not-determinate-actual">
+<h4><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE</span> <span class="pre">(actual)</span></code><a class="headerlink" href="#test-assert-double-is-not-determinate-actual" title="Permalink to this headline">#</a></h4>
+<p>Asserts that <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is not usable for mathematical operations. That
+is, the <code class="docutils literal notranslate"><span class="pre">actual</span></code> parameter is either positive infinity or negative infinity or
+Not A Number floating point representations.</p>
+</section>
+</section>
+</section>
+<section id="advanced-asserting-details-on-tricky-assertions">
+<h2>Advanced Asserting: Details On Tricky Assertions<a class="headerlink" href="#advanced-asserting-details-on-tricky-assertions" title="Permalink to this headline">#</a></h2>
+<p>This section helps you understand how to deal with some of the trickier
+assertion situations you may run into. It will give you a glimpse into some of
+the under-the-hood details of Unity’s assertion mechanisms. If you’re one of
+those people who likes to know what is going on in the background, read on. If
+not, feel free to ignore the rest of this document until you need it.</p>
+<section id="how-do-the-equal-assertions-work-for-float-and-double">
+<h3>How do the EQUAL assertions work for FLOAT and DOUBLE?<a class="headerlink" href="#how-do-the-equal-assertions-work-for-float-and-double" title="Permalink to this headline">#</a></h3>
+<p>As you may know, directly checking for equality between a pair of floats or a
+pair of doubles is sloppy at best and an outright no-no at worst. Floating point
+values can often be represented in multiple ways, particularly after a series of
+operations on a value. Initializing a variable to the value of 2.0 is likely to
+result in a floating point representation of 2 x 20,but a series of
+mathematical operations might result in a representation of 8 x 2-2
+that also evaluates to a value of 2. At some point repeated operations cause
+equality checks to fail.</p>
+<p>So Unity doesn’t do direct floating point comparisons for equality. Instead, it
+checks if two floating point values are “really close.” If you leave Unity
+running with defaults, “really close” means “within a significant bit or two.”
+Under the hood, <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_FLOAT</span></code> is really <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_WITHIN</span></code>
+with the <code class="docutils literal notranslate"><span class="pre">delta</span></code> parameter calculated on the fly. For single precision, delta is
+the expected value multiplied by 0.00001, producing a very small proportional
+range around the expected value.</p>
+<p>If you are expecting a value of 20,000.0 the delta is calculated to be 0.2. So
+any value between 19,999.8 and 20,000.2 will satisfy the equality check. This
+works out to be roughly a single bit of range for a single-precision number, and
+that’s just about as tight a tolerance as you can reasonably get from a floating
+point value.</p>
+<p>So what happens when it’s zero? Zero - even more than other floating point
+values - can be represented many different ways. It doesn’t matter if you have
+0 x 20or 0 x 263.It’s still zero, right? Luckily, if you
+subtract these values from each other, they will always produce a difference of
+zero, which will still fall between 0 plus or minus a delta of 0. So it still
+works!</p>
+<p>Double precision floating point numbers use a much smaller multiplier, again
+approximating a single bit of error.</p>
+<p>If you don’t like these ranges and you want to make your floating point equality
+assertions less strict, you can change these multipliers to whatever you like by
+defining UNITY_FLOAT_PRECISION and UNITY_DOUBLE_PRECISION. See Unity
+documentation for more.</p>
+</section>
+<section id="how-do-we-deal-with-targets-with-non-standard-int-sizes">
+<h3>How do we deal with targets with non-standard int sizes?<a class="headerlink" href="#how-do-we-deal-with-targets-with-non-standard-int-sizes" title="Permalink to this headline">#</a></h3>
+<p>It’s “fun” that C is a standard where something as fundamental as an integer
+varies by target. According to the C standard, an <code class="docutils literal notranslate"><span class="pre">int</span></code> is to be the target’s
+natural register size, and it should be at least 16-bits and a multiple of a
+byte. It also guarantees an order of sizes:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Most often, <code class="docutils literal notranslate"><span class="pre">int</span></code> is 32-bits. In many cases in the embedded world, <code class="docutils literal notranslate"><span class="pre">int</span></code> is
+16-bits. There are rare microcontrollers out there that have 24-bit integers,
+and this remains perfectly standard C.</p>
+<p>To make things even more interesting, there are compilers and targets out there
+that have a hard choice to make. What if their natural register size is 10-bits
+or 12-bits? Clearly they can’t fulfill <em>both</em> the requirement to be at least
+16-bits AND the requirement to match the natural register size. In these
+situations, they often choose the natural register size, leaving us with
+something like this:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="p">(</span><span class="mi">8</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="p">(</span><span class="mi">12</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="mi">12</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="p">(</span><span class="mi">16</span><span class="w"> </span><span class="n">bit</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Um… yikes. It’s obviously breaking a rule or two… but they had to break SOME
+rules, so they made a choice.</p>
+<p>When the C99 standard rolled around, it introduced alternate standard-size types.
+It also introduced macros for pulling in MIN/MAX values for your integer types.
+It’s glorious! Unfortunately, many embedded compilers can’t be relied upon to
+use the C99 types (Sometimes because they have weird register sizes as described
+above. Sometimes because they don’t feel like it?).</p>
+<p>A goal of Unity from the beginning was to support every combination of
+microcontroller or microprocessor and C compiler. Over time, we’ve gotten really
+close to this. There are a few tricks that you should be aware of, though, if
+you’re going to do this effectively on some of these more idiosyncratic targets.</p>
+<p>First, when setting up Unity for a new target, you’re going to want to pay
+special attention to the macros for automatically detecting types
+(where available) or manually configuring them yourself. You can get information
+on both of these in Unity’s documentation.</p>
+<p>What about the times where you suddenly need to deal with something odd, like a
+24-bit <code class="docutils literal notranslate"><span class="pre">int</span></code>? The simplest solution is to use the next size up. If you have a
+24-bit <code class="docutils literal notranslate"><span class="pre">int</span></code>, configure Unity to use 32-bit integers. If you have a 12-bit
+<code class="docutils literal notranslate"><span class="pre">int</span></code>, configure Unity to use 16 bits. There are two ways this is going to
+affect you:</p>
+<ol class="arabic simple">
+<li><p>When Unity displays errors for you, it’s going to pad the upper unused bits
+with zeros.</p></li>
+<li><p>You’re going to have to be careful of assertions that perform signed
+operations, particularly <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT_WITHIN</span></code>.Such assertions might wrap
+your <code class="docutils literal notranslate"><span class="pre">int</span></code> in the wrong place, and you could experience false failures. You can
+always back down to a simple <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT</span></code> and do the operations yourself.</p></li>
+</ol>
+<p><em>Find The Latest of This And More at <a class="reference external" href="https://throwtheswitch.org">ThrowTheSwitch.org</a></em></p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, ljx
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Unity Assertions Reference</a><ul>
+<li><a class="reference internal" href="#background-and-overview">Background and Overview</a><ul>
+<li><a class="reference internal" href="#super-condensed-version">Super Condensed Version</a></li>
+<li><a class="reference internal" href="#unity-is-several-things-but-mainly-it-s-assertions">Unity Is Several Things But Mainly It’s Assertions</a></li>
+<li><a class="reference internal" href="#what-s-an-assertion">What’s an Assertion?</a></li>
+<li><a class="reference internal" href="#unity-s-assertions-helpful-messages-and-free-source-code-documentation">Unity’s Assertions: Helpful Messages <em>and</em> Free Source Code Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#assertion-conventions-and-configurations">Assertion Conventions and Configurations</a><ul>
+<li><a class="reference internal" href="#naming-and-parameter-conventions">Naming and Parameter Conventions</a><ul>
+<li><a class="reference internal" href="#test-assert-x-message-variants">TEST_ASSERT_X_MESSAGE Variants</a></li>
+<li><a class="reference internal" href="#test-assert-x-array-variants">TEST_ASSERT_X_ARRAY Variants</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test-assert-each-equal-x-variants">TEST_ASSERT_EACH_EQUAL_X Variants</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#floating-point-support-is-optional">Floating Point Support Is Optional</a></li>
+<li><a class="reference internal" href="#maximum-data-type-width-is-configurable">Maximum Data Type Width Is Configurable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-assertions-in-all-their-blessed-glory">The Assertions in All Their Blessed Glory</a><ul>
+<li><a class="reference internal" href="#basic-fail-and-ignore">Basic Fail and Ignore</a><ul>
+<li><a class="reference internal" href="#test-fail"><code class="docutils literal notranslate"><span class="pre">TEST_FAIL()</span></code></a></li>
+<li><a class="reference internal" href="#test-ignore"><code class="docutils literal notranslate"><span class="pre">TEST_IGNORE()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#boolean">Boolean</a><ul>
+<li><a class="reference internal" href="#test-assert-condition"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT</span> <span class="pre">(condition)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-true-condition"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_TRUE</span> <span class="pre">(condition)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-false-condition"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FALSE</span> <span class="pre">(condition)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-unless-condition"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UNLESS</span> <span class="pre">(condition)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-null-pointer"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_NULL</span> <span class="pre">(pointer)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-not-null-pointer"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_NOT_NULL</span> <span class="pre">(pointer)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#signed-and-unsigned-integers-of-all-sizes">Signed and Unsigned Integers (of all sizes)</a><ul>
+<li><a class="reference internal" href="#test-assert-equal-int-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int8-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT8</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int16-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT16</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int32-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT32</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int64-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT64</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-not-equal-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_NOT_EQUAL</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint8-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT8</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint16-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT16</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint32-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT32</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint64-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT64</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unsigned-integers-of-all-sizes-in-hexadecimal">Unsigned Integers (of all sizes) in Hexadecimal</a><ul>
+<li><a class="reference internal" href="#test-assert-equal-hex-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex8-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX8</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex16-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX16</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex32-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX32</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex64-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX64</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#masked-and-bit-level-assertions">Masked and Bit-level Assertions</a><ul>
+<li><a class="reference internal" href="#test-assert-bits-mask-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BITS</span> <span class="pre">(mask,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-bits-high-mask-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BITS_HIGH</span> <span class="pre">(mask,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-bits-low-mask-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BITS_LOW</span> <span class="pre">(mask,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-bit-high-bit-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BIT_HIGH</span> <span class="pre">(bit,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-bit-low-bit-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_BIT_LOW</span> <span class="pre">(bit,</span> <span class="pre">actual)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integer-less-than-greater-than">Integer Less Than / Greater Than</a><ul>
+<li><a class="reference internal" href="#test-assert-greater-than-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-int-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-int8-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-int16-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-int32-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_INT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-uint-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-uint8-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-uint16-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-uint32-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_UINT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-hex8-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_HEX8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-hex16-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_HEX16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-greater-than-hex32-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_GREATER_THAN_HEX32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-int-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-int8-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-int16-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-int32-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_INT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-uint-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-uint8-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-uint16-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-uint32-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_UINT32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-hex8-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_HEX8</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-hex16-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_HEX16</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-less-than-hex32-threshold-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_LESS_THAN_HEX32</span> <span class="pre">(threshold,</span> <span class="pre">actual)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integer-ranges-of-all-sizes">Integer Ranges (of all sizes)</a><ul>
+<li><a class="reference internal" href="#test-assert-int-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-int8-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT8_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-int16-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT16_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-int32-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT32_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-int64-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_INT64_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-uint-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-uint8-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT8_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-uint16-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT16_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-uint32-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT32_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-uint64-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_UINT64_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-hex-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-hex8-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX8_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-hex16-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX16_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-hex32-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX32_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-hex64-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_HEX64_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#structs-and-strings">Structs and Strings</a><ul>
+<li><a class="reference internal" href="#test-assert-equal-ptr-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_PTR</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-string-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_STRING</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-memory-expected-actual-len"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_MEMORY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">len)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#arrays">Arrays</a><ul>
+<li><a class="reference internal" href="#test-assert-equal-int-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int8-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT8_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int16-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT16_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int32-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT32_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-int64-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_INT64_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint8-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT8_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint16-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT16_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint32-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT32_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-uint64-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_UINT64_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex8-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX8_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex16-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX16_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex32-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX32_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-hex64-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_HEX64_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-ptr-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_PTR_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-string-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_STRING_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-memory-array-expected-actual-len-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_MEMORY_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">len,</span> <span class="pre">num_elements)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#each-equal-arrays-to-single-value">Each Equal (Arrays to Single Value)</a><ul>
+<li><a class="reference internal" href="#test-assert-each-equal-int-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-int8-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT8</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-int16-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT16</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-int32-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT32</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-int64-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_INT64</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-uint-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-uint8-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT8</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-uint16-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT16</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-uint32-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT32</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-uint64-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_UINT64</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-hex-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-hex8-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX8</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-hex16-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX16</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-hex32-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX32</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-hex64-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_HEX64</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-ptr-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_PTR</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-string-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_STRING</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-each-equal-memory-expected-actual-len-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EACH_EQUAL_MEMORY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">len,</span> <span class="pre">num_elements)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#floating-point-if-enabled">Floating Point (If enabled)</a><ul>
+<li><a class="reference internal" href="#test-assert-float-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-float-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_FLOAT</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-float-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_FLOAT_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-neg-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NEG_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-nan-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NAN</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-determinate-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_DETERMINATE</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-not-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-not-neg-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_NEG_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-not-nan-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_NAN</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-float-is-not-determinate-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FLOAT_IS_NOT_DETERMINATE</span> <span class="pre">(actual)</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#double-if-enabled">Double (If enabled)</a><ul>
+<li><a class="reference internal" href="#test-assert-double-within-delta-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_WITHIN</span> <span class="pre">(delta,</span> <span class="pre">expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-double-expected-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_DOUBLE</span> <span class="pre">(expected,</span> <span class="pre">actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-equal-double-array-expected-actual-num-elements"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_EQUAL_DOUBLE_ARRAY</span> <span class="pre">(expected,</span> <span class="pre">actual,</span> <span class="pre">num_elements)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-neg-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NEG_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-nan-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NAN</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-determinate-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_DETERMINATE</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-not-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-not-neg-inf-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_NEG_INF</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-not-nan-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_NAN</span> <span class="pre">(actual)</span></code></a></li>
+<li><a class="reference internal" href="#test-assert-double-is-not-determinate-actual"><code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE</span> <span class="pre">(actual)</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-asserting-details-on-tricky-assertions">Advanced Asserting: Details On Tricky Assertions</a><ul>
+<li><a class="reference internal" href="#how-do-the-equal-assertions-work-for-float-and-double">How do the EQUAL assertions work for FLOAT and DOUBLE?</a></li>
+<li><a class="reference internal" href="#how-do-we-deal-with-targets-with-non-standard-int-sizes">How do we deal with targets with non-standard int sizes?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/scripts/furo.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    </body>
+</html>

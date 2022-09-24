@@ -1,0 +1,703 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../../search.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.15"/>
+        <title>Unity Configuration Guide - C data struct 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../../index.html"><div class="brand">C data struct 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">C data struct 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../line/info.html">II:C语言描述数据结构 —— 顺序表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../linkmap/info.html">III:C语言描述数据结构 —— 单链表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../ring/info.html">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tree/info.html">VI:平衡二叉树 C语言代码实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time/info.html#id1">前言</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="unity-configuration-guide">
+<h1>Unity Configuration Guide<a class="headerlink" href="#unity-configuration-guide" title="Permalink to this headline">#</a></h1>
+<section id="c-standards-compilers-and-microcontrollers">
+<h2>C Standards, Compilers and Microcontrollers<a class="headerlink" href="#c-standards-compilers-and-microcontrollers" title="Permalink to this headline">#</a></h2>
+<p>The embedded software world contains its challenges. Compilers support different
+revisions of the C Standard. They ignore requirements in places, sometimes to
+make the language more usable in some special regard. Sometimes it’s to simplify
+their support. Sometimes it’s due to specific quirks of the microcontroller they
+are targeting. Simulators add another dimension to this menagerie.</p>
+<p>Unity is designed to run on almost anything that is targeted by a C compiler. It
+would be awesome if this could be done with zero configuration. While there are
+some targets that come close to this dream, it is sadly not universal. It is
+likely that you are going to need at least a couple of the configuration options
+described in this document.</p>
+<p>All of Unity’s configuration options are <code class="docutils literal notranslate"><span class="pre">#defines</span></code>. Most of these are simple
+definitions. A couple are macros with arguments. They live inside the
+unity_internals.h header file. We don’t necessarily recommend opening that file
+unless you really need to. That file is proof that a cross-platform library is
+challenging to build. From a more positive perspective, it is also proof that a
+great deal of complexity can be centralized primarily to one place in order to
+provide a more consistent and simple experience elsewhere.</p>
+<section id="using-these-options">
+<h3>Using These Options<a class="headerlink" href="#using-these-options" title="Permalink to this headline">#</a></h3>
+<p>It doesn’t matter if you’re using a target-specific compiler and a simulator or
+a native compiler. In either case, you’ve got a couple choices for configuring
+these options:</p>
+<ol class="arabic simple">
+<li><p>Because these options are specified via C defines, you can pass most of these
+options to your compiler through command line compiler flags. Even if you’re
+using an embedded target that forces you to use their overbearing IDE for all
+configuration, there will be a place somewhere in your project to configure
+defines for your compiler.</p></li>
+<li><p>You can create a custom <code class="docutils literal notranslate"><span class="pre">unity_config.h</span></code> configuration file (present in your
+toolchain’s search paths). In this file, you will list definitions and macros
+specific to your target. All you must do is define <code class="docutils literal notranslate"><span class="pre">UNITY_INCLUDE_CONFIG_H</span></code> and
+Unity will rely on <code class="docutils literal notranslate"><span class="pre">unity_config.h</span></code> for any further definitions it may need.</p></li>
+</ol>
+</section>
+</section>
+<section id="the-options">
+<h2>The Options<a class="headerlink" href="#the-options" title="Permalink to this headline">#</a></h2>
+<section id="integer-types">
+<h3>Integer Types<a class="headerlink" href="#integer-types" title="Permalink to this headline">#</a></h3>
+<p>If you’ve been a C developer for long, you probably already know that C’s
+concept of an integer varies from target to target. The C Standard has rules
+about the <code class="docutils literal notranslate"><span class="pre">int</span></code> matching the register size of the target microprocessor. It has
+rules about the <code class="docutils literal notranslate"><span class="pre">int</span></code> and how its size relates to other integer types. An <code class="docutils literal notranslate"><span class="pre">int</span></code>
+on one target might be 16 bits while on another target it might be 64. There are
+more specific types in compilers compliant with C99 or later, but that’s
+certainly not every compiler you are likely to encounter. Therefore, Unity has a
+number of features for helping to adjust itself to match your required integer
+sizes. It starts off by trying to do it automatically.</p>
+<section id="unity-exclude-stdint-h">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_STDINT_H</span></code><a class="headerlink" href="#unity-exclude-stdint-h" title="Permalink to this headline">#</a></h4>
+<p>The first thing that Unity does to guess your types is check <code class="docutils literal notranslate"><span class="pre">stdint.h</span></code>.
+This file includes defines like <code class="docutils literal notranslate"><span class="pre">UINT_MAX</span></code> that Unity can make use of to
+learn a lot about your system. It’s possible you don’t want it to do this
+(um. why not?) or (more likely) it’s possible that your system doesn’t
+support <code class="docutils literal notranslate"><span class="pre">stdint.h</span></code>. If that’s the case, you’re going to want to define this.
+That way, Unity will know to skip the inclusion of this file and you won’t
+be left with a compiler error.</p>
+<p><em>Example:</em>
+#define UNITY_EXCLUDE_STDINT_H</p>
+</section>
+<section id="unity-exclude-limits-h">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_LIMITS_H</span></code><a class="headerlink" href="#unity-exclude-limits-h" title="Permalink to this headline">#</a></h4>
+<p>The second attempt to guess your types is to check <code class="docutils literal notranslate"><span class="pre">limits.h</span></code>. Some compilers
+that don’t support <code class="docutils literal notranslate"><span class="pre">stdint.h</span></code> could include <code class="docutils literal notranslate"><span class="pre">limits.h</span></code> instead. If you don’t
+want Unity to check this file either, define this to make it skip the inclusion.</p>
+<p><em>Example:</em>
+#define UNITY_EXCLUDE_LIMITS_H</p>
+<p>If you’ve disabled both of the automatic options above, you’re going to have to
+do the configuration yourself. Don’t worry. Even this isn’t too bad… there are
+just a handful of defines that you are going to specify if you don’t like the
+defaults.</p>
+</section>
+<section id="unity-int-width">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_INT_WIDTH</span></code><a class="headerlink" href="#unity-int-width" title="Permalink to this headline">#</a></h4>
+<p>Define this to be the number of bits an <code class="docutils literal notranslate"><span class="pre">int</span></code> takes up on your system. The
+default, if not autodetected, is 32 bits.</p>
+<p><em>Example:</em>
+#define UNITY_INT_WIDTH 16</p>
+</section>
+<section id="unity-long-width">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_LONG_WIDTH</span></code><a class="headerlink" href="#unity-long-width" title="Permalink to this headline">#</a></h4>
+<p>Define this to be the number of bits a <code class="docutils literal notranslate"><span class="pre">long</span></code> takes up on your system. The
+default, if not autodetected, is 32 bits. This is used to figure out what kind
+of 64-bit support your system can handle. Does it need to specify a <code class="docutils literal notranslate"><span class="pre">long</span></code> or a
+<code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code> to get a 64-bit value. On 16-bit systems, this option is going to be
+ignored.</p>
+<p><em>Example:</em>
+#define UNITY_LONG_WIDTH 16</p>
+</section>
+<section id="unity-pointer-width">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_POINTER_WIDTH</span></code><a class="headerlink" href="#unity-pointer-width" title="Permalink to this headline">#</a></h4>
+<p>Define this to be the number of bits a pointer takes up on your system. The
+default, if not autodetected, is 32-bits. If you’re getting ugly compiler
+warnings about casting from pointers, this is the one to look at.</p>
+<p><em>Example:</em>
+#define UNITY_POINTER_WIDTH 64</p>
+</section>
+<section id="unity-support-64">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_SUPPORT_64</span></code><a class="headerlink" href="#unity-support-64" title="Permalink to this headline">#</a></h4>
+<p>Unity will automatically include 64-bit support if it auto-detects it, or if
+your <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span></code>, or pointer widths are greater than 32-bits. Define this to
+enable 64-bit support if none of the other options already did it for you. There
+can be a significant size and speed impact to enabling 64-bit support on small
+targets, so don’t define it if you don’t need it.</p>
+<p><em>Example:</em>
+#define UNITY_SUPPORT_64</p>
+</section>
+</section>
+<section id="floating-point-types">
+<h3>Floating Point Types<a class="headerlink" href="#floating-point-types" title="Permalink to this headline">#</a></h3>
+<p>In the embedded world, it’s not uncommon for targets to have no support for
+floating point operations at all or to have support that is limited to only
+single precision. We are able to guess integer sizes on the fly because integers
+are always available in at least one size. Floating point, on the other hand, is
+sometimes not available at all. Trying to include <code class="docutils literal notranslate"><span class="pre">float.h</span></code> on these platforms
+would result in an error. This leaves manual configuration as the only option.</p>
+<section id="unity-include-float">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_INCLUDE_FLOAT</span></code><a class="headerlink" href="#unity-include-float" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-exclude-float">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_FLOAT</span></code><a class="headerlink" href="#unity-exclude-float" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-include-double">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_INCLUDE_DOUBLE</span></code><a class="headerlink" href="#unity-include-double" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-exclude-double">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_DOUBLE</span></code><a class="headerlink" href="#unity-exclude-double" title="Permalink to this headline">#</a></h4>
+<p>By default, Unity guesses that you will want single precision floating point
+support, but not double precision. It’s easy to change either of these using the
+include and exclude options here. You may include neither, either, or both, as
+suits your needs. For features that are enabled, the following floating point
+options also become available.</p>
+<p><em>Example:</em></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    //what manner of strange processor is this?
+    #define UNITY_EXCLUDE_FLOAT
+    #define UNITY_INCLUDE_DOUBLE
+</pre></div>
+</div>
+</section>
+<section id="unity-exclude-float-print">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_FLOAT_PRINT</span></code><a class="headerlink" href="#unity-exclude-float-print" title="Permalink to this headline">#</a></h4>
+<p>Unity aims for as small of a footprint as possible and avoids most standard
+library calls (some embedded platforms don’t have a standard library!). Because
+of this, its routines for printing integer values are minimalist and hand-coded.
+Therefore, the display of floating point values during a failure are optional.
+By default, Unity will print the actual results of floating point assertion
+failure (e.g. ”Expected 4.56 Was 4.68”). To not include this extra support, you
+can use this define to instead respond to a failed assertion with a message like
+”Values Not Within Delta”. If you would like verbose failure messages for floating
+point assertions, use these options to give more explicit failure messages.</p>
+<p><em>Example:</em>
+#define UNITY_EXCLUDE_FLOAT_PRINT</p>
+</section>
+<section id="unity-float-type">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_FLOAT_TYPE</span></code><a class="headerlink" href="#unity-float-type" title="Permalink to this headline">#</a></h4>
+<p>If enabled, Unity assumes you want your <code class="docutils literal notranslate"><span class="pre">FLOAT</span></code> asserts to compare standard C
+floats. If your compiler supports a specialty floating point type, you can
+always override this behavior by using this definition.</p>
+<p><em>Example:</em>
+#define UNITY_FLOAT_TYPE float16_t</p>
+</section>
+<section id="unity-double-type">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_DOUBLE_TYPE</span></code><a class="headerlink" href="#unity-double-type" title="Permalink to this headline">#</a></h4>
+<p>If enabled, Unity assumes you want your <code class="docutils literal notranslate"><span class="pre">DOUBLE</span></code> asserts to compare standard C
+doubles. If you would like to change this, you can specify something else by
+using this option. For example, defining <code class="docutils literal notranslate"><span class="pre">UNITY_DOUBLE_TYPE</span></code> to <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code>
+could enable gargantuan floating point types on your 64-bit processor instead of
+the standard <code class="docutils literal notranslate"><span class="pre">double</span></code>.</p>
+<p><em>Example:</em>
+#define UNITY_DOUBLE_TYPE long double</p>
+</section>
+<section id="unity-float-precision">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_FLOAT_PRECISION</span></code><a class="headerlink" href="#unity-float-precision" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-double-precision">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_DOUBLE_PRECISION</span></code><a class="headerlink" href="#unity-double-precision" title="Permalink to this headline">#</a></h4>
+<p>If you look up <code class="docutils literal notranslate"><span class="pre">UNITY_ASSERT_EQUAL_FLOAT</span></code> and <code class="docutils literal notranslate"><span class="pre">UNITY_ASSERT_EQUAL_DOUBLE</span></code> as
+documented in the big daddy Unity Assertion Guide, you will learn that they are
+not really asserting that two values are equal but rather that two values are
+“close enough” to equal. “Close enough” is controlled by these precision
+configuration options. If you are working with 32-bit floats and/or 64-bit
+doubles (the normal on most processors), you should have no need to change these
+options. They are both set to give you approximately 1 significant bit in either
+direction. The float precision is 0.00001 while the double is 10-12.
+For further details on how this works, see the appendix of the Unity Assertion
+Guide.</p>
+<p><em>Example:</em>
+#define UNITY_FLOAT_PRECISION 0.001f</p>
+</section>
+</section>
+<section id="toolset-customization">
+<h3>Toolset Customization<a class="headerlink" href="#toolset-customization" title="Permalink to this headline">#</a></h3>
+<p>In addition to the options listed above, there are a number of other options
+which will come in handy to customize Unity’s behavior for your specific
+toolchain. It is possible that you may not need to touch any of these… but
+certain platforms, particularly those running in simulators, may need to jump
+through extra hoops to operate properly. These macros will help in those
+situations.</p>
+<section id="unity-output-char-a">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_CHAR(a)</span></code><a class="headerlink" href="#unity-output-char-a" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-output-flush">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_FLUSH()</span></code><a class="headerlink" href="#unity-output-flush" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-output-start">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_START()</span></code><a class="headerlink" href="#unity-output-start" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-output-complete">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_COMPLETE()</span></code><a class="headerlink" href="#unity-output-complete" title="Permalink to this headline">#</a></h4>
+<p>By default, Unity prints its results to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> as it runs. This works
+perfectly fine in most situations where you are using a native compiler for
+testing. It works on some simulators as well so long as they have <code class="docutils literal notranslate"><span class="pre">stdout</span></code>
+routed back to the command line. There are times, however, where the simulator
+will lack support for dumping results or you will want to route results
+elsewhere for other reasons. In these cases, you should define the
+<code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_CHAR</span></code> macro. This macro accepts a single character at a time (as
+an <code class="docutils literal notranslate"><span class="pre">int</span></code>, since this is the parameter type of the standard C <code class="docutils literal notranslate"><span class="pre">putchar</span></code> function
+most commonly used). You may replace this with whatever function call you like.</p>
+<p><em>Example:</em>
+Say you are forced to run your test suite on an embedded processor with no
+<code class="docutils literal notranslate"><span class="pre">stdout</span></code> option. You decide to route your test result output to a custom serial
+<code class="docutils literal notranslate"><span class="pre">RS232_putc()</span></code> function you wrote like thus:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    #define UNITY_OUTPUT_CHAR(a) RS232_putc(a)
+    #define UNITY_OUTPUT_START() RS232_config(115200,1,8,0)
+    #define UNITY_OUTPUT_FLUSH() RS232_flush()
+    #define UNITY_OUTPUT_COMPLETE() RS232_close()
+</pre></div>
+</div>
+<p><em>Note:</em>
+<code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_FLUSH()</span></code> can be set to the standard out flush function simply by
+specifying <code class="docutils literal notranslate"><span class="pre">UNITY_USE_FLUSH_STDOUT</span></code>. No other defines are required. If you
+specify a custom flush function instead with <code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_FLUSH</span></code> directly, it
+will declare an instance of your function by default. If you want to disable
+this behavior, add <code class="docutils literal notranslate"><span class="pre">UNITY_OMIT_OUTPUT_FLUSH_HEADER_DECLARATION</span></code>.</p>
+</section>
+<section id="unity-weak-attribute">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_WEAK_ATTRIBUTE</span></code><a class="headerlink" href="#unity-weak-attribute" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-weak-pragma">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_WEAK_PRAGMA</span></code><a class="headerlink" href="#unity-weak-pragma" title="Permalink to this headline">#</a></h4>
+</section>
+<section id="unity-no-weak">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_NO_WEAK</span></code><a class="headerlink" href="#unity-no-weak" title="Permalink to this headline">#</a></h4>
+<p>For some targets, Unity can make the otherwise required setUp() and tearDown()
+functions optional. This is a nice convenience for test writers since setUp and
+tearDown don’t often actually do anything. If you’re using gcc or clang, this
+option is automatically defined for you. Other compilers can also support this
+behavior, if they support a C feature called weak functions. A weak function is
+a function that is compiled into your executable unless a non-weak version of
+the same function is defined elsewhere. If a non-weak version is found, the weak
+version is ignored as if it never existed. If your compiler supports this feature,
+you can let Unity know by defining UNITY_WEAK_ATTRIBUTE or UNITY_WEAK_PRAGMA as
+the function attributes that would need to be applied to identify a function as
+weak. If your compiler lacks support for weak functions, you will always need to
+define setUp and tearDown functions (though they can be and often will be just
+empty). You can also force Unity to NOT use weak functions by defining
+UNITY_NO_WEAK. The most common options for this feature are:</p>
+<p><em>Example:</em>
+#define UNITY_WEAK_ATTRIBUTE weak
+#define UNITY_WEAK_ATTRIBUTE <strong>attribute</strong>((weak))
+#define UNITY_WEAK_PRAGMA
+#define UNITY_NO_WEAK</p>
+</section>
+<section id="unity-ptr-attribute">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_PTR_ATTRIBUTE</span></code><a class="headerlink" href="#unity-ptr-attribute" title="Permalink to this headline">#</a></h4>
+<p>Some compilers require a custom attribute to be assigned to pointers, like
+<code class="docutils literal notranslate"><span class="pre">near</span></code> or <code class="docutils literal notranslate"><span class="pre">far</span></code>. In these cases, you can give Unity a safe default for these by
+defining this option with the attribute you would like.</p>
+<p><em>Example:</em>
+#define UNITY_PTR_ATTRIBUTE <strong>attribute</strong>((far))
+#define UNITY_PTR_ATTRIBUTE near</p>
+</section>
+<section id="unity-print-eol">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_PRINT_EOL</span></code><a class="headerlink" href="#unity-print-eol" title="Permalink to this headline">#</a></h4>
+<p>By default, Unity outputs \n at the end of each line of output. This is easy
+to parse by the scripts, by Ceedling, etc, but it might not be ideal for YOUR
+system. Feel free to override this and to make it whatever you wish.</p>
+<p><em>Example:</em>
+#define UNITY_PRINT_EOL { UNITY_OUTPUT_CHAR(‘\r’); UNITY_OUTPUT_CHAR(‘\n’) }</p>
+</section>
+<section id="unity-exclude-details">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_DETAILS</span></code><a class="headerlink" href="#unity-exclude-details" title="Permalink to this headline">#</a></h4>
+<p>This is an option for if you absolutely must squeeze every byte of memory out of
+your system. Unity stores a set of internal scratchpads which are used to pass
+extra detail information around. It’s used by systems like CMock in order to
+report which function or argument flagged an error. If you’re not using CMock and
+you’re not using these details for other things, then you can exclude them.</p>
+<p><em>Example:</em>
+#define UNITY_EXCLUDE_DETAILS</p>
+</section>
+<section id="unity-exclude-setjmp">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_SETJMP</span></code><a class="headerlink" href="#unity-exclude-setjmp" title="Permalink to this headline">#</a></h4>
+<p>If your embedded system doesn’t support the standard library setjmp, you can
+exclude Unity’s reliance on this by using this define. This dropped dependence
+comes at a price, though. You will be unable to use custom helper functions for
+your tests, and you will be unable to use tools like CMock. Very likely, if your
+compiler doesn’t support setjmp, you wouldn’t have had the memory space for those
+things anyway, though… so this option exists for those situations.</p>
+<p><em>Example:</em>
+#define UNITY_EXCLUDE_SETJMP</p>
+</section>
+<section id="unity-output-color">
+<h4><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_COLOR</span></code><a class="headerlink" href="#unity-output-color" title="Permalink to this headline">#</a></h4>
+<p>If you want to add color using ANSI escape codes you can use this define.
+t
+<em>Example:</em>
+#define UNITY_OUTPUT_COLOR</p>
+</section>
+</section>
+</section>
+<section id="getting-into-the-guts">
+<h2>Getting Into The Guts<a class="headerlink" href="#getting-into-the-guts" title="Permalink to this headline">#</a></h2>
+<p>There will be cases where the options above aren’t quite going to get everything
+perfect. They are likely sufficient for any situation where you are compiling
+and executing your tests with a native toolchain (e.g. clang on Mac). These
+options may even get you through the majority of cases encountered in working
+with a target simulator run from your local command line. But especially if you
+must run your test suite on your target hardware, your Unity configuration will
+require special help. This special help will usually reside in one of two
+places: the <code class="docutils literal notranslate"><span class="pre">main()</span></code> function or the <code class="docutils literal notranslate"><span class="pre">RUN_TEST</span></code> macro. Let’s look at how these
+work.</p>
+<section id="main">
+<h3><code class="docutils literal notranslate"><span class="pre">main()</span></code><a class="headerlink" href="#main" title="Permalink to this headline">#</a></h3>
+<p>Each test module is compiled and run on its own, separate from the other test
+files in your project. Each test file, therefore, has a <code class="docutils literal notranslate"><span class="pre">main</span></code> function. This
+<code class="docutils literal notranslate"><span class="pre">main</span></code> function will need to contain whatever code is necessary to initialize
+your system to a workable state. This is particularly true for situations where
+you must set up a memory map or initialize a communication channel for the
+output of your test results.</p>
+<p>A simple main function looks something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    int main(void) {
+        UNITY_BEGIN();
+        RUN_TEST(test_TheFirst);
+        RUN_TEST(test_TheSecond);
+        RUN_TEST(test_TheThird);
+        return UNITY_END();
+    }
+</pre></div>
+</div>
+<p>You can see that our main function doesn’t bother taking any arguments. For our
+most barebones case, we’ll never have arguments because we just run all the
+tests each time. Instead, we start by calling <code class="docutils literal notranslate"><span class="pre">UNITY_BEGIN</span></code>. We run each test
+(in whatever order we wish). Finally, we call <code class="docutils literal notranslate"><span class="pre">UNITY_END</span></code>, returning its return
+value (which is the total number of failures).</p>
+<p>It should be easy to see that you can add code before any test cases are run or
+after all the test cases have completed. This allows you to do any needed
+system-wide setup or teardown that might be required for your special
+circumstances.</p>
+</section>
+<section id="run-test">
+<h3><code class="docutils literal notranslate"><span class="pre">RUN_TEST</span></code><a class="headerlink" href="#run-test" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">RUN_TEST</span></code> macro is called with each test case function. Its job is to
+perform whatever setup and teardown is necessary for executing a single test
+case function. This includes catching failures, calling the test module’s
+<code class="docutils literal notranslate"><span class="pre">setUp()</span></code> and <code class="docutils literal notranslate"><span class="pre">tearDown()</span></code> functions, and calling <code class="docutils literal notranslate"><span class="pre">UnityConcludeTest()</span></code>. If
+using CMock or test coverage, there will be additional stubs in use here. A
+simple minimalist RUN_TEST macro looks something like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    #define RUN_TEST(testfunc) \
+        UNITY_NEW_TEST(#testfunc) \
+        if (TEST_PROTECT()) { \
+            setUp(); \
+            testfunc(); \
+        } \
+        if (TEST_PROTECT() &amp;&amp; (!TEST_IS_IGNORED)) \
+            tearDown(); \
+        UnityConcludeTest();
+</pre></div>
+</div>
+<p>So that’s quite a macro, huh? It gives you a glimpse of what kind of stuff Unity
+has to deal with for every single test case. For each test case, we declare that
+it is a new test. Then we run <code class="docutils literal notranslate"><span class="pre">setUp</span></code> and our test function. These are run
+within a <code class="docutils literal notranslate"><span class="pre">TEST_PROTECT</span></code> block, the function of which is to handle failures that
+occur during the test. Then, assuming our test is still running and hasn’t been
+ignored, we run <code class="docutils literal notranslate"><span class="pre">tearDown</span></code>. No matter what, our last step is to conclude this
+test before moving on to the next.</p>
+<p>Let’s say you need to add a call to <code class="docutils literal notranslate"><span class="pre">fsync</span></code> to force all of your output data to
+flush to a file after each test. You could easily insert this after your
+<code class="docutils literal notranslate"><span class="pre">UnityConcludeTest</span></code> call. Maybe you want to write an xml tag before and after
+each result set. Again, you could do this by adding lines to this macro. Updates
+to this macro are for the occasions when you need an action before or after
+every single test case throughout your entire suite of tests.</p>
+</section>
+</section>
+<section id="happy-porting">
+<h2>Happy Porting<a class="headerlink" href="#happy-porting" title="Permalink to this headline">#</a></h2>
+<p>The defines and macros in this guide should help you port Unity to just about
+any C target we can imagine. If you run into a snag or two, don’t be afraid of
+asking for help on the forums. We love a good challenge!</p>
+<p><em>Find The Latest of This And More at <a class="reference external" href="https://throwtheswitch.org">ThrowTheSwitch.org</a></em></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, ljx
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Unity Configuration Guide</a><ul>
+<li><a class="reference internal" href="#c-standards-compilers-and-microcontrollers">C Standards, Compilers and Microcontrollers</a><ul>
+<li><a class="reference internal" href="#using-these-options">Using These Options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-options">The Options</a><ul>
+<li><a class="reference internal" href="#integer-types">Integer Types</a><ul>
+<li><a class="reference internal" href="#unity-exclude-stdint-h"><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_STDINT_H</span></code></a></li>
+<li><a class="reference internal" href="#unity-exclude-limits-h"><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_LIMITS_H</span></code></a></li>
+<li><a class="reference internal" href="#unity-int-width"><code class="docutils literal notranslate"><span class="pre">UNITY_INT_WIDTH</span></code></a></li>
+<li><a class="reference internal" href="#unity-long-width"><code class="docutils literal notranslate"><span class="pre">UNITY_LONG_WIDTH</span></code></a></li>
+<li><a class="reference internal" href="#unity-pointer-width"><code class="docutils literal notranslate"><span class="pre">UNITY_POINTER_WIDTH</span></code></a></li>
+<li><a class="reference internal" href="#unity-support-64"><code class="docutils literal notranslate"><span class="pre">UNITY_SUPPORT_64</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#floating-point-types">Floating Point Types</a><ul>
+<li><a class="reference internal" href="#unity-include-float"><code class="docutils literal notranslate"><span class="pre">UNITY_INCLUDE_FLOAT</span></code></a></li>
+<li><a class="reference internal" href="#unity-exclude-float"><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_FLOAT</span></code></a></li>
+<li><a class="reference internal" href="#unity-include-double"><code class="docutils literal notranslate"><span class="pre">UNITY_INCLUDE_DOUBLE</span></code></a></li>
+<li><a class="reference internal" href="#unity-exclude-double"><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_DOUBLE</span></code></a></li>
+<li><a class="reference internal" href="#unity-exclude-float-print"><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_FLOAT_PRINT</span></code></a></li>
+<li><a class="reference internal" href="#unity-float-type"><code class="docutils literal notranslate"><span class="pre">UNITY_FLOAT_TYPE</span></code></a></li>
+<li><a class="reference internal" href="#unity-double-type"><code class="docutils literal notranslate"><span class="pre">UNITY_DOUBLE_TYPE</span></code></a></li>
+<li><a class="reference internal" href="#unity-float-precision"><code class="docutils literal notranslate"><span class="pre">UNITY_FLOAT_PRECISION</span></code></a></li>
+<li><a class="reference internal" href="#unity-double-precision"><code class="docutils literal notranslate"><span class="pre">UNITY_DOUBLE_PRECISION</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#toolset-customization">Toolset Customization</a><ul>
+<li><a class="reference internal" href="#unity-output-char-a"><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_CHAR(a)</span></code></a></li>
+<li><a class="reference internal" href="#unity-output-flush"><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_FLUSH()</span></code></a></li>
+<li><a class="reference internal" href="#unity-output-start"><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_START()</span></code></a></li>
+<li><a class="reference internal" href="#unity-output-complete"><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_COMPLETE()</span></code></a></li>
+<li><a class="reference internal" href="#unity-weak-attribute"><code class="docutils literal notranslate"><span class="pre">UNITY_WEAK_ATTRIBUTE</span></code></a></li>
+<li><a class="reference internal" href="#unity-weak-pragma"><code class="docutils literal notranslate"><span class="pre">UNITY_WEAK_PRAGMA</span></code></a></li>
+<li><a class="reference internal" href="#unity-no-weak"><code class="docutils literal notranslate"><span class="pre">UNITY_NO_WEAK</span></code></a></li>
+<li><a class="reference internal" href="#unity-ptr-attribute"><code class="docutils literal notranslate"><span class="pre">UNITY_PTR_ATTRIBUTE</span></code></a></li>
+<li><a class="reference internal" href="#unity-print-eol"><code class="docutils literal notranslate"><span class="pre">UNITY_PRINT_EOL</span></code></a></li>
+<li><a class="reference internal" href="#unity-exclude-details"><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_DETAILS</span></code></a></li>
+<li><a class="reference internal" href="#unity-exclude-setjmp"><code class="docutils literal notranslate"><span class="pre">UNITY_EXCLUDE_SETJMP</span></code></a></li>
+<li><a class="reference internal" href="#unity-output-color"><code class="docutils literal notranslate"><span class="pre">UNITY_OUTPUT_COLOR</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-into-the-guts">Getting Into The Guts</a><ul>
+<li><a class="reference internal" href="#main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#run-test"><code class="docutils literal notranslate"><span class="pre">RUN_TEST</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#happy-porting">Happy Porting</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/scripts/furo.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    </body>
+</html>

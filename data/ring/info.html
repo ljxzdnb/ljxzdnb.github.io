@@ -1,0 +1,466 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="VI:平衡二叉树 C语言代码实现" href="../tree/info.html" /><link rel="prev" title="IV:C语言描述数据结构 —— 栈和队列" href="../pushpop/info.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.15"/>
+        <title>V:裸机中环形队列与RTOS中消息队列的区别 - C data struct 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">C data struct 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">C data struct 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../line/info.html">II:C语言描述数据结构 —— 顺序表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../linkmap/info.html">III:C语言描述数据结构 —— 单链表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tree/info.html">VI:平衡二叉树 C语言代码实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../time/info.html#id1">前言</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="v-rtos">
+<h1>V:<a class="reference external" href="https://mp.weixin.qq.com/s/i9NvzQniZOX_mRechLGxZg">裸机中环形队列与RTOS中消息队列的区别</a><a class="headerlink" href="#v-rtos" title="Permalink to this headline">#</a></h1>
+<p>“环形队列”和“消息队列”在嵌入式领域有应用非常广泛，相信有经验的嵌入式软件工程师对它们都不陌生。</p>
+<p>但经常看到一些初学者问一些相关的问题，今天就来分享一下关于“环形队列”和“消息队列”的内容。</p>
+<p><strong>环形队列</strong></p>
+<p>环形队列是在实际编程极为有用的数据结构，<strong>它是一个首尾相连的FIFO的数据结构，采用数组的线性空间，数据组织简单，能很快知道队列是否满为空，能以很快速度的来存取数据。</strong></p>
+<p>环形队列通常用于通信领域，比如UART、USB、CAN、网络等。</p>
+<p><strong>1.环形队列实现原理</strong></p>
+<p>内存上没有环形的结构，因此环形队列实上是数组的线性空间来实现。当数据到了尾部它将转回到0位置来处理。</p>
+<p>因此环列队列的逻辑：<strong>将数组元素q[0]与q[MAXN-1]连接，形成一个存放队列的环形空间。</strong></p>
+<p>为了方便读写，还要用数组下标来指明队列的读写位置。head/tail.其中head指向可以读的位置，tail指向可以写的位置。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/ju1DzqX8iaOkqEjIHHV1kx82CfbfoAHnrEkAicrRxP7F41H93mjaxTcicZzSEnECDxLLwNNEictG17BLcz2GgRr1JQ/640?wx_fmt=jpeg&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>环形队列的关键是判断队列为空，还是为满。当tail追上head时，队列为满时；当head追上tail时，队列为空。但如何知道谁追上谁，还需要一些辅助的手段来判断.</p>
+<p>如何判断环形队列为空，为满有两种判断方法：</p>
+<p><strong>a.附加一个标志位tag</strong></p>
+<ul class="simple">
+<li><p>当head赶上tail，队列空，则令tag=0</p></li>
+<li><p>当tail赶上head，队列满，则令tag=1</p></li>
+</ul>
+<p><strong>b.限制tail赶上head，即队尾结点与队首结点之间至少留有一个元素的空间。</strong></p>
+<ul class="simple">
+<li><p>队列空：  head==tail</p></li>
+<li><p>队列满：  (tail+1)% MAXN ==head</p></li>
+</ul>
+<p><strong>2.附加标志实现原理</strong></p>
+<p><strong>a.采用第一个环形队列有如下结构:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ringq</span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">head</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 头部，出队列方向*/</span><span class="w"></span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">tail</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 尾部，入队列方向*/</span><span class="w"> </span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="cm">/* 队列总尺寸 */</span><span class="w"></span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">space</span><span class="p">[</span><span class="n">RINGQ_MAX</span><span class="p">];</span><span class="w"> </span><span class="cm">/* 队列空间 */</span><span class="w"></span>
+<span class="p">}</span><span class="n">RINGQ</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>初始化状态：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>队列为空：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tail</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>队列为满 ：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">((</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tail</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<p>入队操作，如队列不满，则写入：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>出队操作，如果队列不空，则从head处读出。</p>
+<p>下一个可读的位置在：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>头文件ringq.h:</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __RINGQ_H__</span>
+<span class="cp">#define __RINGQ_H__</span>
+
+<span class="cp">#ifdef __cplusplus</span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="cp">#endif </span>
+
+<span class="cp">#define QUEUE_MAX 20</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ringq</span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">head</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 头部，出队列方向*/</span><span class="w"></span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">tail</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 尾部，入队列方向*/</span><span class="w"> </span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="cm">/* 为空还是为满的标志位*/</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="cm">/* 队列总尺寸 */</span><span class="w"></span>
+<span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">space</span><span class="p">[</span><span class="n">QUEUE_MAX</span><span class="p">];</span><span class="w"> </span><span class="cm">/* 队列空间 */</span><span class="w"></span>
+<span class="p">}</span><span class="n">RINGQ</span><span class="p">;</span><span class="w"></span>
+
+<span class="cm">/* </span>
+<span class="cm">  第一种设计方法:</span>
+<span class="cm">     当head == tail 时，tag = 0 为空，等于 = 1 为满。</span>
+<span class="cm">*/</span><span class="w"></span>
+
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ringq_init</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">);</span><span class="w"></span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ringq_free</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">);</span><span class="w"></span>
+
+<span class="cm">/* 加入数据到队列 */</span><span class="w"></span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ringq_push</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+
+<span class="cm">/* 从队列取数据 */</span><span class="w"></span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">ringq_poll</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">p_data</span><span class="p">);</span><span class="w"></span>
+
+
+<span class="cp">#define ringq_is_empty(q) ( (q-&gt;head == q-&gt;tail) &amp;&amp; (q-&gt;tag == 0))</span>
+
+<span class="cp">#define ringq_is_full(q) ( (q-&gt;head == q-&gt;tail) &amp;&amp; (q-&gt;tag == 1))</span>
+
+<span class="cp">#define print_ringq(q) printf(&quot;ring head %d,tail %d,tag %d\n&quot;, q-&gt;head,q-&gt;tail,q-&gt;tag);</span>
+<span class="cp">#ifdef __cplusplus</span>
+<span class="p">}</span><span class="w"></span>
+<span class="cp">#endif </span>
+
+<span class="cp">#endif </span><span class="cm">/* __RINGQ_H__ */</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><strong>源代码 ringq.c：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ringq.h&quot;</span><span class="cp"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">ringq_init</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">QUEUE_MAX</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">ringq_free</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">ringq_push</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">print_ringq</span><span class="p">(</span><span class="n">p_queue</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">ringq_is_full</span><span class="p">(</span><span class="n">p_queue</span><span class="p">))</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ringq is full</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+<span class="w">   </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">space</span><span class="p">[</span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tail</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+
+<span class="w">   </span><span class="cm">/* 这个时候一定队列满了*/</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">       </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="p">;</span><span class="w">  </span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">ringq_poll</span><span class="p">(</span><span class="n">RINGQ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_queue</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_data</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="n">print_ringq</span><span class="p">(</span><span class="n">p_queue</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">ringq_is_empty</span><span class="p">(</span><span class="n">p_queue</span><span class="p">))</span><span class="w"></span>
+<span class="w">   </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ringq is empty</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">   		</span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">   </span><span class="o">*</span><span class="n">p_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">space</span><span class="p">[</span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">];</span><span class="w"></span>
+<span class="w">   </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">head</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="cm">/* 这个时候一定队列空了*/</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tail</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">p_queue</span><span class="o">-&gt;</span><span class="n">tag</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>看到源代码，相信大家就明白其中原理了。其实还有不采用tag，或者其他一些标志的方法，这里就不进一步展开讲述了，感兴趣的读者可以自行研究一下。</p>
+<p><strong>消息队列</strong></p>
+<p>在RTOS中基本都有消息队列这个组件，也是使用最常见的组件之一。</p>
+<p><strong>1.消息队列的基本概念</strong></p>
+<p><strong>消息队列是一种常用于任务间通信的数据结构，队列可以在任务与任务间、中断和任务间传递信息，实现了任务接收来自其他任务或中断的不固定长度的消息。</strong></p>
+<p>通过消息队列服务，任务或中断服务程序可以将一条或多条消息放入消息队列中。同样，一个或多个任务可以从消息队列中获得消息。</p>
+<p>使用消息队列数据结构可以实现任务异步通信工作。</p>
+<p><strong>2.消息队列的特性</strong></p>
+<p><a class="reference external" href="https://mp.weixin.qq.com/s?__biz=MzUxNjgxMDE4OQ==&amp;mid=2247485144&amp;idx=6&amp;sn=5387907f2cafa42c08c7792235ed6ca7&amp;scene=21#wechat_redirect"><strong>RTOS</strong></a>消息队列，常见特性：</p>
+<ul class="simple">
+<li><p>消息支持先进先出方式排队，支持异步读写工作方式。</p></li>
+<li><p>读写队列均支持超时机制。</p></li>
+<li><p>消息支持后进先出方式排队，往队首发送消息（LIFO）。</p></li>
+<li><p>可以允许不同长度（不超过队列节点最大值）的任意类型消息。</p></li>
+<li><p>一个任务能够从任意一个消息队列接收和发送消息。</p></li>
+<li><p>多个任务能够从同一个消息队列接收和发送消息。</p></li>
+<li><p>当队列使用结束后，可以通过删除队列函数进行删除。</p></li>
+</ul>
+<p><strong>3.消息队列的原理</strong></p>
+<p>这里以 <a class="reference external" href="https://mp.weixin.qq.com/s?__biz=MzUxNjgxMDE4OQ==&amp;mid=2247485144&amp;idx=6&amp;sn=5387907f2cafa42c08c7792235ed6ca7&amp;scene=21#wechat_redirect">FreeRTOS</a> 为例进行说明。FreeRTOS 的消息队列控制块由多个元素组成，<strong>当消息队列被创建时，系统会为控制块分配对应的内存空间，用于保存消息队列的一些信息如消息的存储位置，头指针 pcHead、尾指针 pcTail、消息大小 uxItemSize 以及队列长度 uxLength 等</strong>。</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/sz_mmbiz_png/ju1DzqX8iaOkqEjIHHV1kx82CfbfoAHnraCKen5TPflbVRB7iaJGIdpxIiazO7lU64D3yL0LzcayOf7RkM3SZnvaw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p>比如创建消息队列：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">xQueue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xQueueCreate</span><span class="p">(</span><span class="n">QUEUE_LEN</span><span class="p">,</span><span class="w"> </span><span class="n">QUEUE_SIZE</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>任务或者中断服务程序都可以给消息队列发送消息，当发送消息时，如果队列未满或者允许覆盖入队，FreeRTOS 会将消息拷贝到消息队列队尾，否则，会根据用户指定的阻塞超时时间进行阻塞，在这段时间中，如果队列一直不允许入队，该任务将保持阻塞状态以等待队列允许入队。当其它任务从其等待的队列中读取入了数据（队列未满），该任务将自动由阻塞态转移为就绪态。当等待的时间超过了指定的阻塞时间，即使队列中还不允许入队，任务也会自动从阻塞态转移为就绪态，此时发送消息的任务或者中断程序会收到一个错误码 errQUEUE_FULL。</p>
+<p>发送紧急消息的过程与发送消息几乎一样，唯一的不同是，当发送紧急消息时， 发送的位置是消息队列队头而非队尾，这样，接收者就能够优先接收到紧急消息，从而及时进行消息处理。</p>
+<p>当某个任务试图读一个队列时，其可以指定一个阻塞超时时间。在这段时间中，如果队列为空，该任务将保持阻塞状态以等待队列数据有效。当其它任务或中断服务程序往其等待的队列中写入了数据，该任务将自动由阻塞态转移为就绪态。当等待的时间超过了指定的阻塞时间，即使队列中尚无有效数据，任务也会自动从阻塞态转移为就绪态。</p>
+<p><strong>当消息队列不再被使用时，应该删除它以释放系统资源，一旦操作完成， 消息队列将被永久性的删除。</strong></p>
+<p>消息队列的运作过程具体见下图：</p>
+<p><img alt="图片" src="https://mmbiz.qpic.cn/sz_mmbiz_png/ju1DzqX8iaOkqEjIHHV1kx82CfbfoAHnribbzVl9BMoENLCxflEVgUFkhqBVicRziaoldYcXPiaABPvMCdcFBdpN9RQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" /></p>
+<p><strong>4.消息队列的阻塞机制</strong></p>
+<p>**出队阻塞：**当且仅当消息队列有数据的时候，任务才能读取到数据，可以指定等待数据的阻塞时间。</p>
+<p>**入队阻塞：**当且仅当队列允许入队的时候，发送者才能成功发送消息；队列中无可用消息空间时，说明消息队列已满，此时，系统会根据用户指定的阻塞超时时间将任务阻塞。</p>
+<p>假如有多个任务阻塞在一个消息队列中，那么这些阻塞的任务将按照任务优先级进行排序，优先级高的任务将优先获得队列的访问权。</p>
+<p><strong>“环形队列”和“消息队列”的异同</strong></p>
+<p>通过以上分析，你会发现“环形队列”和“消息队列”之间有很多共同点：</p>
+<p>1.他们都是一种数据结构，结构中都包含头、尾、标志等信息；</p>
+<p><strong>2.它们都是分配一块连续的内存空间，且都可以分配多个队列。</strong></p>
+<p>3.应用场景类似，有大量吞吐数据的情况下，比如通信领域。</p>
+<p>…</p>
+<p>当然，他们也有一些不同点：</p>
+<p>1.“环形队列”可以独立使用，也可以结合操作系统使用。而消息队列依赖<a class="reference external" href="https://mp.weixin.qq.com/s?__biz=MzI4MDI4MDE5Ng==&amp;mid=2247502058&amp;idx=2&amp;sn=adf2c30eef005c29c51949bb84785e2e&amp;scene=21#wechat_redirect"><strong>RTOS</strong></a>（有些RTOS的参数信息）。</p>
+<p>2.“环形队列”占用资源更小，更适合于资源较小的系统中。</p>
+<p>3.“消息队列”结合RTOS应用更加灵活，比如延时、中断传输数据等。</p>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../tree/info.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">VI:平衡二叉树 C语言代码实现</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../pushpop/info.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">IV:C语言描述数据结构 —— 栈和队列</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, ljx
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    </body>
+</html>

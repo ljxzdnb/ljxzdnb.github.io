@@ -1,0 +1,496 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.15"/>
+        <title>Unity Test API - C data struct 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../index.html"><div class="brand">C data struct 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">C data struct 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../line/info.html">II:C语言描述数据结构 —— 顺序表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../linkmap/info.html">III:C语言描述数据结构 —— 单链表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ring/info.html">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tree/info.html">VI:平衡二叉树 C语言代码实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time/info.html#id1">前言</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="unity-test-api">
+<h1>Unity Test API<a class="headerlink" href="#unity-test-api" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://travis-ci.org/ThrowTheSwitch/Unity"><img alt="Unity Build Status" src="https://api.travis-ci.org/ThrowTheSwitch/Unity.png?branch=master" /></a>
+<strong>Copyright (c) 2007 - 2017 Unity Project by Mike Karlesky, Mark VanderVoord, and Greg Williams</strong></p>
+<section id="running-tests">
+<h2>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>RUN_TEST(func, linenum)
+</pre></div>
+</div>
+<p>Each Test is run within the macro <code class="docutils literal notranslate"><span class="pre">RUN_TEST</span></code>.  This macro performs necessary setup before the test is called and handles cleanup and result tabulation afterwards.</p>
+</section>
+<section id="ignoring-tests">
+<h2>Ignoring Tests<a class="headerlink" href="#ignoring-tests" title="Permalink to this headline">#</a></h2>
+<p>There are times when a test is incomplete or not valid for some reason.  At these times, TEST_IGNORE can be called.  Control will immediately be returned to the caller of the test, and no failures will be returned.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_IGNORE()
+</pre></div>
+</div>
+<p>Ignore this test and return immediately</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_IGNORE_MESSAGE (message)
+</pre></div>
+</div>
+<p>Ignore this test and return immediately.  Output a message stating why the test was ignored.</p>
+</section>
+<section id="aborting-tests">
+<h2>Aborting Tests<a class="headerlink" href="#aborting-tests" title="Permalink to this headline">#</a></h2>
+<p>There are times when a test will contain an infinite loop on error conditions, or there may be reason to escape from the test early without executing the rest of the test.  A pair of macros support this functionality in Unity.  The first <code class="docutils literal notranslate"><span class="pre">TEST_PROTECT</span></code> sets up the feature, and handles emergency abort cases. <code class="docutils literal notranslate"><span class="pre">TEST_ABORT</span></code> can then be used at any time within the tests to return to the last <code class="docutils literal notranslate"><span class="pre">TEST_PROTECT</span></code> call.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_PROTECT()
+</pre></div>
+</div>
+<p>Setup and Catch macro</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ABORT()
+</pre></div>
+</div>
+<p>Abort Test macro</p>
+<p>Example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>main()
+{
+    if (TEST_PROTECT())
+    {
+        MyTest();
+    }
+}
+</pre></div>
+</div>
+<p>If MyTest calls <code class="docutils literal notranslate"><span class="pre">TEST_ABORT</span></code>, program control will immediately return to <code class="docutils literal notranslate"><span class="pre">TEST_PROTECT</span></code> with a return value of zero.</p>
+</section>
+</section>
+<section id="unity-assertion-summary">
+<h1>Unity Assertion Summary<a class="headerlink" href="#unity-assertion-summary" title="Permalink to this headline">#</a></h1>
+<section id="basic-validity-tests">
+<h2>Basic Validity Tests<a class="headerlink" href="#basic-validity-tests" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_TRUE(condition)
+</pre></div>
+</div>
+<p>Evaluates whatever code is in condition and fails if it evaluates to false</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_FALSE(condition)
+</pre></div>
+</div>
+<p>Evaluates whatever code is in condition and fails if it evaluates to true</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT(condition)
+</pre></div>
+</div>
+<p>Another way of calling <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_TRUE</span></code></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_UNLESS(condition)
+</pre></div>
+</div>
+<p>Another way of calling <code class="docutils literal notranslate"><span class="pre">TEST_ASSERT_FALSE</span></code></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_FAIL()
+TEST_FAIL_MESSAGE(message)
+</pre></div>
+</div>
+<p>This test is automatically marked as a failure.  The message is output stating why.</p>
+</section>
+<section id="numerical-assertions-integers">
+<h2>Numerical Assertions: Integers<a class="headerlink" href="#numerical-assertions-integers" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_INT(expected, actual)
+TEST_ASSERT_EQUAL_INT8(expected, actual)
+TEST_ASSERT_EQUAL_INT16(expected, actual)
+TEST_ASSERT_EQUAL_INT32(expected, actual)
+TEST_ASSERT_EQUAL_INT64(expected, actual)
+</pre></div>
+</div>
+<p>Compare two integers for equality and display errors as signed integers. A cast will be performed
+to your natural integer size so often this can just be used.  When you need to specify the exact size,
+like when comparing arrays, you can use a specific version:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_UINT(expected, actual)
+TEST_ASSERT_EQUAL_UINT8(expected, actual)
+TEST_ASSERT_EQUAL_UINT16(expected, actual)
+TEST_ASSERT_EQUAL_UINT32(expected, actual)
+TEST_ASSERT_EQUAL_UINT64(expected, actual)
+</pre></div>
+</div>
+<p>Compare two integers for equality and display errors as unsigned integers.  Like INT, there are
+variants for different sizes also.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_HEX(expected, actual)
+TEST_ASSERT_EQUAL_HEX8(expected, actual)
+TEST_ASSERT_EQUAL_HEX16(expected, actual)
+TEST_ASSERT_EQUAL_HEX32(expected, actual)
+TEST_ASSERT_EQUAL_HEX64(expected, actual)
+</pre></div>
+</div>
+<p>Compares two integers for equality and display errors as hexadecimal.  Like the other integer comparisons,
+you can specify the size… here the size will also effect how many nibbles are shown (for example, <code class="docutils literal notranslate"><span class="pre">HEX16</span></code>
+will show 4 nibbles).</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL(expected, actual)
+</pre></div>
+</div>
+<p>Another way of calling TEST_ASSERT_EQUAL_INT</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_INT_WITHIN(delta, expected, actual)
+</pre></div>
+</div>
+<p>Asserts that the actual value is within plus or minus delta of the expected value.  This also comes in
+size specific variants.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_GREATER_THAN(threshold, actual)
+</pre></div>
+</div>
+<p>Asserts that the actual value is greater than the threshold. This also comes in size specific variants.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_LESS_THAN(threshold, actual)
+</pre></div>
+</div>
+<p>Asserts that the actual value is less than the threshold. This also comes in size specific variants.</p>
+</section>
+<section id="arrays">
+<h2>Arrays<a class="headerlink" href="#arrays" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>_ARRAY
+</pre></div>
+</div>
+<p>You can append <code class="docutils literal notranslate"><span class="pre">_ARRAY</span></code> to any of these macros to make an array comparison of that type.  Here you will
+need to care a bit more about the actual size of the value being checked.  You will also specify an
+additional argument which is the number of elements to compare.  For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_HEX8_ARRAY(expected, actual, elements)
+
+_EACH_EQUAL
+</pre></div>
+</div>
+<p>Another array comparison option is to check that EVERY element of an array is equal to a single expected
+value. You do this by specifying the EACH_EQUAL macro. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EACH_EQUAL_INT32(expected, actual, elements)
+</pre></div>
+</div>
+</section>
+<section id="numerical-assertions-bitwise">
+<h2>Numerical Assertions: Bitwise<a class="headerlink" href="#numerical-assertions-bitwise" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_BITS(mask, expected, actual)
+</pre></div>
+</div>
+<p>Use an integer mask to specify which bits should be compared between two other integers.  High bits in the mask are compared, low bits ignored.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_BITS_HIGH(mask, actual)
+</pre></div>
+</div>
+<p>Use an integer mask to specify which bits should be inspected to determine if they are all set high.  High bits in the mask are compared, low bits ignored.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_BITS_LOW(mask, actual)
+</pre></div>
+</div>
+<p>Use an integer mask to specify which bits should be inspected to determine if they are all set low.  High bits in the mask are compared, low bits ignored.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_BIT_HIGH(bit, actual)
+</pre></div>
+</div>
+<p>Test a single bit and verify that it is high.  The bit is specified 0-31 for a 32-bit integer.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_BIT_LOW(bit, actual)
+</pre></div>
+</div>
+<p>Test a single bit and verify that it is low.  The bit is specified 0-31 for a 32-bit integer.</p>
+</section>
+<section id="numerical-assertions-floats">
+<h2>Numerical Assertions: Floats<a class="headerlink" href="#numerical-assertions-floats" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_FLOAT_WITHIN(delta, expected, actual)
+</pre></div>
+</div>
+<p>Asserts that the actual value is within plus or minus delta of the expected value.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_FLOAT(expected, actual)
+TEST_ASSERT_EQUAL_DOUBLE(expected, actual)
+</pre></div>
+</div>
+<p>Asserts that two floating point values are “equal” within a small % delta of the expected value.</p>
+</section>
+<section id="string-assertions">
+<h2>String Assertions<a class="headerlink" href="#string-assertions" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_STRING(expected, actual)
+</pre></div>
+</div>
+<p>Compare two null-terminate strings.  Fail if any character is different or if the lengths are different.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_STRING_LEN(expected, actual, len)
+</pre></div>
+</div>
+<p>Compare two strings.  Fail if any character is different, stop comparing after len characters.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_STRING_MESSAGE(expected, actual, message)
+</pre></div>
+</div>
+<p>Compare two null-terminate strings.  Fail if any character is different or if the lengths are different. Output a custom message on failure.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_STRING_LEN_MESSAGE(expected, actual, len, message)
+</pre></div>
+</div>
+<p>Compare two strings.  Fail if any character is different, stop comparing after len characters. Output a custom message on failure.</p>
+</section>
+<section id="pointer-assertions">
+<h2>Pointer Assertions<a class="headerlink" href="#pointer-assertions" title="Permalink to this headline">#</a></h2>
+<p>Most pointer operations can be performed by simply using the integer comparisons above.  However, a couple of special cases are added for clarity.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_NULL(pointer)
+</pre></div>
+</div>
+<p>Fails if the pointer is not equal to NULL</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_NOT_NULL(pointer)
+</pre></div>
+</div>
+<p>Fails if the pointer is equal to NULL</p>
+</section>
+<section id="memory-assertions">
+<h2>Memory Assertions<a class="headerlink" href="#memory-assertions" title="Permalink to this headline">#</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TEST_ASSERT_EQUAL_MEMORY(expected, actual, len)
+</pre></div>
+</div>
+<p>Compare two blocks of memory.  This is a good generic assertion for types that can’t be coerced into acting like
+standard types… but since it’s a memory compare, you have to be careful that your data types are packed.</p>
+</section>
+<section id="message">
+<h2>_MESSAGE<a class="headerlink" href="#message" title="Permalink to this headline">#</a></h2>
+<p>you can append _MESSAGE to any of the macros to make them take an additional argument.  This argument
+is a string that will be printed at the end of the failure strings.  This is useful for specifying more
+information about the problem.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, ljx
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Unity Test API</a><ul>
+<li><a class="reference internal" href="#running-tests">Running Tests</a></li>
+<li><a class="reference internal" href="#ignoring-tests">Ignoring Tests</a></li>
+<li><a class="reference internal" href="#aborting-tests">Aborting Tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unity-assertion-summary">Unity Assertion Summary</a><ul>
+<li><a class="reference internal" href="#basic-validity-tests">Basic Validity Tests</a></li>
+<li><a class="reference internal" href="#numerical-assertions-integers">Numerical Assertions: Integers</a></li>
+<li><a class="reference internal" href="#arrays">Arrays</a></li>
+<li><a class="reference internal" href="#numerical-assertions-bitwise">Numerical Assertions: Bitwise</a></li>
+<li><a class="reference internal" href="#numerical-assertions-floats">Numerical Assertions: Floats</a></li>
+<li><a class="reference internal" href="#string-assertions">String Assertions</a></li>
+<li><a class="reference internal" href="#pointer-assertions">Pointer Assertions</a></li>
+<li><a class="reference internal" href="#memory-assertions">Memory Assertions</a></li>
+<li><a class="reference internal" href="#message">_MESSAGE</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/scripts/furo.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    </body>
+</html>

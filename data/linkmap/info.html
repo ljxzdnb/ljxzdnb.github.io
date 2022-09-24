@@ -1,0 +1,925 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="IV:C语言描述数据结构 —— 栈和队列" href="../pushpop/info.html" /><link rel="prev" title="II:C语言描述数据结构 —— 顺序表" href="../line/info.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.15"/>
+        <title>III:C语言描述数据结构 —— 单链表 - C data struct 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">C data struct 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">C data struct 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hash/info.html">I:C语言-哈希查找(HASH)-详解（完整代码）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../line/info.html">II:C语言描述数据结构 —— 顺序表</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">III:C语言描述数据结构 —— 单链表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pushpop/info.html">IV:C语言描述数据结构 —— 栈和队列</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ring/info.html">V:裸机中环形队列与RTOS中消息队列的区别</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tree/info.html">VI:平衡二叉树 C语言代码实现</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../time/info.html">VII:定时器方案之红黑树与最小堆、时间轮详解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../time/info.html#id1">前言</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="iii-c">
+<h1>III:C语言描述数据结构 —— <a class="reference external" href="https://blog.csdn.net/weixin_59913110/article/details/126103367#t7">单链表</a><a class="headerlink" href="#iii-c" title="Permalink to this headline">#</a></h1>
+<p>前言
+对于链表这部分，在数据结构里面是非常重要的。链表的学习周期长一些，博客的内容会多一些，所以对于链表的描述我将分为多篇。基本概念、基本实现、基本习题、进阶习题我都会通过博客向大家分享。那么本篇是对链表有一个初步的认识，并且能够掌握最基本的单链表的增删查改。</p>
+<ol class="arabic simple">
+<li><p>顺序表的问题及思考
+在学习链表之前，我们回顾以下顺序表，那么我们来思考下面几个问题：</p></li>
+</ol>
+<p>中间/头部的插入删除，时间复杂度为O(N)
+增容需要申请空间，拷贝数据，释放旧空间。这就会造成不小的空间消耗
+增容一般是呈 2 倍的增长，势必会有一定的空间浪费。例如当前容量为 100，满了以后增容到 200 ，我们再继续插入 5 个数据，那么就浪费了 95 个数据空间。
+那么我们要解决上述问题，就必须学习链表。所以带着问题去学习，那么将事半功倍。</p>
+<ol class="arabic simple" start="2">
+<li><p>链表的基本概念和基本结构
+基本概念：链表是一种物理存储结构上非连续、非顺序的存储结构，数据元素的逻辑顺序是通过链表中的指针链接次序实现的。</p></li>
+</ol>
+<p>如何理解物理存储结构是不连续的呢？</p>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/0f101816b04247a282012b09c8370dc5.png" /></p>
+<p>链表与顺序表不一样的是，顺序表它是一个数组，但是链表不是，所有的连续数据都是通过指针来链接的。那么现在又引出了一个问题，链表的每个数据都要链接下一个数据，而链接的方式是通过指针，那么如何做到呢？我们可以运用结构体来解决这个问题，并且提出结点的概念。</p>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/dfa51cfc62724f36af04bb85270fb6f0.png" /></p>
+<p>可以看到，每个结点都有数据域和指针域，指针是指向下一个结点的地址，那么需要补充的是，第一个结点的地址需要用一个指针来保存，最后一个结点的指针是指向空指针。 保存第一个结点的地址的意义在于：可以找到链表的头结点，从而进一步访问结点之后的结点。最后一个结点的指针指向空指针的意义在于：避免野指针的问题，客观上增加一种链表的结束条件，例如字符串的结束标志 ‘\0’ 。</p>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/10a2924820cb41139aaa9d2166281df4.png" /></p>
+<p>那么我们就得出了链表的三个特征：</p>
+<ol class="arabic simple">
+<li><p><strong>链表的结构在逻辑上是连续的，但是在物理上不一定连续</strong></p></li>
+<li><p><strong>现实中的结点一般都是从堆上申请出来的</strong></p></li>
+<li><p><strong>从堆上申请的空间，是按照一定的策略来分配的，两次申请的空间可能连续，也可能不连续</strong></p></li>
+</ol>
+<section id="id1">
+<h2>3. 链表的分类<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>链表的结构是有多种的，单向、双向、循环等等，但我们主要的侧重点在单向的不带哨兵卫的链表。</p>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/e7c3cd0f70514b96a249a1eb5604783e.png" /></p>
+</section>
+<section id="id2">
+<h2>4. 链表的实现<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//结点的声明</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">LLDataType</span><span class="p">;</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">LinkList</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LLDataType</span><span class="w"> </span><span class="n">val</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">struct</span><span class="w"> </span><span class="nc">LinkList</span><span class="o">*</span><span class="w"> </span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="n">LL</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>存储头结点的指针在主函数中定义：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;LinkList.h&quot;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>头插的实现：</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//创建新结点
+static LL* CreateNode(LLDataType x)
+{
+	LL* RetNode = (LL*)calloc(1, sizeof(LL));
+	assert(RetNode);
+	RetNode-&gt;val = x;
+	RetNode-&gt;next = NULL;
+	return RetNode;
+}
+//头插
+void ListPushHead(LL** phead, LLDataType x)
+{
+	assert(phead);
+	//此时我们还没有结点，需要创建一个结点
+	LL* NewNode = CreateNode(x);
+	//新结点的指针要指向以前的头结点
+	NewNode-&gt;next = *phead;
+	//头指针的内容更新为新结点的地址
+	*phead = NewNode;
+}
+</pre></div>
+</div>
+<p>需要注意，即使存储头结点的指针是一个指针，但我们在函数内操作时，需要改变指针的指向位置，所以需要使用二级指针。我们可能对最后两条代码存在疑问，我在这里解释一下：</p>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/d5b3f749329a45bba05bdf57ea0f985b.png" /></p>
+<p><strong>链表打印实现：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//打印</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPrint</span><span class="p">(</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">phead</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phead</span><span class="p">;</span><span class="c1">//使用临时变量来操作链表，但因为是传址调用，不使用也是可以的</span>
+<span class="w">	</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d-&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;NULL</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>测试：头插一个数据以及打印：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;LinkList.h&quot;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>尾插的实现：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//尾插</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">LIstPushBack</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LLDataType</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="n">phead</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">newnode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//如果链表没有结点，新结点直接作为头结点</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">phead</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="o">*</span><span class="n">phead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newnode</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">phead</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//向后寻找链表的最后一个结点</span>
+<span class="w">		</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newnode</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>可以看到，我们尾插的情况是有两个的，一个链表里面没有结点，那么就让这个要尾插的结点直接为头。而另一种则是链表中存在结点，我们需要遍历找到最后一个结点，并让这个结点的指针指向新的结点。同时需要注意，我们传的参数是二级指针，我们要解引用才能找到存放头结点地址的指针。</p>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/725ae43afb874ca0a60276c77261db5d.png" /></p>
+<p>我们思考一个问题：我们能否像头插一样定义一个指针，专门用来存储最后一个结点的地址呢？当然可以，不过我们需要对函数的参数做出一些改变。</p>
+<p><strong>头插更改：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>//头插
+void ListPushHead(LL** phead, LL** ptail,LLDataType x)
+{
+	//assert(phead);
+	此时我们还没有结点，需要创建一个结点
+	//LL* NewNode = CreateNode(x);
+	新结点的指针要指向以前的头结点
+	//NewNode-&gt;next = *phead;
+	头指针的内容更新为新结点的地址
+	//*phead = NewNode;
+ 
+	assert(phead);
+	//此时我们还没有结点，需要创建一个结点
+	LL* NewNode = CreateNode(x);
+	//链表为空时，第一个头插的结点就是尾结点
+	if (*phead == NULL)
+	{
+		*ptail = NewNode;
+	}
+	//新结点的指针要指向以前的头结点
+	NewNode-&gt;next = *phead;
+	//头指针的内容更新为新结点的地址
+	*phead = NewNode;
+}
+</pre></div>
+</div>
+<p><strong>尾插更改：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>//尾插
+void LIstPushBack(LL** phead,LL** ptail, LLDataType x)
+{
+	//assert(phead);
+	//LL* NewNode = CreateNode(x);
+	如果链表没有结点，新结点直接作为头结点
+	//if (*phead == NULL)
+	//{
+	//	*phead = NewNode;
+	//}
+	//else
+	//{
+	//	LL* tail = *phead;
+	//	//向后寻找链表的最后一个结点
+	//	while (tail-&gt;next != NULL)
+	//	{
+	//		tail = tail-&gt;next;
+	//	}
+	//	tail-&gt;next = NewNode;
+	//}
+ 
+	assert(phead &amp;&amp; ptail);
+	LL* NewNode = CreateNode(x);
+	//如果链表为空，那么头尾指针都指向这个新结点
+	if (*phead == NULL)
+	{
+		*ptail = *phead = NewNode;
+	}
+	else
+	{
+		(*ptail)-&gt;next = NewNode;//尾结点的指针指向新结点
+		(*ptail) = (*ptail)-&gt;next;//尾指针指向新结点
+	}
+}
+</pre></div>
+</div>
+<p><strong>我们对修改之后的代码进行数据测试：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;LinkList.h&quot;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="c1">//专门用来存储最后一个结点的地址</span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/65398ad7352a495dbee6f81ed6f53ba4.png" /></p>
+<p><strong>头删的实现：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//头删</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPopHead</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="n">phead</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="o">*</span><span class="n">phead</span><span class="p">);</span><span class="c1">//链表为空不需要删除，强制退出</span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">phead</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//如果链表仅有一个结点</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">free</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span><span class="c1">//释放结点</span>
+<span class="w">		</span><span class="o">*</span><span class="n">phead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="c1">//存储头尾结点地址的指针置空</span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//链表有两个或两个以上结点时</span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="o">*</span><span class="n">phead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">free</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//尾指针不需要变</span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>尾删的实现：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//尾删</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPopBack</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="n">phead</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="o">*</span><span class="n">phead</span><span class="p">);</span><span class="c1">//链表里面没有结点不需要删除 </span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptail</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">NewPtail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">phead</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//找到倒数第二个结点</span>
+<span class="w">	</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">NewPtail</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="o">*</span><span class="n">ptail</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">NewPtail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NewPtail</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//对删除之前的尾结点释放</span>
+<span class="w">	</span><span class="n">free</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//存储尾结点地址的指针更新</span>
+<span class="w">	</span><span class="o">*</span><span class="n">ptail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NewPtail</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">(</span><span class="o">*</span><span class="n">ptail</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>测试：头删和尾删：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;LinkList.h&quot;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="c1">//专门用来存储最后一个结点的地址</span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">ListPopHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPopBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/7231f179036d48fd8f9217b129ee32b6.png" /></p>
+<p><strong>数据的查找：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//查找</span>
+<span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="nf">ListFind</span><span class="p">(</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="n">LLDataType</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phead</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">			</span><span class="k">return</span><span class="w"> </span><span class="n">cur</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>我们的目的是找到数据的结点地址，如果确实有结点存储这个数据，那么就返回结点地址，否则返回空。如果有多个结点存储同一个数据，那么返回第一个结点的地址。这是符合常理的设计方法。</p>
+<p><strong>在 pos 位置插入数据：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//在 pos 位置插入</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListInsert</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="n">LLDataType</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="n">phead</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="o">*</span><span class="n">phead</span><span class="p">);</span><span class="c1">//确保链表有结点</span>
+<span class="w">	</span><span class="c1">//如果 pos 位置与头结点位置重合就头插</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pos</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">*</span><span class="n">phead</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">ListPushHead</span><span class="p">(</span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">ptail</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//在 pos 位置之前插入</span>
+<span class="w">		</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">phead</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">NewNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NewNode</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pos</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>测试：在 pos 位置插入数据(与查找配合)：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;LinkList.h&quot;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="c1">//专门用来存储最后一个结点的地址</span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">ListPopHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPopBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">ListInsert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="n">ListFind</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/856c1a37dc5749b0bbcb0332cb26c840.png" /></p>
+<p><strong>在 pos 位置删除结点：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//在 pos 位置删除</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPopInsert</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="n">phead</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">assert</span><span class="p">(</span><span class="o">*</span><span class="n">phead</span><span class="p">);</span><span class="c1">//确保链表有结点</span>
+<span class="w">	</span><span class="c1">//如果 pos 位置是头结点就头删</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pos</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">*</span><span class="n">phead</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">ListPopHead</span><span class="p">(</span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//如果 pos 位置是尾结点就尾删</span>
+<span class="w">	</span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pos</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">*</span><span class="n">ptail</span><span class="p">)</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">ListPopBack</span><span class="p">(</span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">	</span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">phead</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">pos</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pos</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="n">free</span><span class="p">(</span><span class="n">pos</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><img alt="img" src="https://img-blog.csdnimg.cn/7c85740a606d48d18e7cce89c9755b73.png" /></p>
+</section>
+<section id="id3">
+<h2>5. 完整各文件代码<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h2>
+<section id="test-c">
+<h3>test.c 源文件<a class="headerlink" href="#test-c" title="Permalink to this headline">#</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define _CRT_SECURE_NO_WARNINGS 1</span>
+<span class="w"> </span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;LinkList.h&quot;</span><span class="cp"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="c1">//专门用来存储最后一个结点的地址</span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPushHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">LIstPushBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">ListPopHead</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPopBack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">ListInsert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="n">ListFind</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w">	</span><span class="n">ListPopInsert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tail</span><span class="p">,</span><span class="w"> </span><span class="n">ListFind</span><span class="p">(</span><span class="n">head</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">));</span><span class="w"></span>
+<span class="w">	</span><span class="n">ListPrint</span><span class="p">(</span><span class="n">head</span><span class="p">);</span><span class="w"></span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="listlink-c">
+<h3>ListLink.c 源文件<a class="headerlink" href="#listlink-c" title="Permalink to this headline">#</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>#define _CRT_SECURE_NO_WARNINGS 1
+#include &quot;LinkList.h&quot;
+ 
+//创建新结点
+static LL* CreateNode(LLDataType x)
+{
+	LL* RetNode = (LL*)calloc(1, sizeof(LL));
+	assert(RetNode);
+	RetNode-&gt;val = x;
+	RetNode-&gt;next = NULL;
+	return RetNode;
+}
+//头插
+void ListPushHead(LL** phead, LL** ptail,LLDataType x)
+{
+	//assert(phead);
+	此时我们还没有结点，需要创建一个结点
+	//LL* NewNode = CreateNode(x);
+	新结点的指针要指向以前的头结点
+	//NewNode-&gt;next = *phead;
+	头指针的内容更新为新结点的地址
+	//*phead = NewNode;
+ 
+	assert(phead);
+	//此时我们还没有结点，需要创建一个结点
+	LL* NewNode = CreateNode(x);
+	//链表为空时，第一个头插的结点就是尾结点
+	if (*phead == NULL)
+	{
+		*ptail = NewNode;
+	}
+	//新结点的指针要指向以前的头结点
+	NewNode-&gt;next = *phead;
+	//头指针的内容更新为新结点的地址
+	*phead = NewNode;
+}
+//打印
+void ListPrint(LL* phead)
+{
+	LL* cur = phead;//使用临时变量来操作链表，但因为是传址调用，不使用也是可以的
+	while (cur)
+	{
+		printf(&quot;%d-&gt;&quot;, cur-&gt;val);
+		cur = cur-&gt;next;
+	}
+	printf(&quot;NULL\n&quot;);
+}
+//尾插
+void LIstPushBack(LL** phead,LL** ptail, LLDataType x)
+{
+	//assert(phead);
+	//LL* NewNode = CreateNode(x);
+	如果链表没有结点，新结点直接作为头结点
+	//if (*phead == NULL)
+	//{
+	//	*phead = NewNode;
+	//}
+	//else
+	//{
+	//	LL* tail = *phead;
+	//	//向后寻找链表的最后一个结点
+	//	while (tail-&gt;next != NULL)
+	//	{
+	//		tail = tail-&gt;next;
+	//	}
+	//	tail-&gt;next = NewNode;
+	//}
+ 
+	assert(phead &amp;&amp; ptail);
+	LL* NewNode = CreateNode(x);
+	//如果链表为空，那么头尾指针都指向这个新结点
+	if (*phead == NULL)
+	{
+		*ptail = *phead = NewNode;
+	}
+	else
+	{
+		(*ptail)-&gt;next = NewNode;//尾结点的指针指向新结点
+		(*ptail) = (*ptail)-&gt;next;//尾指针指向新结点
+	}
+}
+//头删
+void ListPopHead(LL** phead, LL** ptail)
+{
+	assert(phead &amp;&amp; ptail);
+	assert(*phead);//链表为空不需要删除，强制退出
+	LL* cur = *phead;
+	//如果链表仅有一个结点
+	if (cur-&gt;next == NULL)
+	{
+		free(cur);//释放结点
+		*phead = *ptail = NULL;//存储头尾结点地址的指针置空
+	}
+	//链表有两个或两个以上结点时
+	else
+	{
+		*phead = cur-&gt;next;
+		free(cur);
+		//尾指针不需要变
+	}
+}
+//尾删
+void ListPopBack(LL** phead, LL** ptail)
+{
+	assert(phead &amp;&amp; ptail);
+	assert(*phead);//链表里面没有结点不需要删除 
+	LL* cur = *ptail;
+	LL* NewPtail = *phead;
+	//找到倒数第二个结点
+	while (NewPtail-&gt;next != *ptail)
+	{
+		NewPtail = NewPtail-&gt;next;
+	}
+	//对删除之前的尾结点释放
+	free(cur);
+	//存储尾结点地址的指针更新
+	*ptail = NewPtail;
+	(*ptail)-&gt;next = NULL;
+}
+//查找
+LL* ListFind(LL* phead,LLDataType x)
+{
+	LL* cur = phead;
+	while (cur)
+	{
+		if (cur-&gt;val == x)
+			return cur;
+		cur = cur-&gt;next;
+	}
+	return NULL;
+}
+//在 pos 位置插入
+void ListInsert(LL** phead, LL** ptail, LL* pos, LLDataType x)
+{
+	assert(phead &amp;&amp; ptail);
+	assert(*phead);//确保链表有结点
+	//如果 pos 位置与头结点位置重合就头插
+	if (pos == *phead)
+	{
+		ListPushHead(phead, ptail, x);
+	}
+	else
+	{
+		//在 pos 位置之前插入
+		LL* cur = *phead;
+		while (cur-&gt;next != pos)
+		{
+			cur = cur-&gt;next;
+		}
+		LL* NewNode = CreateNode(x);
+		cur-&gt;next = NewNode;
+		NewNode-&gt;next = pos;
+	}
+}
+//在 pos 位置删除
+void ListPopInsert(LL** phead, LL** ptail, LL* pos)
+{
+	assert(phead &amp;&amp; ptail);
+	assert(*phead);//确保链表有结点
+	//如果 pos 位置是头结点就头删
+	if (pos == *phead)
+	{
+		ListPopHead(phead, ptail);
+	}
+	//如果 pos 位置是尾结点就尾删
+	else if (pos == *ptail)
+	{
+		ListPopBack(phead, ptail);
+	}
+	else
+	{
+		LL* cur = *phead;
+		while (cur-&gt;next != pos)
+		{
+			cur = cur-&gt;next;
+		}
+		cur-&gt;next = pos-&gt;next;
+		free(pos);
+	}
+}
+</pre></div>
+</div>
+</section>
+<section id="listlink-h">
+<h3>ListLink.h 头文件<a class="headerlink" href="#listlink-h" title="Permalink to this headline">#</a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define _CRT_SECURE_NO_WARNINGS 1</span>
+<span class="w"> </span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;assert.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="c1">//结点的声明</span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">LLDataType</span><span class="p">;</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">LinkList</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">LLDataType</span><span class="w"> </span><span class="n">val</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">struct</span><span class="w"> </span><span class="nc">LinkList</span><span class="o">*</span><span class="w"> </span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="n">LL</span><span class="p">;</span><span class="w"></span>
+<span class="c1">//存放头结点地址的指针</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPushHead</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">,</span><span class="n">LLDataType</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="c1">//头插</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPrint</span><span class="p">(</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">phead</span><span class="p">);</span><span class="c1">//打印</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">LIstPushBack</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="w"> </span><span class="p">,</span><span class="n">LLDataType</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="c1">//尾插 </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPopHead</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="c1">//头删</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPopBack</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">);</span><span class="c1">//尾删</span>
+<span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="nf">ListFind</span><span class="p">(</span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="n">LLDataType</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="c1">//查找</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListInsert</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="n">LLDataType</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="c1">//在 pos 位置插入</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ListPopInsert</span><span class="p">(</span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">phead</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">**</span><span class="w"> </span><span class="n">ptail</span><span class="p">,</span><span class="w"> </span><span class="n">LL</span><span class="o">*</span><span class="w"> </span><span class="n">pos</span><span class="p">);</span><span class="c1">//删除 pos 位置的数据</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../pushpop/info.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">IV:C语言描述数据结构 —— 栈和队列</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../line/info.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">II:C语言描述数据结构 —— 顺序表</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, ljx
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">III:C语言描述数据结构 —— 单链表</a><ul>
+<li><a class="reference internal" href="#id1">3. 链表的分类</a></li>
+<li><a class="reference internal" href="#id2">4. 链表的实现</a></li>
+<li><a class="reference internal" href="#id3">5. 完整各文件代码</a><ul>
+<li><a class="reference internal" href="#test-c">test.c 源文件</a></li>
+<li><a class="reference internal" href="#listlink-c">ListLink.c 源文件</a></li>
+<li><a class="reference internal" href="#listlink-h">ListLink.h 头文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    </body>
+</html>
