@@ -18,3 +18,4 @@
    data/ring/info.md
    data/tree/info.md
    data/time/info.md
+   data/skiplist/info.md
