@@ -21,7 +21,7 @@ i {
 }
 #navbarSupportedContent{
 	overflow: hidden;
-	position: sticky;
+	position: relative;
 }
 #navbarSupportedContent ul{
 	padding: 0px;
