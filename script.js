@@ -13,6 +13,11 @@ function test(){
 		"height": activeWidthNewAnimHeight + "px",
 		"width": activeWidthNewAnimWidth + "px"
 	});
+	$("#navbarSupportedContent").on("click","a",function (){
+		var linkId = $(this).attr("id");
+		$("#content iframe").hide();
+		$("#"+linkId.replace("nav","content")).show();
+	});
 	$("#navbarSupportedContent").on("click","li",function(e){
 		$('#navbarSupportedContent ul li').removeClass("active");
 		$(this).addClass('active');
@@ -55,7 +60,6 @@ jQuery(document).ready(function($){
 	// Add active class to target link
 	target.parent().addClass('active');
 });
-
 
 
 
