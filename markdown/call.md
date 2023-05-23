@@ -138,7 +138,7 @@ dot -Tpng graph.dot -o graph.png
 
 the effect is as follows:
 
-![/home/ljx/lib/c_project/module/backtrace/graph.png](/home/ljx/lib/c_project/module/backtrace/graph.png)
+![../graph.png](../graph.png)
 
 all codes:
 
