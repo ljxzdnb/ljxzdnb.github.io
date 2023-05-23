@@ -151,7 +151,7 @@ angular.module('app').controller('ctrl', function($scope) {
         '\n' +
         'the effect is as follows:\n' +
         '\n' +
-        '![/home/ljx/lib/c_project/module/backtrace/graph.png](/home/ljx/lib/c_project/module/backtrace/graph.png)\n' +
+        '![../graph.png](../graph.png)\n' +
         '\n' +
         'all codes:\n' +
         '\n' +
