@@ -1,3 +1,0 @@
-/home/ljx/lib/c_project/module/class/cmake-build-debug/CMakeFiles/class.dir
-/home/ljx/lib/c_project/module/class/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/ljx/lib/c_project/module/class/cmake-build-debug/CMakeFiles/rebuild_cache.dir
