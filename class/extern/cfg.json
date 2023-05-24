@@ -1,0 +1,57 @@
+enum{
+    true,
+    false,
+};
+
+struct specs_t {
+    char* max;
+    char* min;
+    char* unit;
+};
+
+struct dataType_t {
+    struct specs_t specs;
+    char* type;
+};
+
+struct ext_data_t {
+    int offset;
+    int format;
+    int scale;
+};
+
+struct outputData_t {
+    char* calc;
+    struct dataType_t dataType;
+    struct ext_data_t ext_data;
+    char* identifier;
+    char* name;
+    char* remark;
+    int required;
+};
+
+struct services_t {
+    struct outputData_t outputData[MAX_TAG_NUM];
+    char* identifier;
+    char* method;
+    int required;
+};
+
+struct profile_t {
+    char* productKey;
+};
+
+struct object_model_cfg_t {
+    struct profile_t profile;
+    struct services_t services[MAX_TAG_NUM]; //服务个数
+    char* schema;
+};
+
+struct table_t {
+    char* version;
+    struct object_model_cfg_t object_model_cfg[DEV_NUM]; //下挂设备个数
+}table;
+//=
+//#include "configs.cjson"  //
+//;
+

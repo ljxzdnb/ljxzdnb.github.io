@@ -1,0 +1,4 @@
+/home/ljx/clion/bin/cmake/linux/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/ljx/clion/bin/ninja/linux/aarch64/ninja -G Ninja -S /home/ljx/lib/c_project/module/class -B /home/ljx/lib/c_project/module/class/cmake-build-debug
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/ljx/lib/c_project/module/class/cmake-build-debug
