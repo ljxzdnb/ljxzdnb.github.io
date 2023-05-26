@@ -6,23 +6,62 @@
   <link rel="stylesheet" href="normalize.min.css">
 <link rel='stylesheet' href='github-markdown.css'>
 <link rel='stylesheet' href='github.css'><link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css'><link rel="stylesheet" href="./doc/style.css">
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
 <body ng-app="app" ng-controller="ctrl">
     <div class="left">
-        <textarea id="txt" ng-model="my_markdown"></textarea>
+        <textarea id="txt" ng-model="my_markdown" style="display: none"></textarea>
     </div>
     <div class="right">
         <div class="markdown-body" marked="my_markdown"></div>
     </div>
+
+    <div id="accordian">
+        <ul class="show-dropdown main-navbar">
+            <div class="selector-active"><div class="top"></div><div class="bottom"></div></div>
+            <li>
+                <a href="javascript:void(0);"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            </li>
+            <li class="active">
+                <a href="javascript:void(0);"><i class="far fa-address-book"></i>Address Book</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="far fa-clone"></i>Components</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="far fa-calendar-alt"></i>Calendar</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="far fa-chart-bar"></i>Charts</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="far fa-copy"></i>Documents</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="far fa-bookmark"></i>Bookmarks</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="far fa-envelope"></i>Mail</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);"><i class="far fa-heart"></i>Favorite</a>
+            </li>
+        </ul>
+    </div>
+    <!-- partial -->
+    <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script><script  src="./doc/script.js"></script>
+
 </body>
 <!-- partial -->
   <script src='angular.min.js'></script>
 <script src='angular-marked.min.js'></script>
 <script src='marked.js'></script>
-<script src='highlight.min.js'></script><script  src="./script.js"></script>
+<script src='highlight.min.js'></script>
+<script  src="./script.js"></script>
 
 </body>
 </html>
