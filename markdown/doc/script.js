@@ -13,6 +13,20 @@ $(".selector-active").css({
 	"height": activeWidthVerticalHeight + "px",
 	"width": activeWidthVerticalWidth + "px"
 });
+$("#accordian").on("click","a",function (){
+	var file = $(this).text();
+	var el = document.getElementById('txt');
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET','./files/'+file+'.md',true);
+	xhr.readyState = 'text';
+	xhr.onload = function (){
+		if(xhr.status === 200){
+			el.value = xhr.responseText;
+			el.dispatchEvent(new Event('input',{bubbles:true}))
+		}
+	}
+	xhr.send();
+});
 $("#accordian").on("click","li",function(e){
 	$('#accordian ul li').removeClass("active");
 	$(this).addClass('active');
