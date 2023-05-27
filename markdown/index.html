@@ -5,10 +5,11 @@
   <title>CodePen - Angular Markdown Editor</title>
   <link rel="stylesheet" href="normalize.min.css">
 <link rel='stylesheet' href='github-markdown.css'>
-<link rel='stylesheet' href='github.css'><link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css'><link rel="stylesheet" href="./doc/style.css">
-
+<link rel='stylesheet' href='github.css'>
+<link rel="stylesheet" href="markdown.css">
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">-->
+<!--<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css'>-->
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <!-- partial:index.partial.html -->
@@ -53,15 +54,18 @@
         </ul>
     </div>
     <!-- partial -->
-    <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script><script  src="./doc/script.js"></script>
+
+    <script src='jquery.min.js'></script>
+    <script  src="script.js"></script>
 
 </body>
 <!-- partial -->
   <script src='angular.min.js'></script>
+<script src='./latex/MathJax.js?config=TeX-MML-AM_CHTML'></script>
 <script src='angular-marked.min.js'></script>
 <script src='marked.js'></script>
 <script src='highlight.min.js'></script>
-<script  src="script.js"></script>
+<script src="markdown.js"></script>
 
 </body>
 </html>

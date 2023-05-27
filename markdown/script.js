@@ -1,35 +1,59 @@
-angular.module('app', ['hc.marked'])
+// ---------vertical-menu with-inner-menu-active-animation-----------
 
-angular.module('app').config(function(markedProvider) {
-    markedProvider.setOptions({
-        gfm: true,
-        tables: true,
-        highlight: function(code) {
-            return hljs.highlightAuto(code).value;
-        }
-    });
-})
+var tabsVerticalInner = $('#accordian');
+var selectorVerticalInner = $('#accordian').find('li').length;
+var activeItemVerticalInner = tabsVerticalInner.find('.active');
+var activeWidthVerticalHeight = activeItemVerticalInner.innerHeight();
+var activeWidthVerticalWidth = activeItemVerticalInner.innerWidth();
+var itemPosVerticalTop = activeItemVerticalInner.position();
+var itemPosVerticalLeft = activeItemVerticalInner.position();
+$(".selector-active").css({
+	"top":itemPosVerticalTop.top + "px", 
+	"left":itemPosVerticalLeft.left + "px",
+	"height": activeWidthVerticalHeight + "px",
+	"width": activeWidthVerticalWidth + "px"
+});
+$("#accordian").on("click","a",function (){
+	var file = $(this).text();
+	var el = document.getElementById('txt');
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET','./files/'+file+'.md',true);
+	xhr.readyState = 'text';
+	xhr.onload = function (){
+		if(xhr.status === 200){
+			el.value = xhr.responseText;
+			el.dispatchEvent(new Event('input',{bubbles:true}))
+		}
+	}
+	xhr.send();
+});
+$("#accordian").on("click","li",function(e){
+	$('#accordian ul li').removeClass("active");
+	$(this).addClass('active');
+	var activeWidthVerticalHeight = $(this).innerHeight();
+	var activeWidthVerticalWidth = $(this).innerWidth();
+	var itemPosVerticalTop = $(this).position();
+	var itemPosVerticalLeft = $(this).position();
+	$(".selector-active").css({
+		"top":itemPosVerticalTop.top + "px", 
+		"left":itemPosVerticalLeft.left + "px",
+		"height": activeWidthVerticalHeight + "px",
+		"width": activeWidthVerticalWidth + "px"
+	});
+});
 
-angular.module('app').controller('ctrl', function($scope) {
-    $scope.my_markdown = '## welcome to markdown file brewer\n' +
-        '\n' +
-        '\n' +
-        '\n' +
-        'the following files written by markdown format,and those will be show up on website by html format.'
-    function enableTab(id) {
-        var el = document.getElementById(id);
-        el.addEventListener('input', function(e) {
-                // alert(this.value)
-                var val = this.value,
-                    start = this.selectionStart,
-                    end = this.selectionEnd;
-                this.value = val.substring(0, start) + '\t' + val.substring(end);
 
-                this.selectionStart = this.selectionEnd = start + 1;
+// --------------add active class-on another-page move----------
+// jQuery(document).ready(function($){
+  // Get current path and find target link
+  // var path = window.location.pathname.split("/").pop();
 
-                return false;
-
-        })
-    };
-    enableTab('txt')
-})
+  // Account for home page with empty path
+  // if ( path == '' ) {
+  //   path = 'index.html';
+  // }
+  //
+  // var target = $('#accordian ul li a[href="'+path+'"]');
+  // // Add active class to target link
+  // target.parent().addClass('active');
+// });
