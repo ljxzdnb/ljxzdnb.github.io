@@ -201,8 +201,8 @@ void __cyg_profile_func_enter(void* func_address, void* call_site)
 	mtrace();
 	ptrace(PTRACE_GETREGSET,pid,NULL,NULL);
 	//void* arg = (void*)ptrace(PTRACE_PEEKTEXT,getpid(),regs.pc,NULL);
-	long int arg = ptrace(PTRACE_PEEKDATA,pid,(void*)regs.sp,NULL);
-    	if((void*)arg!=NULL)printf("arg %ld\n",arg);
+    long int arg = ptrace(PTRACE_PEEKDATA,pid,(void*)regs.sp,NULL);
+    if((void*)arg!=NULL)printf("arg %ld\n",arg);
 	start = clock();
 
 }
