@@ -1,6 +1,6 @@
 .left {
   position: fixed;
-  top: 30px;
+  top: 0;
   left: 250px;
   bottom: 0;
   width: 100%;
@@ -23,7 +23,7 @@
 
 .right {
   position: fixed;
-  top: 30px;
+  top: 0;
   right: 0;
   left: 250px;
   bottom: 0;

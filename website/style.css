@@ -167,8 +167,9 @@ i {
 }
 
 iframe{
-	top: 30px;
+	padding-top: -3px;
 	left: 0;
+	border: medium none;
 	position: fixed;
 	width: 100%;
 	height: 100%;
