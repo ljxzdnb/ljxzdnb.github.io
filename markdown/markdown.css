@@ -1,7 +1,7 @@
 .left {
   position: fixed;
   top: 0;
-  left: 250px;
+  left: 150px;
   bottom: 0;
   width: 100%;
   box-shadow: -10px 2px 6px 10px rgba(0, 0, 0, 0.4);
@@ -25,7 +25,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  left: 250px;
+  left: 150px;
   bottom: 0;
   overflow: auto;
   padding: 30px;

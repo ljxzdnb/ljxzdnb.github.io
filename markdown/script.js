@@ -7,12 +7,12 @@ var activeWidthVerticalHeight = activeItemVerticalInner.innerHeight();
 var activeWidthVerticalWidth = activeItemVerticalInner.innerWidth();
 var itemPosVerticalTop = activeItemVerticalInner.position();
 var itemPosVerticalLeft = activeItemVerticalInner.position();
-// $(".selector-active").css({
-// 	"top":itemPosVerticalTop.top + "px",
-// 	"left":itemPosVerticalLeft.left + "px",
-// 	"height": activeWidthVerticalHeight + "px",
-// 	"width": activeWidthVerticalWidth + "px"
-// });
+$(".selector-active").css({
+	// "top":itemPosVerticalTop.top + "px",
+	// "left":itemPosVerticalLeft.left + "px",
+	"height": 45 + "px",
+	// "width": activeWidthVerticalWidth + "px"
+});
 $("#accordian").on("click","a",function (){
 	var file = $(this).text();
 	var el = document.getElementById('txt');
@@ -21,8 +21,10 @@ $("#accordian").on("click","a",function (){
 	xhr.readyState = 'text';
 	xhr.onload = function (){
 		if(xhr.status === 200){
+			// $scope.my_markdown = xhr.responseText;
 			el.value = xhr.responseText;
 			el.dispatchEvent(new Event('input',{bubbles:true}))
+			MathJax.Hub.Typeset();
 		}
 	}
 	xhr.send();

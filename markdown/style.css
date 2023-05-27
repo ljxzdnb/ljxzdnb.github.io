@@ -21,7 +21,7 @@ h6{
 
 #accordian {
 	background: #5161ce;
-	width: 250px;
+	width: 150px;
 	/*padding: 10px;*/
 	top:0;
 	float: left;
@@ -74,6 +74,7 @@ h6{
 #accordian .active>a:not(:only-child):after {
 	transform: rotate(90deg);
 }
+
 .selector-active{
 	width: 100%;
 	display:inline-block;
