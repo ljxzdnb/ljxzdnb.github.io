@@ -12,9 +12,6 @@ angular.module('app').config(function(markedProvider) {
 
 angular.module('app').controller('ctrl', function($scope) {
     $scope.my_markdown = '## welcome to markdown file brewer\n' +
-        '\n' +
-        '\n' +
-        '\n' +
         'the following files written by markdown format,and those will be show up on website by html format.\n' +
         '* math format:\n' +
         "$$ y(x,t) = y = A \\sin(kx - \\omega t) $$\n" +

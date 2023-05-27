@@ -7,12 +7,12 @@ var activeWidthVerticalHeight = activeItemVerticalInner.innerHeight();
 var activeWidthVerticalWidth = activeItemVerticalInner.innerWidth();
 var itemPosVerticalTop = activeItemVerticalInner.position();
 var itemPosVerticalLeft = activeItemVerticalInner.position();
-$(".selector-active").css({
-	"top":itemPosVerticalTop.top + "px", 
-	"left":itemPosVerticalLeft.left + "px",
-	"height": activeWidthVerticalHeight + "px",
-	"width": activeWidthVerticalWidth + "px"
-});
+// $(".selector-active").css({
+// 	"top":itemPosVerticalTop.top + "px",
+// 	"left":itemPosVerticalLeft.left + "px",
+// 	"height": activeWidthVerticalHeight + "px",
+// 	"width": activeWidthVerticalWidth + "px"
+// });
 $("#accordian").on("click","a",function (){
 	var file = $(this).text();
 	var el = document.getElementById('txt');
@@ -45,15 +45,15 @@ $("#accordian").on("click","li",function(e){
 
 // --------------add active class-on another-page move----------
 // jQuery(document).ready(function($){
-  // Get current path and find target link
-  // var path = window.location.pathname.split("/").pop();
-
-  // Account for home page with empty path
-  // if ( path == '' ) {
-  //   path = 'index.html';
-  // }
-  //
-  // var target = $('#accordian ul li a[href="'+path+'"]');
-  // // Add active class to target link
-  // target.parent().addClass('active');
+//   //Get current path and find target link
+//   var path = window.location.pathname.split("/").pop();
+//
+//   //Account for home page with empty path
+//   if ( path == '' ) {
+//     path = 'index.html';
+//   }
+//
+//   var target = $('#accordian ul li a[href="'+path+'"]');
+//   // Add active class to target link
+//   target.parent().addClass('active');
 // });
