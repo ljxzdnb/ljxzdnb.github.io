@@ -4,9 +4,9 @@
 	"start_url":"/index.html",
 	"icons":[
 		{
-			"src":"icons.jpeg",
-			"sizes":"359x359",
-			"type":"image/jpeg"
+			"src":"picons.png",
+			"sizes":"144x144",
+			"type":"image/png"
 		}
 	],
 	"background_color":"white",
