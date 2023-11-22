@@ -48,6 +48,65 @@ def twoSum(nums, target):
         hashmap[num] = i #这句不能放在if语句之前，解决list中有重复值或target-num=num的情况
 ```
 
+chatGPT：
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int key;
+    int index;
+} HashNode;
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+    HashNode* hashTable = (HashNode*)malloc(sizeof(HashNode) * numsSize);
+
+    for (int i = 0; i < numsSize; ++i) {
+        int complement = target - nums[i];
+
+        // 在哈希表中查找是否存在 complement
+        for (int j = 0; j < i; ++j) {
+            if (hashTable[j].key == complement) {
+                int* result = (int*)malloc(sizeof(int) * 2);
+                result[0] = hashTable[j].index;
+                result[1] = i;
+                *returnSize = 2;
+                free(hashTable);
+                return result;
+            }
+        }
+
+        // 将当前元素加入哈希表
+        hashTable[i].key = nums[i];
+        hashTable[i].index = i;
+    }
+
+    *returnSize = 0;
+    free(hashTable);
+    return NULL;
+}
+
+int main() {
+    int nums[] = {2, 7, 11, 15};
+    int target = 9;
+    int returnSize;
+
+    int* result = twoSum(nums, sizeof(nums) / sizeof(nums[0]), target, &returnSize);
+
+    if (result != NULL) {
+        printf("Two Sum found: %d, %d\n", result[0], result[1]);
+        free(result);
+    } else {
+        printf("Two Sum not found.\n");
+    }
+
+    return 0;
+}
+```
+
+
+
 
 
 # [数组的相对排序](https://leetcode.cn/problems/relative-sort-array/):
