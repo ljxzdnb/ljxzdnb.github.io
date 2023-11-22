@@ -1,0 +1,15 @@
+{
+	"name":"ljx's website",
+	"short_name":"markdown",
+	"start_url":"index.html",
+	"icons":[
+		{
+			"src":"icons.jpeg",
+			"sizes":"359x359",
+			"type":"image/jpeg"
+		}
+	],
+	"background_color":"white",
+	"theme_color":"white",
+	"display":"fullscreen"
+}
