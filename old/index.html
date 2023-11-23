@@ -8,15 +8,12 @@
     <!-- <link rel="manifest" href="manifest.json"> -->
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css'>
-    <link rel="stylesheet" href="style.css">
-    <link rel='stylesheet' href='github-markdown.css'>
-    <link rel='stylesheet' href='github.css'>
-<!--    <link rel="stylesheet" href="markdown.css">-->
+    <link rel="stylesheet" href="./website/style.css">
     <link rel="shortcut icon" href="icon.ico" type="image/x-icon"/>
     <link rel="icon" href="icon.png" sizes="32x32" type="image/png"/>
 </head>
-<body ng-app="app" ng-controller="ctrl">
-<div class="headcontent">
+<body>
+
 <nav class="navbar navbar-expand-custom navbar-mainbg">
     <a class="navbar-brand navbar-logo" href="#" onclick="toggleFullScreen()">ljx's personal website</a>
     <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,43 +23,21 @@
         <ul class="navbar-nav ml-auto">
             <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
             <li class="nav-item active">
-                <a class="nav-link" id="nav-0" href="javascript:void(0);"><i class="far fa-copy"></i>info</a>
-            </li>
-            <li>
-                <a class="nav-link" id="nav-1" href="javascript:void(0);"><i class="far fa-clone"></i>call</a>
-            </li>
-            <li>
-                <a class="nav-link" id="nav-2" href="javascript:void(0);"><i class="far fa-bookmark"></i>leetcode</a>
-            </li>
-            <li>
-               <a class="nav-link" id="nav-3" href="javascript:void(0);"><i class="far fa-chart-bar"></i>huawei</a>
+                <a class="nav-link" id="nav-3" href="javascript:void(0);"><i class="far fa-copy"></i>Markdown</a>
             </li>
         </ul>
     </div>
 </nav>
-</div>
 
-<div class="content">
-    <div class="left">
-        <textarea id="txt" ng-model="my_markdown" style="display: none"></textarea>
-    </div>
-    <div class="right">
-        <div id="markdown" class="markdown-body" marked="my_markdown"></div>
-    </div>
+<div id="content">
+    <iframe id="content-3" src="markdown/index.html"></iframe>
 </div>
-</body>
 
 <script src='jquery.min.js'></script>
 <script src='./markdown/latex/MathJax.js?config=TeX-MML-AM_CHTML'></script>
 <script src='https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js'></script>
-<script  src="script.js"></script>
-<script src='angular.min.js'></script>
-<script src='./latex/MathJax.js?config=TeX-MML-AM_CHTML'></script>
-<script src='angular-marked.min.js'></script>
-<script src='marked.js'></script>
-<script src='highlight.min.js'></script>
-<script src="markdown.js"></script>
+<script  src="./website/script.js"></script>
 
 <script>
     function toggleFullScreen() {
@@ -76,4 +51,6 @@
         }
     }
 </script>
+
+</body>
 </html>
