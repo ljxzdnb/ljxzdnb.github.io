@@ -1,0 +1,13 @@
+# Mobile first - hide on scroll menu
+
+A Pen created on CodePen.io. Original URL: [https://codepen.io/andiio/pen/ARxgGb](https://codepen.io/andiio/pen/ARxgGb).
+
+Mobile first responsive navigation. On scroll the navigation slides up, on up scroll the menu is slides down.
+
+Small screen menu icon animates to a X when menu is visible.
+
+In the wild:
+
+http://vanamco.com/
+http://mailchimp.com/
+http://www.teehanlax.com/

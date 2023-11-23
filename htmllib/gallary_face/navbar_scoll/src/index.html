@@ -1,0 +1,250 @@
+<ul class="nav-mobile check">
+  <li>CSS-only Playground</li>        
+  <li class="menu-container"> 
+    <input id="menu-toggle" type="checkbox">
+    <label for="menu-toggle" class="menu-button">  
+      <svg class="icon-open" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
+      <svg class="icon-close" viewBox="0 0 100 100">
+        <path d="M83.288 88.13c-2.114 2.112-5.575 2.112-7.69 0L53.66 66.188c-2.113-2.112-5.572-2.112-7.686 0l-21.72 21.72c-2.114 2.113-5.572 2.113-7.687 0l-4.693-4.692c-2.114-2.114-2.114-5.573 0-7.688l21.72-21.72c2.112-2.115 2.112-5.574 0-7.687L11.87 24.4c-2.114-2.113-2.114-5.57 0-7.686l4.842-4.842c2.113-2.114 5.57-2.114 7.686 0l21.72 21.72c2.114 2.113 5.572 2.113 7.688 0l21.72-21.72c2.115-2.114 5.574-2.114 7.688 0l4.695 4.695c2.112 2.113 2.112 5.57-.002 7.686l-21.72 21.72c-2.112 2.114-2.112 5.573 0 7.686L88.13 75.6c2.112 2.11 2.112 5.572 0 7.687l-4.842 4.84z"/>
+      </svg> 
+    </label>      
+    <ul class="menu-sidebar">
+      <li><a href="#">Item</a></li>
+      <li><a href="#">Item</a></li>
+      <li><a href="#">Item</a></li>
+      <li>
+        <input type="checkbox" id="sub-one" class="submenu-toggle">        
+        <label class="submenu-label" for="sub-one">Category</label>
+        <div class="arrow right">&#8250;</div>           
+        <ul class="menu-sub">
+          <li class="menu-sub-title">
+            <label class="submenu-label" for="sub-one">Back</label>
+            <div class="arrow left">&#8249;</div>              
+          </li>        
+          <li><a href="#">Sub-item</a></li>
+          <li><a href="#">Sub-item</a></li>
+          <li><a href="#">Sub-item</a></li>
+          <li><a href="#">Sub-item</a></li>                                
+        </ul>
+      </li>
+      <li>
+        <input type="checkbox" id="sub-two" class="submenu-toggle">        
+        <label class="submenu-label" for="sub-two">Category</label>
+        <div class="arrow right">&#8250;</div> 
+        <ul class="menu-sub">
+          <li class="menu-sub-title">
+            <label class="submenu-label" for="sub-two">Back</label>
+            <div class="arrow left">&#8249;</div>              
+          </li>      
+          <li><a href="#">Sub-item</a></li>
+          <li><a href="#">Sub-item</a></li>
+          <li><a href="#">Sub-item</a></li>     
+          <li><a href="#">Sub-item</a></li>                                
+        </ul>              
+      </li>                                         
+    </ul> 
+  </li>
+</ul>
+<br /><br /><br />
+<ul class="carousel-container radio">
+  <li>
+    <input class="carousel-toggle" id="slide-1" type="radio" name="c-toggle" checked/> 
+    <label class="dot" for="slide-1"></label>
+    <ul class="carousel-content">
+      <li>
+        <img src="http://lorempixel.com/output/abstract-q-c-550-412-3.jpg"/>
+        <label class="arrow back" for="slide-2">&#8250;	</label>      
+        <label class="arrow next" for="slide-4">&#8249;</label>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <input class="carousel-toggle" id="slide-2" type="radio" name="c-toggle" />   
+    <label class="dot" for="slide-2"></label>
+    <ul class="carousel-content">
+      <li>
+        <img src="http://lorempixel.com/output/animals-q-c-550-412-9.jpg"/>
+        <label class="arrow back" for="slide-3">&#8250;	</label>       
+        <label class="arrow next" for="slide-1">&#8249;</label>  
+      </li>  
+    </ul>    
+  </li>
+  <li>
+    <input class="carousel-toggle" id="slide-3" type="radio" name="c-toggle" /> 
+    <label class="dot" for="slide-3"></label> 
+    <ul class="carousel-content">
+      <li>
+        <img src="http://lorempixel.com/output/food-q-c-550-412-10.jpg"/>
+        <label class="arrow back" for="slide-4">&#8250;	</label>                  
+        <label class="arrow next" for="slide-2">&#8249;</label>
+      </li>
+    </ul>  
+  </li>  
+  <li>
+    <input class="carousel-toggle" id="slide-4" type="radio" name="c-toggle" />        
+    <label class="dot" for="slide-4"></label>
+    <ul class="carousel-content">
+      <img src="http://lorempixel.com/output/abstract-q-c-550-412-9.jpg"/>
+      <label class="arrow back" for="slide-1">&#8250;	</label>                        
+      <label class="arrow next" for="slide-3">&#8249;</label>                  
+    </ul>    
+  </li>  
+</ul>
+<hr />
+<ul class="tab-container radio">
+  <li>
+    <input class="tab-toggle" id="tab-1" type="radio" name="toggle" checked /> 
+    <label data-title="Tab 1" class="tab l-b" for="tab-1">Tabs</label>            
+    <ul class="tab-content-container">
+      <li class="tab-content">
+        This is a testing text to test the tab content container. Lorem Ipsum dolor sit amet! Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        This is a testing text to test the tab content container. Lorem Ipsum dolor sit amet! 
+        <div class="arrows">
+          <label class="back" for="tab-4">&#8249;</label>
+          <label class="next" for="tab-2">&#8250;	</label>   
+        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <input class="tab-toggle" id="tab-2" type="radio" name="toggle" />
+    <label class="tab" for="tab-2">Are</label> 
+    <ul class="tab-content-container">
+      <li class="tab-content">
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        <div class="arrows">
+          <label class="back" for="tab-1">&#8249;</label>
+          <label class="next" for="tab-3">&#8250;	</label>   
+        </div>   
+      </li>
+    </ul>
+  </li>
+  <li>
+    <input class="tab-toggle" id="tab-3" type="radio" name="toggle"/>        
+    <label class="tab" for="tab-3">Pretty</label>
+    <ul class="tab-content-container">
+      <li class="tab-content">
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        <div class="arrows">
+          <label class="back" for="tab-2">&#8249;</label>
+          <label class="next" for="tab-4">&#8250;	</label>   
+        </div>
+      </li>
+    </ul>    
+  </li>
+  <li>
+    <input class="tab-toggle" id="tab-4" type="radio" name="toggle"/>     
+    <label class="tab" for="tab-4">Cool</label> 
+    <ul class="tab-content-container">
+      <li class="tab-content">
+        This is the final content for the tab example.
+        <div class="arrows">
+          <label class="back" for="tab-3">&#8249;</label>
+          <label class="next" for="tab-1">&#8250;	</label>   
+        </div>
+      </li>  
+    </ul>  
+  </li>
+</ul>
+<br /><br /><br /><br /><br /><br /><br /><br />
+<hr />
+<ul class="accordion-container radio">
+  <li class="accordion-category">
+    <input type="radio" name="a-toggle" id="one" checked>      
+    <label for="one" class="accordion-title">Accordions</label>
+    <ul class="accordion-items">    
+      <li>Item One</li>                    
+      <li>Item Two</li>                     
+      <li>Item Three</li>                                   
+    </ul>      
+  </li>
+  <li class="accordion-category">
+    <input id="two" type="radio" name="a-toggle">      
+    <label for="two" class="accordion-title">Condense</label>
+    <ul class="accordion-items">
+      <li>Item A</li>                     
+      <li>Item B</li>                     
+    </ul>      
+  </li>  
+  <li class="accordion-category">
+    <input id="tre" type="radio" name="a-toggle">      
+    <label for="tre" class="accordion-title">Stuff</label>
+    <ul class="accordion-items">
+      <li>Item 1</li>          
+      <li>Item 2</li> 
+      <li>Item 3</li>          
+      <li>Item 4</li>            
+    </ul>
+  </ul>       
+</div>
+<hr />
+<div class="modal-container check">
+  <input id="modal-toggle" type="checkbox">
+  <label class="modal-btn" for="modal-toggle">Modal</label> 
+  <label class="modal-backdrop" for="modal-toggle"></label>
+  <div class="modal-content">
+    <label class="modal-close" for="modal-toggle">&#x2715;</label>
+    <h2>Modal title</h2><hr />
+    <p>Hello from inside the modal!</p> 
+    <label class="modal-content-btn" for="modal-toggle">OK</label>   
+  </div>          
+</div> 
+<hr />
+<div class="tooltip-container check">
+  <input id="tooltip-toggle" type="checkbox">
+  <label class="tooltip-btn" for="tooltip-toggle">Tooltip click</label> 
+  <label class="tooltip-backdrop" for="tooltip-toggle"></label>
+  <div class="tooltip-content">
+    <p>Hello from inside the CSS tooltip!</p> 
+  </div>          
+</div>  
+<div class="tooltip-container">
+  <div class="tooltip-btn tooltip-toggle">Tooltip hover</div> 
+  <div class="tooltip-content">
+    <p>Hello from inside the CSS tooltip!</p> 
+  </div>          
+</div>  
+<hr />
+<br />
+<div class="star-container">
+  <input type="radio" name="starred" id="five"/> 
+  <input type="radio" name="starred" id="four"/> 
+  <input type="radio" name="starred" id="three"/>
+  <input type="radio" name="starred" id="two"/>
+  <input type="radio" name="starred" id="one"/>
+  <label for="one"></label>
+  <label for="two"></label>
+  <label for="three"></label>
+  <label for="four"></label>
+  <label for="five"></label>
+</div>
+<br />
+<hr />
+<div class="step-container">
+  <input type="checkbox" id="step-1" name="toggler" checked/>
+  <div class="step-dot one">Ready</div> 
+  <div class="step-content">
+    <label for="step-2">Next</label>         
+    <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo. </div>
+  </div>
+  <input type="checkbox" id="step-2" name="toggler" />
+  <div class="step-dot two">Set</div>  
+  <div class="step-content">
+    <label for="step-3">Next</label>            
+    <div class="text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+  </div>
+  <input type="checkbox" id="step-3" name="toggler" />
+    <div class="step-dot three">Go!</div>  
+  <div class="step-content">
+    <div class="text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</div>
+  </div>
+</div>
+<br />
+<hr />
+<div class="readmo">
+  <input type="checkbox" id="toggler" /> 
+  <label for="toggler"></label>
+  <p>This is a filler text filler text filler text lorem ipsum dolor sit ametThis is a filler text filler text filler text lorem ipsum dolor sit amet. filler text filler text filler text lorem ipsum dolor sit ametThis is a filler text filler text filler text lorem ipsum dolor sit amet. filler text filler text filler text lorem ipsum dolor sit ametThis is a filler text filler text filler text lorem ipsum dolor sit amet</p>
+</div>

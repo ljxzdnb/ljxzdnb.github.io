@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Transparent box</title>
+	<style>
+	.geeks {
+		background: rgb(0, 153, 0);
+		padding: 15px;
+		text-align: center;
+		width: 300px;
+	}
+
+	#geek {
+		padding: 15px;
+		text-align: center;
+		width: 300px;
+	}
+
+	.rgba1 {
+		background: rgba(0, 153, 0, 0.1);
+	}
+
+	.rgba2 {
+		background: rgba(0, 153, 0, 0.5);
+	}
+
+	.rgba3 {
+		background: rgba(0, 153, 0, 0.8);
+	}
+
+	.rgba4 {
+		background: rgba(0, 153, 0, 1.0);
+	}
+
+	.g1 {
+		float: left;
+		margin-left: 50px;
+	}
+
+	.g2 {
+		margin-top: -40px;
+		margin-left: 50px;
+		float: left;
+	}
+	</style>
+</head>
+
+<body>
+	<div class="g1">
+		<p style="font-size:24px;font-weight:bold;">Transparent Box</p>
+
+		<div class="geeks" style="opacity:0.1;">
+			<p>10% opacity</p>
+
+		</div>
+		<div class="geeks" style="opacity:0.5;">
+			<p>50% opacity</p>
+
+		</div>
+		<div class="geeks" style="opacity:0.8;">
+			<p>80% opacity</p>
+
+		</div>
+		<div class="geeks">
+			<p>100% opacity</p>
+
+		</div>
+	</div>
+	<br>
+	<br>
+	<div class="g2">
+		<p style="font-size:24px;font-weight:bold;">RGBA color values</p>
+
+		<div class="rgba1" id="geek">
+			<p>10% opacity</p>
+
+		</div>
+		<div class="rgba2" id="geek">
+			<p>50% opacity</p>
+
+		</div>
+		<div class="rgba3" id="geek">
+			<p>80% opacity</p>
+
+		</div>
+		<div class="rgba4" id="geek">
+			<p>100% opacity</p>
+
+		</div>
+	</div>
+</body>
+
+</html>

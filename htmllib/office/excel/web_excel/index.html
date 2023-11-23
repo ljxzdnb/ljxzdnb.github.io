@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SpreadJS Designer</title>
+	<link href="./gc.spread.sheets.excel2013white.15.2.1.css" rel="stylesheet" type="text/css" />
+	<link href="./gc.spread.sheets.designer.15.2.1.min.css" rel="stylesheet" type="text/css">
+	<link href="./custom.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+		html,
+		body {
+			overflow: hidden;
+			padding: 0;
+			margin: 0;
+			height: 100%;
+		}
+
+		#gc-designer-container {
+			height: 100%;
+		}
+	</style>
+	<script>(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'./gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-52L5DM7');</script>
+</head>
+
+<body unselectable="on">
+	<div id="gc-designer-container"> </div>
+
+	<script type="text/javascript" src="./gc.spread.sheets.all.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.charts.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.shapes.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.slicers.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.print.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.barcode.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.pdf.15.2.1.min.js"></script>
+	<script src="./gc.spread.pivot.pivottables.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.tablesheet.15.2.1.min.js"></script>
+	<script src="./gc.spread.excelio.15.2.1.min.js"></script>
+
+	<script src="./gc.spread.sheets.designer.resource.en.15.2.1.min.js"></script>
+	<script src="./gc.spread.sheets.designer.all.15.2.1.min.js"></script>
+	<script src="./license.js"></script>
+	<script type="text/javascript">
+		window.onload = function () {
+			var designer = new GC.Spread.Sheets.Designer.Designer(document.getElementById("gc-designer-container"));
+			var spread = designer.getWorkbook();
+			spread.setSheetCount(2);
+			setAboutSheet(spread.getSheet(1));
+		}
+
+		function setAboutSheet(sheet) {
+			sheet.suspendPaint();
+			var t1 = 'GrapeCity SpreadJS';
+			var t2 = 'This SpreadJS spreadsheet demo uses the online version of the SpreadJS Sheets Designer';
+			var t3 = 'to showcase several of the features that SpreadJS Sheets offers.';
+
+			var t4 = 'Explore the features and enter sample data directly into the cells to add formulas or charts,';
+			var t5 = 'similar to Microsoft Excel. You can also import and export Excel files using the File menu.'
+
+			var t6 = 'Excel imports/exports are handled client-side only and no data is sent to the server.';
+
+			var t7 = 'Note – this Spread Designer component is available as a separate SpreadJS Add-on purchase,';
+			var t8 = 'allowing you to quickly add and offer any of these menu features to your customers.';
+
+			var t9 = 'Contact us.to learn more:';
+			var t10 = 'us.sales@grapecity.com';
+
+			var t11 = 'Visit the SpreadJS page:';
+			// var t12 = 'https://www.grapecity.com/spreadjs';
+			sheet.name("About");
+			sheet.setColumnWidth(1, 350);
+			sheet.setRowHeight(1, 38);
+			sheet.getCell(1, 1).value(t1).font('bold 26.667px Calibri');
+			sheet.setRowHeight(3, 24);
+			sheet.setRowHeight(4, 24);
+			sheet.getCell(3, 1).value(t2).font('18.67px Calibri');
+			sheet.getCell(4, 1).value(t3).font('18.67px Calibri');
+			sheet.setRowHeight(5, 14);
+			sheet.setRowHeight(6, 24);
+			sheet.setRowHeight(7, 24);
+			sheet.setRowHeight(8, 24);
+			sheet.getCell(6, 1).value(t4).font('18.67px Calibri');
+			sheet.getCell(7, 1).value(t5).font('18.67px Calibri');
+			sheet.getCell(8, 1).value(t6).font('18.67px Calibri');
+			sheet.setRowHeight(9, 14);
+			sheet.setRowHeight(10, 24);
+			sheet.setRowHeight(11, 24);
+			sheet.getCell(10, 1).value(t7).font('18.67px Calibri');
+			sheet.getCell(11, 1).value(t8).font('18.67px Calibri');
+			sheet.setRowHeight(13, 24);
+			sheet.setRowHeight(14, 24);
+			sheet.setRowHeight(15, 24);
+			sheet.getCell(14, 1).value(t9).font('18.67px Calibri');
+			sheet.getCell(15, 1).value(t10).font('18.67px Calibri').cellType(new GC.Spread.Sheets.CellTypes.HyperLink());
+			sheet.setRowHeight(16, 24);
+			sheet.setRowHeight(17, 24);
+			sheet.getCell(16, 1).value(t11).font('18.67px Calibri');
+			// sheet.getCell(17, 1).value(t12).font('18.67px Calibri').cellType(new GC.Spread.Sheets.CellTypes.HyperLink());
+			sheet.resumePaint();
+		}
+	</script>
+	<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-52L5DM7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+</body>
+
+</html>

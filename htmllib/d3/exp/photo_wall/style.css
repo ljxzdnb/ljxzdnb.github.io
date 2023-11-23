@@ -1,0 +1,491 @@
+@charset "utf-8";
+/* agent style */
+*{
+margin:0;
+padding:0;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+-o-box-sizing:border-box;
+-ms-box-sizing:border-box;
+box-sizing:border-box;
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+-ms-hyphens: auto;
+-o-hyphens: auto;
+hyphens: auto;
+}
+::selection{background:#2196f3;color:#fff;text-shadow:none;}
+a:link,a:visited{color:inherit;text-decoration:none;}
+:after,:before{position:absolute;font-family:inherit;}
+a,:visited{text-decoration:none;color:#000;}
+*,:focus{outline-style:none;}
+html,body{height:100%;}
+img,input{border:none;}
+ul{list-style:none;}
+body{
+position: relative;
+overflow-x:hidden;
+color: #444;
+font-family:caption;
+line-height: 1.45;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+text-rendering: optimizeLegibility;
+-webkit-text-size-adjust:100%;
+text-size-adjust:100%;
+}
+
+/* user css */
+.img > [href^="#img-1-1-"],.img > [href^="#img-1-1-"]:after {background: url('https://picsum.photos/id/91/1920/1080');}
+.img > [href^="#img-2-1-"],.img > [href^="#img-2-1-"]:after {background: url('https://picsum.photos/id/88/1920/1920');}
+.img > [href^="#img-3-1-"],.img > [href^="#img-3-1-"]:after {background: url('https://picsum.photos/id/30/1920/1080');}
+.img > [href^="#img-4-1-"],.img > [href^="#img-4-1-"]:after {background: url('https://picsum.photos/id/40/1920/1920');}
+.img > [href^="#img-5-1-"],.img > [href^="#img-5-1-"]:after {background: url('https://picsum.photos/id/50/1920/1080');}
+.img > [href^="#img-6-1-"],.img > [href^="#img-6-1-"]:after {background: url('https://picsum.photos/id/61/1920/1920');}
+.img > [href^="#img-7-1-"],.img > [href^="#img-7-1-"]:after {background: url('https://picsum.photos/id/70/1920/1080');}
+.img > [href^="#img-8-1-"],.img > [href^="#img-8-1-"]:after {background: url('https://picsum.photos/id/57/1920/1920');}
+.img > [href^="#img-9-1-"],.img > [href^="#img-9-1-"]:after {background: url('https://picsum.photos/id/90/1920/1080');}
+
+.close:after,.close:before{background:#fff;} /* button close */
+.close:hover:after,.close:hover:before {background:#2196f3;}  /* hover button close */
+.img > a[href^="#img-"]:before{border-color:#fff !important;} /* button left and right */
+.img > a[href^="#img-"]:hover:before {border-color: #2196f3 !important;} /* hover button left and right */
+.gallery-1 > .img > [href^="#img"] {width: 33.33333%;height: 33.33333%;} /* width and height block with img */
+
+/* gallery */
+.gallery-1 {
+  position: relative;
+  z-index: 500;
+  width: 100%;
+  height: inherit;
+}
+.gallery-1 > .img > [href^="#img"] {
+  background-color: #fff;
+  display: block;
+  float: left;
+}
+.img {width: inherit;height: inherit;}
+[href^="#img-"],[href^="#img-"]:after,[href^="#img-"]:before {
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+}
+[href$="-h"],[href$="-h"]:after,[href$="-h"]:before {background-size: cover !important;}
+[href$="-v"],[href$="-v"]:after,[href$="-v"]:before {background-size: 0 cover !important;}
+.img > [href^="#img"]:after,.img > [href^="#img"]:before {
+  content: '';
+  position: absolute;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+.img > [href^="#img"]:after,.close:after,.close:before {top:0;left:0;right:0;bottom:0;}
+.img > [href^="#img"]:before {
+  width: 1.5em;
+  height: 1.5em;
+  top: 50%;
+  margin-top: -1.25em;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  z-index: 500;
+}
+.gallery-1 > .img > a:not([href]) {
+  position: absolute;
+  display: none;
+  z-index: 11;
+}
+.close {
+  position: absolute;
+  width: 2.75em;
+  height: 2.75em;
+  top: .75em;
+  right: 1em;
+  z-index: 12;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+.close:after,.close:before {
+  content: '';
+  position: absolute;
+  width: .25em;
+  right: 0;
+  left: auto;
+  margin-right: 1.25em;
+}
+.close:after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.close:before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.img > [href^="#img"]:after,.img > .close:target ~ a:after {
+  -webkit-transition: background-position 1s cubic-bezier(0, .25, .25, 1), opacity .3s ease, visibility .3s ease;
+  -moz-transition: background-position 1s cubic-bezier(0, .25, .25, 1), opacity .3s ease, visibility .3s ease;
+  -ms-transition: background-position 1s cubic-bezier(0, .25, .25, 1), opacity .3s ease, visibility .3s ease;
+  -o-transition: background-position 1s cubic-bezier(0, .25, .25, 1), opacity .3s ease, visibility .3s ease;
+  transition: background-position 1s cubic-bezier(0, .25, .25, 1), opacity .3s ease, visibility .3s ease;
+}
+[id^="img"]:target ~ .img > [href^="#img"]:after {
+  -webkit-transition: background-position 1s cubic-bezier(0, .25, .25, 1);
+  -moz-transition: background-position 1s cubic-bezier(0, .25, .25, 1);
+  -ms-transition: background-position 1s cubic-bezier(0, .25, .25, 1);
+  -o-transition: background-position 1s cubic-bezier(0, .25, .25, 1);
+  transition: background-position 1s cubic-bezier(0, .25, .25, 1);
+}
+.close:after,.close:before,.img > a[href^="#img-"]:before {
+  -webkit-transition: background .5s ease, border-color .5s ease;
+  -moz-transition: background .5s ease, border-color .5s ease;
+  -ms-transition: background .5s ease, border-color .5s ease;
+  -o-transition: background .5s ease, border-color .5s ease;
+  transition: background .5s ease, border-color .5s ease;
+}
+
+[id$="-v"]:target ~ .img > a:not(.close){left: 0;right: 0;}
+[id$="-h"]:target ~ .img > a:not(.close){top: 0;bottom: 0;}
+
+[id$="-v"]:target ~ .img > .top{top:0;bottom:66.66666%;}
+[id$="-v"]:target ~ .img > .midle{top:33.33333%;bottom:33.33333%;}
+[id$="-v"]:target ~ .img > .bottom{top:66.66666%;bottom:0;}
+
+[id$="-h"]:target ~ .img > .left{left:0;right:66.66666%;}
+[id$="-h"]:target ~ .img > .midle{left:33.33333%;right:33.33333%;}
+[id$="-h"]:target ~ .img > .right{left:66.66666%;right:0;}
+
+[id$="-h"]:target ~ .img  > .left:hover ~ [href*="-h"]:after{background-position-x:left !important;}
+[id$="-h"]:target ~ .img  > .right:hover ~ [href*="-h"]:after{background-position-x:right !important;}
+[id$="-v"]:target ~ .img  > .top:hover ~ [href*="-v"]:after{background-position-y:top !important;}
+[id$="-v"]:target ~ .img  > .bottom:hover ~ [href*="-v"]:after{background-position-y:bottom !important;}
+[id^="img"]:target ~ .img  > .midle:hover ~ [href*="img"]:after{background-position:auto !important;}
+
+[id^="img"]:target ~ .img > a:not([href]){display: block;}
+
+[id^="img"]:target ~ .img > .close,
+[id^="img"]:target ~ .img > .close:after,
+[id^="img"]:target ~ .img > .close:before,
+[id^="img-1-"]:target ~ .img > [href^="#img-1-"]:after,
+[id^="img-2-"]:target ~ .img > [href^="#img-2-"]:after,
+[id^="img-3-"]:target ~ .img > [href^="#img-3-"]:after,
+[id^="img-4-"]:target ~ .img > [href^="#img-4-"]:after,
+[id^="img-5-"]:target ~ .img > [href^="#img-5-"]:after,
+[id^="img-6-"]:target ~ .img > [href^="#img-6-"]:after,
+[id^="img-7-"]:target ~ .img > [href^="#img-7-"]:after,
+[id^="img-8-"]:target ~ .img > [href^="#img-8-"]:after,
+[id^="img-9-"]:target ~ .img > [href^="#img-9-"]:after,
+[id^="img-10-"]:target ~ .img > [href^="#img-10-"]:after,
+[id^="img-11-"]:target ~ .img > [href^="#img-11-"]:after,
+[id^="img-12-"]:target ~ .img > [href^="#img-12-"]:after,
+[id^="img-13-"]:target ~ .img > [href^="#img-13-"]:after,
+[id^="img-14-"]:target ~ .img > [href^="#img-14-"]:after,
+[id^="img-15-"]:target ~ .img > [href^="#img-15-"]:after,
+[id^="img-16-"]:target ~ .img > [href^="#img-16-"]:after,
+[id^="img-17-"]:target ~ .img > [href^="#img-17-"]:after,
+[id^="img-18-"]:target ~ .img > [href^="#img-18-"]:after,
+[id^="img-19-"]:target ~ .img > [href^="#img-19-"]:after,
+[id^="img-20-"]:target ~ .img > [href^="#img-20-"]:after,
+[id^="img-21-"]:target ~ .img > [href^="#img-21-"]:after,
+[id^="img-22-"]:target ~ .img > [href^="#img-22-"]:after,
+[id^="img-23-"]:target ~ .img > [href^="#img-23-"]:after,
+[id^="img-24-"]:target ~ .img > [href^="#img-24-"]:after,
+[id^="img-25-"]:target ~ .img > [href^="#img-25-"]:after,
+[id^="img-26-"]:target ~ .img > [href^="#img-26-"]:after,
+[id^="img-27-"]:target ~ .img > [href^="#img-27-"]:after,
+[id^="img-28-"]:target ~ .img > [href^="#img-28-"]:after,
+[id^="img-29-"]:target ~ .img > [href^="#img-29-"]:after,
+[id^="img-30-"]:target ~ .img > [href^="#img-30-"]:after,
+[id^="img-31-"]:target ~ .img > [href^="#img-31-"]:after,
+[id^="img-32-"]:target ~ .img > [href^="#img-32-"]:after,
+[id^="img-33-"]:target ~ .img > [href^="#img-33-"]:after,
+[id^="img-34-"]:target ~ .img > [href^="#img-34-"]:after,
+[id^="img-35-"]:target ~ .img > [href^="#img-35-"]:after,
+[id^="img-36-"]:target ~ .img > [href^="#img-36-"]:after,
+[id^="img-37-"]:target ~ .img > [href^="#img-37-"]:after,
+[id^="img-38-"]:target ~ .img > [href^="#img-38-"]:after,
+[id^="img-39-"]:target ~ .img > [href^="#img-39-"]:after,
+[id^="img-40-"]:target ~ .img > [href^="#img-40-"]:after,
+[id^="img-41-"]:target ~ .img > [href^="#img-41-"]:after,
+[id^="img-42-"]:target ~ .img > [href^="#img-42-"]:after,
+[id^="img-43-"]:target ~ .img > [href^="#img-43-"]:after,
+[id^="img-44-"]:target ~ .img > [href^="#img-44-"]:after,
+[id^="img-45-"]:target ~ .img > [href^="#img-45-"]:after,
+[id^="img-46-"]:target ~ .img > [href^="#img-46-"]:after,
+[id^="img-47-"]:target ~ .img > [href^="#img-47-"]:after,
+[id^="img-48-"]:target ~ .img > [href^="#img-48-"]:after,
+[id^="img-49-"]:target ~ .img > [href^="#img-49-"]:after,
+[id^="img-50-"]:target ~ .img > [href^="#img-50-"]:after,
+[id^="img-51-"]:target ~ .img > [href^="#img-51-"]:after,
+[id^="img-52-"]:target ~ .img > [href^="#img-52-"]:after,
+[id^="img-53-"]:target ~ .img > [href^="#img-53-"]:after,
+[id^="img-54-"]:target ~ .img > [href^="#img-54-"]:after,
+[id^="img-55-"]:target ~ .img > [href^="#img-55-"]:after,
+[id^="img-56-"]:target ~ .img > [href^="#img-56-"]:after,
+[id^="img-57-"]:target ~ .img > [href^="#img-57-"]:after,
+[id^="img-58-"]:target ~ .img > [href^="#img-58-"]:after,
+[id^="img-59-"]:target ~ .img > [href^="#img-59-"]:after,
+[id^="img-60-"]:target ~ .img > [href^="#img-60-"]:after,
+[id^="img-61-"]:target ~ .img > [href^="#img-61-"]:after,
+[id^="img-62-"]:target ~ .img > [href^="#img-62-"]:after,
+[id^="img-63-"]:target ~ .img > [href^="#img-63-"]:after,
+[id^="img-64-"]:target ~ .img > [href^="#img-64-"]:after,
+[id^="img-65-"]:target ~ .img > [href^="#img-65-"]:after,
+[id^="img-66-"]:target ~ .img > [href^="#img-66-"]:after,
+[id^="img-67-"]:target ~ .img > [href^="#img-67-"]:after,
+[id^="img-68-"]:target ~ .img > [href^="#img-68-"]:after,
+[id^="img-69-"]:target ~ .img > [href^="#img-69-"]:after,
+[id^="img-70-"]:target ~ .img > [href^="#img-70-"]:after,
+[id^="img-71-"]:target ~ .img > [href^="#img-71-"]:after,
+[id^="img-72-"]:target ~ .img > [href^="#img-72-"]:after,
+[id^="img-73-"]:target ~ .img > [href^="#img-73-"]:after,
+[id^="img-74-"]:target ~ .img > [href^="#img-74-"]:after,
+[id^="img-75-"]:target ~ .img > [href^="#img-75-"]:after,
+[id^="img-76-"]:target ~ .img > [href^="#img-76-"]:after,
+[id^="img-77-"]:target ~ .img > [href^="#img-77-"]:after,
+[id^="img-78-"]:target ~ .img > [href^="#img-78-"]:after,
+[id^="img-79-"]:target ~ .img > [href^="#img-79-"]:after,
+[id^="img-80-"]:target ~ .img > [href^="#img-80-"]:after,
+[id^="img-81-"]:target ~ .img > [href^="#img-81-"]:after,
+[id^="img-82-"]:target ~ .img > [href^="#img-82-"]:after,
+[id^="img-83-"]:target ~ .img > [href^="#img-83-"]:after,
+[id^="img-84-"]:target ~ .img > [href^="#img-84-"]:after,
+[id^="img-85-"]:target ~ .img > [href^="#img-85-"]:after,
+[id^="img-86-"]:target ~ .img > [href^="#img-86-"]:after,
+[id^="img-87-"]:target ~ .img > [href^="#img-87-"]:after,
+[id^="img-88-"]:target ~ .img > [href^="#img-88-"]:after,
+[id^="img-89-"]:target ~ .img > [href^="#img-89-"]:after,
+[id^="img-90-"]:target ~ .img > [href^="#img-90-"]:after,
+[id^="img-91-"]:target ~ .img > [href^="#img-91-"]:after,
+[id^="img-92-"]:target ~ .img > [href^="#img-92-"]:after,
+[id^="img-93-"]:target ~ .img > [href^="#img-93-"]:after,
+[id^="img-94-"]:target ~ .img > [href^="#img-94-"]:after,
+[id^="img-95-"]:target ~ .img > [href^="#img-95-"]:after,
+[id^="img-96-"]:target ~ .img > [href^="#img-96-"]:after,
+[id^="img-97-"]:target ~ .img > [href^="#img-97-"]:after,
+[id^="img-98-"]:target ~ .img > [href^="#img-98-"]:after,
+[id^="img-99-"]:target ~ .img > [href^="#img-99-"]:after,
+[id^="img-100-"]:target ~ .img > [href^="#img-100-"]:after {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+[id^="img-1-"]:target ~ div + .img > a:nth-last-child(1):before,
+[id^="img-2-"]:target ~ .img > [href^="#img-1-"]:before,
+[id^="img-3-"]:target ~ .img > [href^="#img-2-"]:before,
+[id^="img-4-"]:target ~ .img > [href^="#img-3-"]:before,
+[id^="img-5-"]:target ~ .img > [href^="#img-4-"]:before,
+[id^="img-6-"]:target ~ .img > [href^="#img-5-"]:before,
+[id^="img-7-"]:target ~ .img > [href^="#img-6-"]:before,
+[id^="img-8-"]:target ~ .img > [href^="#img-7-"]:before,
+[id^="img-9-"]:target ~ .img > [href^="#img-8-"]:before,
+[id^="img-10-"]:target ~ .img > [href^="#img-9-"]:before,
+[id^="img-11-"]:target ~ .img > [href^="#img-10-"]:before,
+[id^="img-12-"]:target ~ .img > [href^="#img-11-"]:before,
+[id^="img-13-"]:target ~ .img > [href^="#img-12-"]:before,
+[id^="img-14-"]:target ~ .img > [href^="#img-13-"]:before,
+[id^="img-15-"]:target ~ .img > [href^="#img-14-"]:before,
+[id^="img-16-"]:target ~ .img > [href^="#img-15-"]:before,
+[id^="img-17-"]:target ~ .img > [href^="#img-16-"]:before,
+[id^="img-18-"]:target ~ .img > [href^="#img-17-"]:before,
+[id^="img-19-"]:target ~ .img > [href^="#img-18-"]:before,
+[id^="img-20-"]:target ~ .img > [href^="#img-19-"]:before,
+[id^="img-21-"]:target ~ .img > [href^="#img-20-"]:before,
+[id^="img-22-"]:target ~ .img > [href^="#img-21-"]:before,
+[id^="img-23-"]:target ~ .img > [href^="#img-22-"]:before,
+[id^="img-24-"]:target ~ .img > [href^="#img-23-"]:before,
+[id^="img-25-"]:target ~ .img > [href^="#img-24-"]:before,
+[id^="img-26-"]:target ~ .img > [href^="#img-25-"]:before,
+[id^="img-27-"]:target ~ .img > [href^="#img-26-"]:before,
+[id^="img-28-"]:target ~ .img > [href^="#img-27-"]:before,
+[id^="img-29-"]:target ~ .img > [href^="#img-28-"]:before,
+[id^="img-30-"]:target ~ .img > [href^="#img-29-"]:before,
+[id^="img-31-"]:target ~ .img > [href^="#img-30-"]:before,
+[id^="img-32-"]:target ~ .img > [href^="#img-31-"]:before,
+[id^="img-33-"]:target ~ .img > [href^="#img-32-"]:before,
+[id^="img-34-"]:target ~ .img > [href^="#img-33-"]:before,
+[id^="img-35-"]:target ~ .img > [href^="#img-34-"]:before,
+[id^="img-36-"]:target ~ .img > [href^="#img-35-"]:before,
+[id^="img-37-"]:target ~ .img > [href^="#img-36-"]:before,
+[id^="img-38-"]:target ~ .img > [href^="#img-37-"]:before,
+[id^="img-39-"]:target ~ .img > [href^="#img-38-"]:before,
+[id^="img-40-"]:target ~ .img > [href^="#img-39-"]:before,
+[id^="img-41-"]:target ~ .img > [href^="#img-40-"]:before,
+[id^="img-42-"]:target ~ .img > [href^="#img-41-"]:before,
+[id^="img-43-"]:target ~ .img > [href^="#img-42-"]:before,
+[id^="img-44-"]:target ~ .img > [href^="#img-43-"]:before,
+[id^="img-45-"]:target ~ .img > [href^="#img-44-"]:before,
+[id^="img-46-"]:target ~ .img > [href^="#img-45-"]:before,
+[id^="img-47-"]:target ~ .img > [href^="#img-46-"]:before,
+[id^="img-48-"]:target ~ .img > [href^="#img-47-"]:before,
+[id^="img-49-"]:target ~ .img > [href^="#img-48-"]:before,
+[id^="img-50-"]:target ~ .img > [href^="#img-49-"]:before,
+[id^="img-51-"]:target ~ .img > [href^="#img-50-"]:before,
+[id^="img-52-"]:target ~ .img > [href^="#img-51-"]:before,
+[id^="img-53-"]:target ~ .img > [href^="#img-52-"]:before,
+[id^="img-54-"]:target ~ .img > [href^="#img-53-"]:before,
+[id^="img-55-"]:target ~ .img > [href^="#img-54-"]:before,
+[id^="img-56-"]:target ~ .img > [href^="#img-55-"]:before,
+[id^="img-57-"]:target ~ .img > [href^="#img-56-"]:before,
+[id^="img-58-"]:target ~ .img > [href^="#img-57-"]:before,
+[id^="img-59-"]:target ~ .img > [href^="#img-58-"]:before,
+[id^="img-60-"]:target ~ .img > [href^="#img-59-"]:before,
+[id^="img-61-"]:target ~ .img > [href^="#img-60-"]:before,
+[id^="img-62-"]:target ~ .img > [href^="#img-61-"]:before,
+[id^="img-63-"]:target ~ .img > [href^="#img-62-"]:before,
+[id^="img-64-"]:target ~ .img > [href^="#img-63-"]:before,
+[id^="img-65-"]:target ~ .img > [href^="#img-64-"]:before,
+[id^="img-66-"]:target ~ .img > [href^="#img-65-"]:before,
+[id^="img-67-"]:target ~ .img > [href^="#img-66-"]:before,
+[id^="img-68-"]:target ~ .img > [href^="#img-67-"]:before,
+[id^="img-69-"]:target ~ .img > [href^="#img-68-"]:before,
+[id^="img-70-"]:target ~ .img > [href^="#img-69-"]:before,
+[id^="img-71-"]:target ~ .img > [href^="#img-70-"]:before,
+[id^="img-72-"]:target ~ .img > [href^="#img-71-"]:before,
+[id^="img-73-"]:target ~ .img > [href^="#img-72-"]:before,
+[id^="img-74-"]:target ~ .img > [href^="#img-73-"]:before,
+[id^="img-75-"]:target ~ .img > [href^="#img-74-"]:before,
+[id^="img-76-"]:target ~ .img > [href^="#img-75-"]:before,
+[id^="img-77-"]:target ~ .img > [href^="#img-76-"]:before,
+[id^="img-78-"]:target ~ .img > [href^="#img-77-"]:before,
+[id^="img-79-"]:target ~ .img > [href^="#img-78-"]:before,
+[id^="img-80-"]:target ~ .img > [href^="#img-79-"]:before,
+[id^="img-81-"]:target ~ .img > [href^="#img-80-"]:before,
+[id^="img-82-"]:target ~ .img > [href^="#img-81-"]:before,
+[id^="img-83-"]:target ~ .img > [href^="#img-82-"]:before,
+[id^="img-84-"]:target ~ .img > [href^="#img-83-"]:before,
+[id^="img-85-"]:target ~ .img > [href^="#img-84-"]:before,
+[id^="img-86-"]:target ~ .img > [href^="#img-85-"]:before,
+[id^="img-87-"]:target ~ .img > [href^="#img-86-"]:before,
+[id^="img-88-"]:target ~ .img > [href^="#img-87-"]:before,
+[id^="img-89-"]:target ~ .img > [href^="#img-88-"]:before,
+[id^="img-90-"]:target ~ .img > [href^="#img-89-"]:before,
+[id^="img-91-"]:target ~ .img > [href^="#img-90-"]:before,
+[id^="img-92-"]:target ~ .img > [href^="#img-91-"]:before,
+[id^="img-93-"]:target ~ .img > [href^="#img-92-"]:before,
+[id^="img-94-"]:target ~ .img > [href^="#img-93-"]:before,
+[id^="img-95-"]:target ~ .img > [href^="#img-94-"]:before,
+[id^="img-96-"]:target ~ .img > [href^="#img-95-"]:before,
+[id^="img-97-"]:target ~ .img > [href^="#img-96-"]:before,
+[id^="img-98-"]:target ~ .img > [href^="#img-97-"]:before,
+[id^="img-99-"]:target ~ .img > [href^="#img-98-"]:before,
+[id^="img-100-"]:target ~ .img > [href^="#img-99-"]:before {
+  left: 1.5em;
+  border-left: .25em solid;
+  border-top: .25em solid;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.gallery-1 > div:target + .img > [href^="#img-1-"]:before,
+[id^="img-1-"]:target ~ .img > [href^="#img-2-"]:before,
+[id^="img-2-"]:target ~ .img > [href^="#img-3-"]:before,
+[id^="img-3-"]:target ~ .img > [href^="#img-4-"]:before,
+[id^="img-4-"]:target ~ .img > [href^="#img-5-"]:before,
+[id^="img-5-"]:target ~ .img > [href^="#img-6-"]:before,
+[id^="img-6-"]:target ~ .img > [href^="#img-7-"]:before,
+[id^="img-7-"]:target ~ .img > [href^="#img-8-"]:before,
+[id^="img-8-"]:target ~ .img > [href^="#img-9-"]:before,
+[id^="img-9-"]:target ~ .img > [href^="#img-10-"]:before,
+[id^="img-10-"]:target ~ .img > [href^="#img-11-"]:before,
+[id^="img-11-"]:target ~ .img > [href^="#img-12-"]:before,
+[id^="img-12-"]:target ~ .img > [href^="#img-13-"]:before,
+[id^="img-13-"]:target ~ .img > [href^="#img-14-"]:before,
+[id^="img-14-"]:target ~ .img > [href^="#img-15-"]:before,
+[id^="img-15-"]:target ~ .img > [href^="#img-16-"]:before,
+[id^="img-16-"]:target ~ .img > [href^="#img-17-"]:before,
+[id^="img-17-"]:target ~ .img > [href^="#img-18-"]:before,
+[id^="img-18-"]:target ~ .img > [href^="#img-19-"]:before,
+[id^="img-19-"]:target ~ .img > [href^="#img-20-"]:before,
+[id^="img-20-"]:target ~ .img > [href^="#img-21-"]:before,
+[id^="img-21-"]:target ~ .img > [href^="#img-22-"]:before,
+[id^="img-22-"]:target ~ .img > [href^="#img-23-"]:before,
+[id^="img-23-"]:target ~ .img > [href^="#img-24-"]:before,
+[id^="img-24-"]:target ~ .img > [href^="#img-25-"]:before,
+[id^="img-25-"]:target ~ .img > [href^="#img-26-"]:before,
+[id^="img-26-"]:target ~ .img > [href^="#img-27-"]:before,
+[id^="img-27-"]:target ~ .img > [href^="#img-28-"]:before,
+[id^="img-28-"]:target ~ .img > [href^="#img-29-"]:before,
+[id^="img-29-"]:target ~ .img > [href^="#img-30-"]:before,
+[id^="img-30-"]:target ~ .img > [href^="#img-31-"]:before,
+[id^="img-31-"]:target ~ .img > [href^="#img-32-"]:before,
+[id^="img-32-"]:target ~ .img > [href^="#img-33-"]:before,
+[id^="img-33-"]:target ~ .img > [href^="#img-34-"]:before,
+[id^="img-34-"]:target ~ .img > [href^="#img-35-"]:before,
+[id^="img-35-"]:target ~ .img > [href^="#img-36-"]:before,
+[id^="img-36-"]:target ~ .img > [href^="#img-37-"]:before,
+[id^="img-37-"]:target ~ .img > [href^="#img-38-"]:before,
+[id^="img-38-"]:target ~ .img > [href^="#img-39-"]:before,
+[id^="img-39-"]:target ~ .img > [href^="#img-40-"]:before,
+[id^="img-40-"]:target ~ .img > [href^="#img-41-"]:before,
+[id^="img-41-"]:target ~ .img > [href^="#img-42-"]:before,
+[id^="img-42-"]:target ~ .img > [href^="#img-43-"]:before,
+[id^="img-43-"]:target ~ .img > [href^="#img-44-"]:before,
+[id^="img-44-"]:target ~ .img > [href^="#img-45-"]:before,
+[id^="img-45-"]:target ~ .img > [href^="#img-46-"]:before,
+[id^="img-46-"]:target ~ .img > [href^="#img-47-"]:before,
+[id^="img-47-"]:target ~ .img > [href^="#img-48-"]:before,
+[id^="img-48-"]:target ~ .img > [href^="#img-49-"]:before,
+[id^="img-49-"]:target ~ .img > [href^="#img-50-"]:before,
+[id^="img-50-"]:target ~ .img > [href^="#img-51-"]:before,
+[id^="img-51-"]:target ~ .img > [href^="#img-52-"]:before,
+[id^="img-52-"]:target ~ .img > [href^="#img-53-"]:before,
+[id^="img-53-"]:target ~ .img > [href^="#img-54-"]:before,
+[id^="img-54-"]:target ~ .img > [href^="#img-55-"]:before,
+[id^="img-55-"]:target ~ .img > [href^="#img-56-"]:before,
+[id^="img-56-"]:target ~ .img > [href^="#img-57-"]:before,
+[id^="img-57-"]:target ~ .img > [href^="#img-58-"]:before,
+[id^="img-58-"]:target ~ .img > [href^="#img-59-"]:before,
+[id^="img-59-"]:target ~ .img > [href^="#img-60-"]:before,
+[id^="img-60-"]:target ~ .img > [href^="#img-61-"]:before,
+[id^="img-61-"]:target ~ .img > [href^="#img-62-"]:before,
+[id^="img-62-"]:target ~ .img > [href^="#img-63-"]:before,
+[id^="img-63-"]:target ~ .img > [href^="#img-64-"]:before,
+[id^="img-64-"]:target ~ .img > [href^="#img-65-"]:before,
+[id^="img-65-"]:target ~ .img > [href^="#img-66-"]:before,
+[id^="img-66-"]:target ~ .img > [href^="#img-67-"]:before,
+[id^="img-67-"]:target ~ .img > [href^="#img-68-"]:before,
+[id^="img-68-"]:target ~ .img > [href^="#img-69-"]:before,
+[id^="img-69-"]:target ~ .img > [href^="#img-70-"]:before,
+[id^="img-70-"]:target ~ .img > [href^="#img-71-"]:before,
+[id^="img-71-"]:target ~ .img > [href^="#img-72-"]:before,
+[id^="img-72-"]:target ~ .img > [href^="#img-73-"]:before,
+[id^="img-73-"]:target ~ .img > [href^="#img-74-"]:before,
+[id^="img-74-"]:target ~ .img > [href^="#img-75-"]:before,
+[id^="img-75-"]:target ~ .img > [href^="#img-76-"]:before,
+[id^="img-76-"]:target ~ .img > [href^="#img-77-"]:before,
+[id^="img-77-"]:target ~ .img > [href^="#img-78-"]:before,
+[id^="img-78-"]:target ~ .img > [href^="#img-79-"]:before,
+[id^="img-79-"]:target ~ .img > [href^="#img-80-"]:before,
+[id^="img-80-"]:target ~ .img > [href^="#img-81-"]:before,
+[id^="img-81-"]:target ~ .img > [href^="#img-82-"]:before,
+[id^="img-82-"]:target ~ .img > [href^="#img-83-"]:before,
+[id^="img-83-"]:target ~ .img > [href^="#img-84-"]:before,
+[id^="img-84-"]:target ~ .img > [href^="#img-85-"]:before,
+[id^="img-85-"]:target ~ .img > [href^="#img-86-"]:before,
+[id^="img-86-"]:target ~ .img > [href^="#img-87-"]:before,
+[id^="img-87-"]:target ~ .img > [href^="#img-88-"]:before,
+[id^="img-88-"]:target ~ .img > [href^="#img-89-"]:before,
+[id^="img-89-"]:target ~ .img > [href^="#img-90-"]:before,
+[id^="img-90-"]:target ~ .img > [href^="#img-91-"]:before,
+[id^="img-91-"]:target ~ .img > [href^="#img-92-"]:before,
+[id^="img-92-"]:target ~ .img > [href^="#img-93-"]:before,
+[id^="img-93-"]:target ~ .img > [href^="#img-94-"]:before,
+[id^="img-94-"]:target ~ .img > [href^="#img-95-"]:before,
+[id^="img-95-"]:target ~ .img > [href^="#img-96-"]:before,
+[id^="img-96-"]:target ~ .img > [href^="#img-97-"]:before,
+[id^="img-97-"]:target ~ .img > [href^="#img-98-"]:before,
+[id^="img-98-"]:target ~ .img > [href^="#img-99-"]:before,
+[id^="img-99-"]:target ~ .img > [href^="#img-100-"]:before {
+  right: 1.5em;
+  border-right: .25em solid;
+  border-bottom: .25em solid;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

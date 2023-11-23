@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON序列化示例</title>
+    <style>
+        .error {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON序列化示例</h1>
+    
+    <textarea id="inputData" rows="10" cols="50" oninput="updateSerializedData()"></textarea>
+    
+    <h2>序列化结果：</h2>
+    <pre id="jsonResult"></pre>
+    
+    <h2>出错提示：</h2>
+    <div id="errorPrompt"></div>
+    
+    <script>
+        function updateSerializedData() {
+            const inputData = document.getElementById("inputData").value;
+            let jsonResult = null;
+            let errorPrompt = "";
+
+            try {
+                jsonResult = JSON.stringify(JSON.parse(inputData), null, 2);
+            } catch (error) {
+                errorPrompt = "JSON解析错误: " + error.message;
+
+                // 高亮出错的位置
+                const errorPosition = error.at - 1;
+                const lines = inputData.split('\n');
+                let highlightedInput = '';
+
+                for (let i = 0; i < lines.length; i++) {
+                    if (i === errorPosition) {
+                        highlightedInput += `<span class="error">${lines[i]}</span>`;
+                    } else {
+                        highlightedInput += lines[i];
+                    }
+
+                    if (i < lines.length - 1) {
+                        highlightedInput += '\n';
+                    }
+                }
+
+                inputData = highlightedInput;
+            }
+
+            document.getElementById("jsonResult").textContent = jsonResult;
+            document.getElementById("errorPrompt").textContent = errorPrompt;
+            document.getElementById("inputData").value = inputData;
+        }
+    </script>
+</body>
+</html>
+

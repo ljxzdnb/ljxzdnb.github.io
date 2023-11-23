@@ -1,0 +1,7 @@
+.toolbar {
+  border: 1px solid #ccc;
+}
+.text {
+  border: 1px solid #ccc;
+  min-height: 300px;
+}
