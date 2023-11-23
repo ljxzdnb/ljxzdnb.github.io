@@ -47,6 +47,19 @@ function test(){
 	});
 }
 $(document).ready(function(){
+		$('html').on('DOMMouseScroll mousewheel', function (e) {
+  	if(e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) { //alternative options for wheelData: wheelDeltaX & wheelDeltaY
+    //scroll down
+    console.log('Down');
+    $( ".navbar-mainbg" ).addClass( "hide-nav-bar" );
+  	} else {
+    //scroll up
+    console.log('Up');
+    $( ".navbar-mainbg" ).removeClass( "hide-nav-bar" );
+  	}
+  	//prevent page fom scrolling
+  	//return false;
+	});
 	setTimeout(function(){ test(); });
 });
 $(window).on('resize', function(){

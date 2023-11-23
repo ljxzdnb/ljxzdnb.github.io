@@ -11,6 +11,7 @@ i {
 	margin-right: 10px;
 }
 /*----------bootstrap-navbar-css------------*/
+
 .navbar-logo{
 	padding: 15px;
 	color: #fff;
@@ -18,11 +19,30 @@ i {
 .navbar-mainbg{
 	background-color: #5161ce;
 	padding: 0px;
+	position: fixed;
+  	top: 0;
+	width: 100%;
+	-webkit-transition: -webkit-transform 0.7s 0.3s ease;
+  	-moz-transition: -moz-transform 0.7s 0.3s ease;
+  	-ms-transition: -ms-transform 0.7s 0.3s ease;
+  	transition: transform 0.7s 0.3s ease;
+  	-webkit-backface-visibility: hidden;
+  	-webkit-transform: translate3d(0px, 0px, 0px);
 }
+
+.navbar-mainbg.hide-nav-bar {
+  -webkit-transform: translate(0, -100%);
+  -moz-transform: translate(0, -100%);
+  -ms-transform: translate(0, -100%);
+  transform: translate(0, -100%);
+  -webkit-backface-visibility: hidden;
+}
+
 #navbarSupportedContent{
 	overflow: hidden;
 	position: relative;
 }
+
 #navbarSupportedContent ul{
 	padding: 0px;
 	margin: 0px;
@@ -190,13 +210,14 @@ i {
 }
 
 .content .right {
-  position: relative;
-  top: 0;
-  right: 0;
+	margin: 0 auto;
+  /*position: relative;*/
+  /*top: 30px;*/
+  /*right: 0;*/
   /*left: 150px;*/
-  bottom: 0;
-  overflow: auto;
-  padding: 30px;
+  /*bottom: 0;*/
+  /*overflow: auto;*/
+  /*padding: 30px;*/
 }
 
 
