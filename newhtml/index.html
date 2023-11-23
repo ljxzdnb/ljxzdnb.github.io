@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>ljx's website</title>
+  <script src="./modernizr.min.js" type="text/javascript"></script>
+
+<meta name="viewport" content="initial-scale=1, maximum-scale=1"><link rel="stylesheet" href="./normalize.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="normalize.min.css">
+<link rel='stylesheet' href='github-markdown.css'>
+<link rel='stylesheet' href='github.css'>
+<link rel="stylesheet" href="markdown.css">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!--
+
+  Code on github: https://github.com/vnmc/Zee-Menu
+
+
+  Credits:
+  Click the burger: https://codepen.io/hynden
+  Toggle Navigation: https://codepen.io/bradfrost
+
+Browsers tested:
+
+Chrome:  29.0 -Full
+Firefox: 23.0.1 - Full (Remove border on menu link)
+Safari:  6.0.5 -Full
+Opera:   12.15 - Full (Remove border on menu link)
+ie8 -    Nav is fixed, burger menu no animations
+IOS -    Nav is fixed
+
+-->
+
+<!-- /Menu-->
+  <div id="header-nav">
+    <div class="container">
+  <!-- H1 for SEO -->
+    <div class="brand">
+      <a href="/" onclick="toggleFullScreen()"><h1>ljx's website</h1></a>
+    </div>
+    <!-- Small screen menu button -->
+		<a href="#menu" class="menu-link">
+      <span class="bar1"></span>
+      <span class="bar2"></span>
+      <span class="bar3"></span>
+     </a>
+    <!-- /Small screen menu button -->
+    
+    <!-- Menu Items -->
+    <nav id="menu" role="navigation">
+			<ul>
+				<li class="active"><a href="#">info</a></li>
+				<li><a href="#">call</a></li>
+				<li><a href="#">leetcode</a></li>
+				<li><a href="#">huawei</a></li>
+			</ul>
+		</nav>
+    <!-- /Menu Items -->
+      </div>
+	</div>
+<!-- /Menu -->
+
+<!-- /Nav element -->
+
+<div class="container">
+    <div class="left">
+        <textarea id="txt" ng-model="my_markdown" style="display: none"></textarea>
+    </div>
+    <div class="right">
+        <div id="markdown" class="markdown-body" marked="my_markdown"></div>
+    </div>
+</div>
+<!-- partial -->
+  <script src='./jquery.min.js'></script>
+<script src='./jquery.transit.min.js'></script><script  src="./script.js"></script>
+<script>
+    function toggleFullScreen() {
+        var elem = document.documentElement;
+        if (!document.fullscreenElement) {
+            elem.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+</script>
+</body>
+</html>
