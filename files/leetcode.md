@@ -300,7 +300,48 @@ def longestValidParentheses(self, s: str) -> int:
         return 0
 ```
 
+栈：
 
+具体做法是我们始终保持栈底元素为当前已经遍历过的元素中「最后一个没有被匹配的右括号的下标」，这样的做法主要是考虑了边界条件的处理，栈里其他元素维护左括号的下标：
+对于遇到的每个‘(’ ，我们将它的下标放入栈中
+对于遇到的每个 ‘)’ ，我们先弹出栈顶元素表示匹配了当前右括号：
+如果栈为空，说明当前的右括号为没有被匹配的右括号，我们将其下标放入栈中来更新我们之前提到的「最后一个没有被匹配的右括号的下标」
+如果栈不为空，当前右括号的下标减去栈顶元素即为「以该右括号为结尾的最长有效括号的长度」
+我们从前往后遍历字符串并更新答案即可。
+
+需要注意的是，如果一开始栈为空，第一个字符为左括号的时候我们会将其放入栈中，这样就不满足提及的「最后一个没有被匹配的右括号的下标」，为了保持统一，我们在一开始的时候往栈中放入一个值为 −1 的元素。
+
+```c
+//栈
+#define MAX(a , b) ((a) > (b) ? (a) : (b))
+int longestValidParentheses(char * s){
+    int len = strlen(s);
+    int max = 0;
+    int str[len+1];//定义栈
+    int top = -1;
+    str[++top] = -1;//定义标准
+    for(int i = 0; i < len; i++)//遍历字符串
+    {
+        if(s[i] == '(')//入栈
+        {
+            str[++top] = i;
+        }
+        if(s[i] == ')')//出栈
+        {
+            --top;
+            if(top == -1)//重新定义标准
+            {
+                str[++top] = i;
+            }
+            else
+            {
+                max = MAX(max , (i - str[top]));
+            }
+        }
+    }
+    return max;
+}
+```
 
 # [括号生成](https://leetcode.cn/problems/generate-parentheses/)(动态规划):
 
@@ -345,7 +386,115 @@ def generateParenthesis(self, n: int) -> List[str]:
     return res
 ```
 
-xxxxxxxxxx79 1# A Huffman Tree Node2class node:3    def __init__(self, freq, symbol, left=None, right=None):4        # frequency of symbol5        self.freq = freq6​7        # symbol name (character)8        self.symbol = symbol9​10        # node left of current node11        self.left = left12​13        # node right of current node14        self.right = right15​16        # tree direction (0/1)17        self.huff = ''18​19# utility function to print huffman20# codes for all symbols in the newly21# created Huffman tree22​23​24def printNodes(node, val=''):25    # huffman code for current node26    newVal = val + str(node.huff)27​28    # if node is not an edge node29    # then traverse inside it30    if(node.left):31        printNodes(node.left, newVal)32    if(node.right):33        printNodes(node.right, newVal)34​35        # if node is edge node then36        # display its huffman code37    if(not node.left and not node.right):38        print(f"{node.symbol} -> {newVal}")39​40​41# characters for huffman tree42chars = ['a', 'b', 'c', 'd', 'e', 'f']43​44# frequency of characters45freq = [ 5, 9, 12, 13, 16, 45]46​47# list containing unused nodes48nodes = []49​50# converting characters and frequencies51# into huffman tree nodes52for x in range(len(chars)):53    nodes.append(node(freq[x], chars[x]))54​55while len(nodes) > 1:56    # sort all the nodes in ascending order57    # based on theri frequency58    nodes = sorted(nodes, key=lambda x: x.freq)59​60    # pick 2 smallest nodes61    left = nodes[0]62    right = nodes[1]63​64    # assign directional value to these nodes65    left.huff = 066    right.huff = 167​68    # combine the 2 smallest nodes to create69    # new node as their parent70    newNode = node(left.freq+right.freq, left.symbol+right.symbol, left, right)71​72    # remove the 2 nodes and add their73    # parent as new node among others74    nodes.remove(left)75    nodes.remove(right)76    nodes.append(newNode)77​78# Huffman Tree is ready!79printNodes(nodes[0])python
+```c
+// 回溯法求解
+#define MAX_SIZE 1430  // 卡特兰数: 1, 1, 2, 5, 14, 42, 132, 429, 1430
+void generate(int left, int right, int n, char *str, int index, char **result, int *returnSize) {
+    if (index == 2 * n) { // 当前长度已达2n
+        result[(*returnSize)] =  (char*)calloc((2 * n + 1), sizeof(char));
+        strcpy(result[(*returnSize)++], str);
+        return;
+    }
+    // 如果左括号数量不大于 n，可以放一个左括号
+    if (left < n) {
+        str[index] = '(';
+        generate(left + 1, right, n, str, index + 1, result, returnSize);
+    }
+    // 如果右括号数量小于左括号的数量，可以放一个右括号
+    if (right < left) {
+        str[index] = ')';
+        generate(left, right + 1, n, str, index + 1, result, returnSize);
+    }
+}
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** generateParenthesis(int n, int *returnSize) {
+    char *str = (char*)calloc((2 * n + 1), sizeof(char));
+    char **result = (char **)malloc(sizeof(char *) * MAX_SIZE);
+    *returnSize = 0;
+    generate(0, 0, n, str, 0, result, returnSize);
+    return result;
+}
+```
+
+
+
+[「算法入门笔记」卡特兰数](https://zhuanlan.zhihu.com/p/97619085)
+
+## **一、引言**
+
+卡特兰数（Catalan number）是 **组合数学** 中一个常出现在各种 **计数问题** 中的 **数列**。
+
+数列的前几项为：1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862，...
+
+本文将会选取几个经典的卡特兰问题，难度先易后难，带领读者逐个击破解决，最后给出相关的解题模板。
+
+## 二、**经典问题**
+
+### **2.1 进出栈序列**
+
+这是一道 **最经典** 的入门级卡特兰数题目，如果能把这题看懂，相信后面的题目也能迎刃而解。
+
+**题目描述**
+
+n 个元素进栈序列为：1，2，3，4，...，n，则有多少种出栈序列。
+
+**思路**
+
+我们将进栈表示为 +1，出栈表示为 -1，则 1 3 2 的出栈序列可以表示为：+1 -1 +1 +1 -1 -1。
+
+![img](https://pic2.zhimg.com/80/v2-fe28b25ed263230250d0a3c68344b0d5_1440w.webp)
+
+根据栈本身的特点，每次出栈的时候，必定之前有元素入栈，即对于每个 -1 前面都有一个 +1 相对应。因此，出栈序列的 **所有前缀和** 必然大于等于 0，并且 +1 的数量 **等于** -1 的数量。
+
+接下来让我们观察一下 n = 3 的一种出栈序列：+1 -1 -1 +1 -1 +1。序列前三项和小于 0，显然这是个非法的序列。
+
+如果将 **第一个** 前缀和小于 0 的前缀，即前三项元素都进行取反，就会得到：-1 +1 +1 +1 -1 +1。此时有 3 + 1 个 +1 以及 3 - 1 个 -1。
+
+因为这个小于 0 的前缀和必然是 -1，且 -1 比 +1 多一个，取反后，-1 比 +1 少一个，则 +1 变为 n + 1 个，且 -1 变为 n - 1 个。进一步推广，对于 n 元素的每种非法出栈序列，都会对应一个含有 n + 1 个 +1 以及 n - 1个 -1 的序列。
+
+如何证明这两种序列是一一对应的？
+
+假设非法序列为 A，对应的序列为 B。每个 A 只有一个"**第一个前缀和小于 0 的前缀**"，所以每个 A 只能产生一个 B。而每个 B 想要还原到 A，就需要找到"**第一个前缀和大于 0 的前缀**"，显然 B 也只能产生一个 A。
+
+![img](https://pic3.zhimg.com/80/v2-1224b08274913efa2cd7dbb31f8e6262_1440w.webp)
+
+每个 B 都有 n + 1 个 +1 以及 n - 1 个 -1，因此 B 的数量为 $C_{2n}^{n+1}$ ，相当于在长度为 2n 的序列中找到`n + 1`个位置存放 +1。相应的，非法序列的数量也就等于 $C_{2n}^{n+1}$。
+
+出栈序列的总数量共有 $C_{2n}^{n}$，因此，合法的出栈序列的数量为  $C_{2n}^{n+1}-C_{2n}^{n}=\frac{C_{2n}^{n}}{n+1}$ 。
+
+此时我们就得到了卡特兰数的通项  $C_{2n}^{n+1}-C_{2n}^{n}=\frac{C_{2n}^{n}}{n+1}$，至于具体如何计算结果将会在后面进行介绍。
+
+### **2.2 括号序列**
+
+**题目描述**
+
+n 对括号，则有多少种 “括号匹配” 的括号序列
+
+![img](https://pic3.zhimg.com/80/v2-e5785ad4be18724da3059efd87307706_1440w.webp)
+
+**思路**
+
+左括号看成 +1，右括号看成 -1，那么就和上题的进出栈一样，共有 $\frac{C_{2n}^{n}}{n+1}$ 种序列。
+
+### **2.3 二叉树**
+
+**题目描述**
+
+`n + 1` 个叶子节点能够构成多少种形状不同的（国际）满二叉树
+
+（国际）满二叉树定义：如果一棵二叉树的结点要么是叶子结点，要么它有两个子结点，这样的树就是满二叉树。
+
+![img](https://pic2.zhimg.com/80/v2-e1fcde1b4cf9b5d3dbac91fbe90d5065_1440w.webp)
+
+**思路**
+
+使用深度优先搜索这个满二叉树，向左扩展时标记为 +1，向右扩展时标记为 -1。
+
+由于每个非叶子节点都有两个左右子节点，所有它必然会先向左扩展，再向右扩展。总体下来，左右扩展将会形成匹配，即变成进出栈的题型。`n + 1`个叶子结点会有 2n 次扩展，构成$\frac{C_{2n}^{n}}{n+1}$ 种形状不同的满二叉树。
+
+![img](https://pic1.zhimg.com/80/v2-b21b64ee36af600e1c9d989f79306a6c_1440w.webp)
 
 # [电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/):
 
@@ -359,21 +508,7 @@ xxxxxxxxxx79 1# A Huffman Tree Node2class node:3    def __init__(self, freq, sy
 ```
 
 ```c
-    def letterCombinations(self, digits: str) -> list:
-        KEY = {'2': ['a', 'b', 'c'],
-               '3': ['d', 'e', 'f'],
-               '4': ['g', 'h', 'i'],
-               '5': ['j', 'k', 'l'],
-               '6': ['m', 'n', 'o'],
-               '7': ['p', 'q', 'r', 's'],
-               '8': ['t', 'u', 'v'],
-               '9': ['w', 'x', 'y', 'z']}
-        if digits == '':
-            return []
-        ans = ['']
-        for num in digits:
-            ans = [pre+suf for pre in ans for suf in KEY[num]]
-        return ans
+
 ```
 
 # [盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/):(贪心)
@@ -1626,6 +1761,24 @@ int candy(int* ratings, int ratingsSize) {
 - `0 <= digits.length <= 4`
 - `digits[i]` 是范围 `['2', '9']` 的一个数字。
 
+```py
+  def letterCombinations(self, digits: str) -> list:
+      KEY = {'2': ['a', 'b', 'c'],
+             '3': ['d', 'e', 'f'],
+             '4': ['g', 'h', 'i'],
+             '5': ['j', 'k', 'l'],
+             '6': ['m', 'n', 'o'],
+             '7': ['p', 'q', 'r', 's'],
+             '8': ['t', 'u', 'v'],
+             '9': ['w', 'x', 'y', 'z']}
+      if digits == '':
+          return []
+      ans = ['']
+      for num in digits:
+          ans = [pre+suf for pre in ans for suf in KEY[num]]
+      return ans
+```
+
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -2470,5 +2623,112 @@ int* findDiagonalOrder(int** matrix, int matrixSize, int* matrixColSize, int* re
     return res;
 }
 
+```
+
+[最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
+给你一个字符串 `s` 、一个字符串 `t` 。返回 `s` 中涵盖 `t` 所有字符的最小子串。如果 `s` 中不存在涵盖 `t` 所有字符的子串，则返回空字符串 `""` 。
+
+ 
+
+**注意：**
+
+- 对于 `t` 中重复字符，我们寻找的子字符串中该字符数量必须不少于 `t` 中该字符数量。
+- 如果 `s` 中存在这样的子串，我们保证它是唯一的答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "ADOBECODEBANC", t = "ABC"
+输出："BANC"
+解释：最小覆盖子串 "BANC" 包含来自字符串 t 的 'A'、'B' 和 'C'。
+```
+
+**示例 2：**
+
+```
+输入：s = "a", t = "a"
+输出："a"
+解释：整个字符串 s 是最小覆盖子串。
+```
+
+**示例 3:**
+
+```
+输入: s = "a", t = "aa"
+输出: ""
+解释: t 中两个字符 'a' 均应包含在 s 的子串中，
+因此没有符合条件的子字符串，返回空字符串。
+```
+
+ 
+
+**提示：**
+
+- `m == s.length`
+- `n == t.length`
+- `1 <= m, n <= 105`
+- `s` 和 `t` 由英文字母组成
+
+思路
+这题要用滑动窗口来解决。
+
+// 滑动窗口模板
+for () {
+    // 将新进来的右边的数据，计算进来
+    // 更新数据
+
+    // 判断窗口数据是否不满足要求了
+    while (窗口数据不满要求 && left < arrSize) {
+        // 移除left数据，更新窗口数据
+        left++;    
+    }
+    right++;
+}
+用 map[] 当作哈希表，统计字符串 t 中各元素的哈希值，用 tLen 统计还未找到的字符串 t 中字母的个数。
+
+右指针 right 从字符串 s 头移动到字符串 s 尾: s 中每个字母的对应的哈希表 -1，若字符串 s 有字符串 t 的字母（即哈希值被减一之前 >0），则 tlen-- ；
+
+如果出现匹配的子串（即 tlen == 0 ，此时所有 t 中字母对应的哈希值都 ==0，非 t 字母对应的哈希值 <0）：更新最小匹配子串的起点 start 和长度 result ，然后 left++ 。不过在 left++ 之前要先更新窗口数据，即先将left的字母的哈希值 +1，如果加一后其值 >0，则这个字母在 t 中存在，所以要 tlen++ 。
+
+if (minlen != INT32_MAX) ，找到了最小匹配字串；若未找到最小匹配子串，返回""。
+
+代码
+
+```c
+char* minWindow(char* s, char* t) {
+    int map[256] = { 0 };   //用 map[] 统计字符串 t 中各字母的个数
+    int subLength = 0, result = INT32_MAX;
+    int start = 0;
+    int sLen = strlen(s), tLen = strlen(t); //用 tLen 统计还未找到的字符串 t 中字母的个数
+    for (int i = 0; i < tLen; i++) {    //统计字符串 t 中各字母的个数
+        map[t[i]]++;
+    }
+    for (int left = 0, right = 0; right < sLen; right++) {
+        if (map[s[right]]-- > 0) {  //s 中每个字母的对应的哈希表 -1
+            tLen--; //若是对应字符串 t 的字母，则更新tLen的值
+        }
+        while (tLen == 0) {     //出现匹配的子串
+            subLength = right - left + 1;
+            if (subLength < result) {   //更新最小匹配子串的起点 start 和长度 result
+                start = left;
+                result = subLength;
+            }
+            if (++map[s[left]] > 0) {   //更新窗口数据：map[] 和 tLen
+                tLen++;
+            }
+            left++;     //窗口左端left右移一位
+        }
+    }
+    if (result != INT32_MAX) {  //找到了最小匹配字串
+        char* res = (char*)malloc(sizeof(char) * (result + 1));
+        *res = '\0';
+        strncat(res, s + start, result);
+        return res;
+    }
+    return "";  //没有找到最小匹配字串
+}
 ```
 
