@@ -599,6 +599,31 @@ def maxArea(self, height: List[int]) -> int:
 True
 ```
 
+```c
+bool _exist(char **board, int row, int col, char *word, int y, int x)
+{
+    if (*word == '\0')
+        return true;
+    if (y < 0 || y >= row || x < 0 || x >= col || *word != board[y][x])
+        return false;
+    board[y][x] = '\0';
+    bool result = _exist(board, row, col, word + 1, y, x - 1) ||
+                  _exist(board, row, col, word + 1, y - 1, x) ||
+                  _exist(board, row, col, word + 1, y, x + 1) ||
+                  _exist(board, row, col, word + 1, y + 1, x);
+    board[y][x] = *word;
+    return result;
+}
+bool exist(char **board, int boardSize, int *boardColSize, char *word)
+{
+    for (int y = 0; y < boardSize; y++)
+        for (int x = 0; x < boardColSize[0]; x++)
+            if (board[y][x] == word[0] && _exist(board, boardSize, boardColSize[0], word, y, x))
+                return true;
+    return false;
+}
+```
+
 
 
 
@@ -1980,6 +2005,68 @@ char*** solveNQueens(int n, int* returnSize, int** returnColumnSizes) {
 
 ```
 
+[118. 杨辉三角](https://leetcode.cn/problems/pascals-triangle/)
+
+给定一个非负整数 *`numRows`，*生成「杨辉三角」的前 *`numRows`* 行。
+
+在「杨辉三角」中，每个数是它左上方和右上方的数的和。
+
+![img](https://pic.leetcode-cn.com/1626927345-DZmfxB-PascalTriangleAnimated2.gif)
+
+ 
+
+**示例 1:**
+
+```
+输入: numRows = 5
+输出: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+```
+
+**示例 2:**
+
+```
+输入: numRows = 1
+输出: [[1]]
+```
+
+ 
+
+**提示:**
+
+- `1 <= numRows <= 30`
+
+```c
+int** generate(int numRows, int* returnSize, int** returnColumnSizes) {
+    int** ret = malloc(sizeof(int*) * numRows);
+    *returnSize = numRows;
+    *returnColumnSizes = malloc(sizeof(int) * numRows);
+    for (int i = 0; i < numRows; ++i) {
+        ret[i] = malloc(sizeof(int) * (i + 1));
+        (*returnColumnSizes)[i] = i + 1;
+        ret[i][0] = ret[i][i] = 1;
+        for (int j = 1; j < i; ++j) {
+            ret[i][j] = ret[i - 1][j] + ret[i - 1][j - 1];
+        }
+    }
+    return ret;
+}
+```
+
+python3
+
+```py
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        if numRows == 0: return []
+        res = [[1]]
+        while len(res) < numRows:
+            newRow = [a+b for a, b in zip([0]+res[-1], res[-1]+[0])]
+            res.append(newRow)      
+        return res
+```
+
+
+
 [54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
 
 给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。 
@@ -2732,3 +2819,39 @@ char* minWindow(char* s, char* t) {
 }
 ```
 
+[49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
+
+给你一个字符串数组，请你将 **字母异位词** 组合在一起。可以按任意顺序返回结果列表。
+
+**字母异位词** 是由重新排列源单词的所有字母得到的一个新单词。
+
+ 
+
+**示例 1:**
+
+```
+输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+```
+
+**示例 2:**
+
+```
+输入: strs = [""]
+输出: [[""]]
+```
+
+**示例 3:**
+
+```
+输入: strs = ["a"]
+输出: [["a"]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= strs.length <= 104`
+- `0 <= strs[i].length <= 100`
+- `strs[i]` 仅包含小写字母
