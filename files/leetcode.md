@@ -2855,3 +2855,274 @@ char* minWindow(char* s, char* t) {
 - `1 <= strs.length <= 104`
 - `0 <= strs[i].length <= 100`
 - `strs[i]` 仅包含小写字母
+
+[3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
+
+**示例 1:**
+
+```
+输入: s = "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+```
+
+**示例 2:**
+
+```
+输入: s = "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+```
+
+**示例 3:**
+
+```
+输入: s = "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+```
+
+ 
+
+**提示：**
+
+- `0 <= s.length <= 5 * 104`
+- `s` 由英文字母、数字、符号和空格组成
+
+```c
+int lengthOfLongestSubstring(char * s){
+    int sLen = strlen(s);
+    int left=0, right = 0;
+    int res=0, cnt=0;
+    int tmp[128] = {0};
+    
+    while(right < sLen) {
+        if(0 == tmp[ s[right] ]) {
+            tmp[ s[right++] ]=1;
+            res = res > ++cnt ? res : cnt;
+        }
+        else {
+            tmp[ s[left++] ] = 0;
+            cnt--;
+        }
+    }
+    return res;
+}
+```
+
+[1004. 最大连续1的个数 III](https://leetcode.cn/problems/max-consecutive-ones-iii/)
+
+给定一个二进制数组 `nums` 和一个整数 `k`，如果可以翻转最多 `k` 个 `0` ，则返回 *数组中连续 `1` 的最大个数* 。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,1,1,0,0,0,1,1,1,1,0], K = 2
+输出：6
+解释：[1,1,1,0,0,1,1,1,1,1,1]
+粗体数字从 0 翻转到 1，最长的子数组长度为 6。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], K = 3
+输出：10
+解释：[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
+粗体数字从 0 翻转到 1，最长的子数组长度为 10。
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 105`
+- `nums[i]` 不是 `0` 就是 `1`
+- `0 <= k <= nums.length`
+
+```c
+int longestOnes(int* A, int ASize, int K){
+    int r = 0, l = 0,sum = 0,len = 0;
+    while (r < ASize) {
+        if (sum < K+1) 
+            sum += (!A[r++]);
+        else 
+            sum -= (!A[l++]);
+        len = (r - l > len & sum < K+1) ? r-l :len;
+    }
+    return len;
+}
+```
+
+[1423. 可获得的最大点数](https://leetcode.cn/problems/maximum-points-you-can-obtain-from-cards/)
+
+几张卡牌 **排成一行**，每张卡牌都有一个对应的点数。点数由整数数组 `cardPoints` 给出。
+
+每次行动，你可以从行的开头或者末尾拿一张卡牌，最终你必须正好拿 `k` 张卡牌。
+
+你的点数就是你拿到手中的所有卡牌的点数之和。
+
+给你一个整数数组 `cardPoints` 和整数 `k`，请你返回可以获得的最大点数。
+
+ 
+
+**示例 1：**
+
+```
+输入：cardPoints = [1,2,3,4,5,6,1], k = 3
+输出：12
+解释：第一次行动，不管拿哪张牌，你的点数总是 1 。但是，先拿最右边的卡牌将会最大化你的可获得点数。最优策略是拿右边的三张牌，最终点数为 1 + 6 + 5 = 12 。
+```
+
+**示例 2：**
+
+```
+输入：cardPoints = [2,2,2], k = 2
+输出：4
+解释：无论你拿起哪两张卡牌，可获得的点数总是 4 。
+```
+
+**示例 3：**
+
+```
+输入：cardPoints = [9,7,7,9,7,7,9], k = 7
+输出：55
+解释：你必须拿起所有卡牌，可以获得的点数为所有卡牌的点数之和。
+```
+
+**示例 4：**
+
+```
+输入：cardPoints = [1,1000,1], k = 1
+输出：1
+解释：你无法拿到中间那张卡牌，所以可以获得的最大点数为 1 。 
+```
+
+**示例 5：**
+
+```
+输入：cardPoints = [1,79,80,1,1,1,200,1], k = 3
+输出：202
+```
+
+ 
+
+**提示：**
+
+- `1 <= cardPoints.length <= 10^5`
+- `1 <= cardPoints[i] <= 10^4`
+- `1 <= k <= cardPoints.length`
+
+```c
+/* 滑动窗口法：一、left移动到k的位置，right为0
+二、每次left减小一位，right增加一位。时间复杂度为O（K） */
+int maxScore(int* cardPoints, int cardPointsSize, int k){
+    int left;
+    int right = 0;
+    int i, j;
+    int sum = 0;
+    int max;
+    for (i = 0; i < k; i++) {
+        sum += cardPoints[i];
+    }
+    max = sum;
+    if(k == cardPointsSize) return max;
+    left = k - 1;
+    while ((left >= 0) && (left + right + 1 == k)) {
+        sum -= cardPoints[left];
+        left--;
+        right++;
+        sum += cardPoints[cardPointsSize - right];
+        max = max > sum ? max : sum;
+    }
+    return max;
+}
+```
+
+[1438. 绝对差不超过限制的最长连续子数组](https://leetcode.cn/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)
+
+给你一个整数数组 `nums` ，和一个表示限制的整数 `limit`，请你返回最长连续子数组的长度，该子数组中的任意两个元素之间的绝对差必须小于或者等于 `limit` *。*
+
+如果不存在满足条件的子数组，则返回 `0` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [8,2,4,7], limit = 4
+输出：2 
+解释：所有子数组如下：
+[8] 最大绝对差 |8-8| = 0 <= 4.
+[8,2] 最大绝对差 |8-2| = 6 > 4. 
+[8,2,4] 最大绝对差 |8-2| = 6 > 4.
+[8,2,4,7] 最大绝对差 |8-2| = 6 > 4.
+[2] 最大绝对差 |2-2| = 0 <= 4.
+[2,4] 最大绝对差 |2-4| = 2 <= 4.
+[2,4,7] 最大绝对差 |2-7| = 5 > 4.
+[4] 最大绝对差 |4-4| = 0 <= 4.
+[4,7] 最大绝对差 |4-7| = 3 <= 4.
+[7] 最大绝对差 |7-7| = 0 <= 4. 
+因此，满足题意的最长子数组的长度为 2 。
+```
+
+**示例 2：**
+
+```
+输入：nums = [10,1,2,4,7,2], limit = 5
+输出：4 
+解释：满足题意的最长子数组是 [2,4,7,2]，其最大绝对差 |2-7| = 5 <= 5 。
+```
+
+**示例 3：**
+
+```
+输入：nums = [4,2,2,2,4,4,2,2], limit = 0
+输出：3
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 10^5`
+- `1 <= nums[i] <= 10^9`
+- `0 <= limit <= 10^9`
+
+判定子数组是否满足条件任何两个元素的差的绝对值小于等于limit，可以转化为子数组的最大元素与最小元素的差小于等于limit。
+
+使用两个队列max和min，需要保证子数组变化时，max的头部元素永远是当前子数组的最大值，min的头部元素永远是当前子数组的最小值。
+
+容易想到，令max为单调非递增序列，当子数组的末尾新增元素x时，移除max尾部所有小于x的元素，然后将x加入max尾部；当子数组移除头部元素x时，若x与max的头部元素相等，则弹出max的头部元素。这两个操作保证子数组变化时，max的头部元素永远是当前子数组的最大值。针对min的处理与max相似，只是保证min为单调非递减序列即可。
+
+设置两个指针pstart、pend分别代表子数组的开始和结束位置。通过移动这两个指针以及max、min两个队列，我们总能知道当前子数组是否满足条件。若不满足条件，则令pstart加一，若满足条件，则令pend加一。通过子数组的指针变化以及过程中条件的满足与否，可以得到满足条件的子数组最大长度。
+
+```c
+int longestSubarray(int* nums, int numsSize, int limit){
+    int res = 0;
+    int min[numsSize], max[numsSize], lo_min = 0, hi_min = 0, lo_max = 0, hi_max = 0;
+    for (int i=0, j=0; j<numsSize; ) {
+        if (hi_max == lo_max || max[lo_max] - min[lo_min] <= limit) {
+            int x = nums[j++];
+            while (hi_min > lo_min && min[hi_min - 1] > x) --hi_min;
+            min[hi_min++] = x;
+            while (hi_max > lo_max && max[hi_max - 1] < x) --hi_max;
+            max[hi_max++] = x;
+        } else {
+            int x = nums[i++];
+            if (min[lo_min] == x) ++lo_min;
+            if (max[lo_max] == x) ++lo_max;
+        }
+        if (max[lo_max] - min[lo_min] <= limit && res < j - i) {
+            res = j - i;
+        }
+    }
+    return res;
+}
+```
+
