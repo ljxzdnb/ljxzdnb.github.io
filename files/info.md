@@ -66,3 +66,13 @@ int main(){
 
 
 <br>
+
+* **graphviz**:
+
+  ```dot
+  digraph G { rankdir = LR; a -> b }
+  ```
+  
+  
+  
+  
