@@ -69,9 +69,9 @@ int main(){
 
 * **graphviz**:
 
-  ```dot
-  digraph G { rankdir = LR; a -> b }
-  ```
+```dot
+digraph G { rankdir = LR; a -> b }
+```
   
   
   
