@@ -2,93 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ljx's personal website</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <!-- <link rel="manifest" href="manifest.json"> -->
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css'>
-    <link rel="stylesheet" href="style.css">
-    <link rel='stylesheet' href='github-markdown.css'>
-    <link rel='stylesheet' href='github.css'>
-<!--    <link rel="stylesheet" href="markdown.css">-->
-    <link rel="shortcut icon" href="icon.ico" type="image/x-icon"/>
-    <link rel="icon" href="icon.png" sizes="32x32" type="image/png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT API Example</title>
 </head>
-<body ng-app="app" ng-controller="ctrl">
-<div class="headcontent">
-<nav class="navbar navbar-expand-custom navbar-mainbg">
-    <a class="navbar-brand navbar-logo" href="#" onclick="toggleFullScreen()">ljx's personal website</a>
-    <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars text-white"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-            <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
-            <li class="nav-item active">
-                <a class="nav-link" id="nav-0" href="javascript:void(0);"><i class="far fa-copy"></i>info</a>
-            </li>
-            <li>
-                <a class="nav-link" id="nav-1" href="javascript:void(0);"><i class="far fa-clone"></i>call</a>
-            </li>
-            <li>
-                <a class="nav-link" id="nav-2" href="javascript:void(0);"><i class="far fa-bookmark"></i>leetcode</a>
-            </li>
-            <li>
-               <a class="nav-link" id="nav-3" href="javascript:void(0);"><i class="far fa-chart-bar"></i>huawei</a>
-            </li>
-        </ul>
+<body>
+    <h1>ChatGPT API Example</h1>
+    <div>
+        <label for="userInput">User Input:</label>
+        <input type="text" id="userInput" />
+        <button onclick="sendMessage()">Send</button>
     </div>
-</nav>
-</div>
-
-<div class="content">
-    <div class="left">
-        <textarea id="txt" ng-model="my_markdown" style="display: none"></textarea>
+    <div id="chatContainer">
+        <div id="chatLog"></div>
     </div>
-    <div class="right">
-        <div id="markdown" class="markdown-body" marked="my_markdown"></div>
-    </div>
-</div>
-</body>
 
-<script src='jquery.min.js'></script>
-<script src='latex/MathJax.js?config=TeX-MML-AM_CHTML'></script>
-<script src='https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'></script>
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js'></script>
-<script  src="script.js"></script>
-<script src='angular.min.js'></script>
-<script src='latex/MathJax.js?config=TeX-MML-AM_CHTML'></script>
-<script src='angular-marked.min.js'></script>
-<script src='marked.js'></script>
-<script src='highlight.min.js'></script>
-<script src="markdown.js"></script>
+    <script>
+        const apiKey = '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';  // 替换为您的 ChatGPT API 密钥
 
-<script>
-    function toggleFullScreen() {
-        var elem = document.documentElement;
-        if (!document.fullscreenElement) {
-            elem.requestFullscreen().catch(err => {
-                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-            });
-        } else {
-            document.exitFullscreen();
+        function sendMessage() {
+            const userInput = document.getElementById('userInput').value;
+            const chatLog = document.getElementById('chatLog');
+
+            // 发送异步请求到 ChatGPT API
+            fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages: [
+                        { role: 'system', content: 'You are a helpful assistant.' },
+                        { role: 'user', content: userInput }
+                    ]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const assistantReply = data.choices[0].message.content;
+                chatLog.innerHTML += `<div><strong>User:</strong> ${userInput}</div>`;
+                chatLog.innerHTML += `<div><strong>Assistant:</strong> ${assistantReply}</div>`;
+            })
+            .catch(error => console.error('Error:', error));
         }
-    }
-</script>
-<script src="https://unpkg.com/d3@5.16.0/dist/d3.min.js"></script>
-<script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
-<script src="https://unpkg.com/d3-graphviz@3.1.0/build/d3-graphviz.min.js"></script>
-<script>
-  function d3ize(elem) {
-    var par = elem.parentElement;
-    d3.select(par).append('div').graphviz().renderDot(elem.innerText);
-    d3.select(elem).style('display', 'none');
-  }
-  console.log(document.getElementsByClassName(".language-dot"));
-  var dotelems = document.getElementsByClassName("language-dot");
-  for (let elem of dotelems) {
-    d3ize(elem);
-  }
-</script>
+    </script>
+</body>
 </html>
+
