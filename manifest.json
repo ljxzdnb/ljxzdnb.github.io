@@ -1,10 +1,10 @@
 {
 	"name":"ljx's website",
 	"short_name":"markdown",
-	"start_url":"/index.html",
+	"start_url":"./index.html",
 	"icons":[
 		{
-			"src":"/picons.png",
+			"src":"./picons.png",
 			"sizes":"144x144",
 			"type":"image/png"
 		}
