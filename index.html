@@ -24,7 +24,7 @@
       try {
         // Replace 'YOUR_API_KEY' with your actual OpenAI API key
         const apiKey = 'sk-lKaqlIhrQfB0kFzXVOFzU61j3FEM0WFHZLQNdCQy4yJid2lI';
-        const apiUrl = 'api.chatanywhere.com.cn/v1/chat/completions';
+        const apiUrl = 'https://api.chatanywhere.com.cn/v1/chat/completions';
 
         const messages = [
           { role: 'user', content: userInput }
@@ -43,7 +43,7 @@
         });
 
         const responseData = await response.json();
-        const modelOutput = responseData.choices[0].text;
+        const modelOutput = responseData.choices[0].message.content;
 
         responseElement.textContent = `ChatGPT's response: ${modelOutput}`;
       } catch (error) {
