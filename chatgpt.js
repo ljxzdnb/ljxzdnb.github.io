@@ -25,8 +25,11 @@ async function askChatGPT() {
 
     const responseData = await response.json();
     const modelOutput = responseData.choices[0].message.content;
-
-    responseElement.textContent = `ChatGPT's response: ${modelOutput}`;
+    var el = document.getElementById('txt');
+    el.value = modelOutput;
+    el.dispatchEvent(new Event('input',{bubbles:true}))
+    // responseElement.textContent = `ChatGPT's response: ${modelOutput}`;
+    MathJax.Hub.Typeset();
   } catch (error) {
     responseElement.textContent = 'Error communicating with ChatGPT API';
     console.error(error);
