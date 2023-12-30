@@ -1,0 +1,89 @@
+.container {
+  position: relative;
+  transition: margin 0.3s;
+  display: flex;
+}
+
+/*** 侧边栏导航 ***/
+.side-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+  height: auto;
+  width: 18.75rem;
+  z-index: 1;
+}
+
+.side-nav:target {
+  transform: translateX(0);
+  background: white;
+  border-radius: 0;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  text-shadow: 0.125rem 0.125rem 0.125rem rgba(34, 34, 34, 0.3);
+  text-transform: uppercase;
+  color: black;
+}
+
+.side-nav:target~main {
+  margin-left: 18.75rem;
+}
+
+.side-nav:target~main .menu-open {
+  display: none;
+}
+
+.side-nav:not(:target)~main .menu-close {
+  display: none;
+}
+
+.side-nav>.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.side-nav>.links>.link {
+  flex: 0 1 auto;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  text-shadow: 0.125rem 0.125rem 0.125rem rgba(34, 34, 34, 0.3);
+  color: black;
+}
+
+.menu-open,
+.menu-close,
+.home-link {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+  text-shadow: 0.125rem 0.125rem 0.125rem rgba(34, 34, 34, 0.3);
+  text-transform: uppercase;
+  margin-left: 0;
+  color: white;
+}
+
+.menu-open:hover,
+.menu-close:hover,
+.home-link:hover {
+  color: white;
+}
+
+@media (max-width: 18.75rem) {
+  .menu-close {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+  }
+}
