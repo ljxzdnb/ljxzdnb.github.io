@@ -25,10 +25,7 @@
         </button>
         <div class="collapse navbar-collapse">
             <div class="input-group">
-                <input class="form-control mr-sm-2" id="user-input" type="search" placeholder="Ask Chatgpt" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit" onclick="askChatGPT()">Search</button>
-                </div>
+                <input class="form-control mr-sm-2" id="user-input" type="search" placeholder="Ask Chatgpt" aria-label="Search" onkeydown="if(event.keyCode==13) askChatGPT()">
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -50,41 +47,6 @@
         </div>
     </nav>
 </main>
-
-
-<style>
-/* Default styles for both orientations */
-.input-group {
-    display: flex;
-}
-
-.form-control {
-    border-radius: 0; /* You can adjust this as needed */
-}
-
-/* Portrait mode styles */
-@media (max-width: 767px) {
-    .input-group {
-        flex-direction: column;
-    }
-
-    .form-control {
-        margin-bottom: 5px; /* Adjust the spacing between input and button */
-    }
-}
-
-/* Landscape mode styles */
-@media (min-width: 768px) {
-    .input-group {
-        flex-direction: row;
-    }
-
-    .form-control {
-        margin-bottom: 0; /* Reset the margin for landscape mode */
-    }
-}
-
-</style>
 
 
 <div class="content">
