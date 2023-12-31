@@ -46,7 +46,7 @@ int main(){
 捐助地址：
 * **images**:
 
-![](./wechat.jpg)
+![](./wechat.png)
 
 ---
 

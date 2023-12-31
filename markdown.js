@@ -58,7 +58,7 @@ angular.module('app').controller('ctrl', function($scope) {
         '\n' +
         '* **images**:\n' +
         '\n' +
-        '![](./wechat.jpg)\n' +
+        '![](./wechat.png)\n' +
         '\n' +
         '---\n' +
         '\n' +
