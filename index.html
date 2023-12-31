@@ -18,36 +18,39 @@
 <body ng-app="app" ng-controller="ctrl">
 
 <main class="headcontent">
-<nav class="navbar navbar-expand-custom navbar-mainbg">
+    <nav class="navbar navbar-expand-custom navbar-mainbg">
         <a class="navbar-brand navbar-logo" href="#" onclick="toggleFullScreen()">ljx's personal website</a>
-    <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars text-white"></i>
-    </button>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ml-auto">
-        <input class="form-control mr-sm-2" id="user-input" type="search" placeholder="Ask Chatgpt" aria-label="Search">
-        <button class="btn btn-outline-light my-2 my-sm-0" type="submit" onclick="askChatGPT()">Search</button>
-        </ul>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-            <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
-            <li class="nav-item active">
-                <a class="nav-link" id="nav-0" href="javascript:void(0);"><i class="far fa-copy"></i>info</a>
-            </li>
-            <li>
-                <a class="nav-link" id="nav-1" href="javascript:void(0);"><i class="far fa-clone"></i>call</a>
-            </li>
-            <li>
-                <a class="nav-link" id="nav-2" href="javascript:void(0);"><i class="far fa-bookmark"></i>leetcode</a>
-            </li>
-            <li>
-               <a class="nav-link" id="nav-3" href="javascript:void(0);"><i class="far fa-chart-bar"></i>huawei</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+        <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+        <div class="collapse navbar-collapse">
+            <div class="input-group">
+                <input class="form-control mr-sm-2" id="user-input" type="search" placeholder="Ask Chatgpt" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit" onclick="askChatGPT()">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+                <li class="nav-item active">
+                    <a class="nav-link" id="nav-0" href="javascript:void(0);"><i class="far fa-copy"></i>info</a>
+                </li>
+                <li>
+                    <a class="nav-link" id="nav-1" href="javascript:void(0);"><i class="far fa-clone"></i>call</a>
+                </li>
+                <li>
+                    <a class="nav-link" id="nav-2" href="javascript:void(0);"><i class="far fa-bookmark"></i>leetcode</a>
+                </li>
+                <li>
+                    <a class="nav-link" id="nav-3" href="javascript:void(0);"><i class="far fa-chart-bar"></i>huawei</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </main>
+
 
 <div class="content">
     <div class="left">
