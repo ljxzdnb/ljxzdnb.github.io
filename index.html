@@ -53,20 +53,37 @@
 
 
 <style>
-    @media (max-width: 767px) { /* Adjust the breakpoint according to your design */
-        .input-group {
-            display: block;
-        }
+/* Default styles for both orientations */
+.input-group {
+    display: flex;
+}
 
-        .input-group-append {
-            margin-top: 10px; /* Adjust the margin as needed */
-        }
+.form-control {
+    border-radius: 0; /* You can adjust this as needed */
+}
 
-        .input-group-append button {
-            height: 38px; /* Adjust the height as needed */
-            font-size: 14px; /* Adjust the font size as needed */
-        }
+/* Portrait mode styles */
+@media (max-width: 767px) {
+    .input-group {
+        flex-direction: column;
     }
+
+    .form-control {
+        margin-bottom: 5px; /* Adjust the spacing between input and button */
+    }
+}
+
+/* Landscape mode styles */
+@media (min-width: 768px) {
+    .input-group {
+        flex-direction: row;
+    }
+
+    .form-control {
+        margin-bottom: 0; /* Reset the margin for landscape mode */
+    }
+}
+
 </style>
 
 
