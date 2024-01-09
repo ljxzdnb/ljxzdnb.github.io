@@ -529,13 +529,10 @@ n 对括号，则有多少种 “括号匹配” 的括号序列
 
 ```c
 int maxArea(int* height, int heightSize) {
-    int left=0,right=heightSize-1,heigh=0,vec=0,max=0;
+    int left=0,right=heightSize-1,max=0;
     while(left<right){
-        heigh = height[left] > height[right]?height[right]:height[left];
-        vec = heigh*(right-left);
-        max = max > vec ?max:vec;
-        if(height[left]<height[right]) left++;
-        else right--;
+        max = fmax( max, (right - left) * fmin(height[left], height[right]) );
+        height[left]<height[right] ? left++ : right--;
     }
     return max;
 }
