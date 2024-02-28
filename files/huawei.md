@@ -4538,3 +4538,358 @@ while 1:
         break
 ```
 
+```c
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STRLEN    300
+
+// 函数原型
+void findLongestCommonSubstring(char *str1, char *str2);
+
+int main(void)
+{
+    char str1[MAX_STRLEN + 1];
+    char str2[MAX_STRLEN + 1];
+    
+    // 输入两个字符串
+    fgets(str1, sizeof(str1), stdin);
+    fgets(str2, sizeof(str2), stdin);
+
+    // 移除换行符
+    str1[strcspn(str1, "\n")] = '\0';
+    str2[strcspn(str2, "\n")] = '\0';
+
+    // 调用函数查找最长公共子串
+    findLongestCommonSubstring(str1, str2);
+
+    return 0;  
+}
+
+// 查找最长公共子串的函数
+void findLongestCommonSubstring(char *str1, char *str2) {
+    int dp[MAX_STRLEN + 1][MAX_STRLEN + 1] = {0};
+    int strLen1 = strlen(str1);
+    int strLen2 = strlen(str2);
+    int maxLen = 0;
+    int index = 0;
+    int i, j;
+
+    // 交换字符串使得str1是较短的字符串
+    if (strLen1 > strLen2) {
+        char *temp = str1;
+        str1 = str2;
+        str2 = temp;
+        int tempLen = strLen1;
+        strLen1 = strLen2;
+        strLen2 = tempLen;
+    }
+
+    // 使用动态规划查找最长公共子串
+    for (i = 1; i <= strLen1; i++) {
+        for (j = 1; j <= strLen2; j++) {
+            if (str1[i - 1] == str2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+                if (dp[i][j] > maxLen) {
+                    maxLen = dp[i][j];
+                    index = i;
+                }
+            }
+        }
+    }
+
+    // 输出最长公共子串
+    for (i = 0; i < maxLen; i++) {
+        printf("%c", str1[index - maxLen + i]);
+    }
+    printf("\n");
+}
+
+```
+
+
+
+**HJ17** **坐标移动**
+
+## 描述
+
+开发一个坐标计算工具， A表示向左移动，D表示向右移动，W表示向上移动，S表示向下移动。从（0,0）点开始移动，从输入字符串里面读取一些坐标，并将最终输入结果输出到输出文件里面。
+
+输入：
+
+合法坐标为A(或者D或者W或者S) + 数字（两位以内）
+
+坐标之间以;分隔。
+
+非法坐标点需要进行丢弃。如AA10; A1A; $%$; YAD; 等。
+
+下面是一个简单的例子 如：
+
+A10;S20;W10;D30;X;A1A;B10A11;;A10;
+
+处理过程：
+
+起点（0,0）
+
+\+  A10  = （-10,0）
+
+\+  S20  = (-10,-20)
+
+\+  W10 = (-10,-10)
+
+\+  D30 = (20,-10)
+
+\+  x  = 无效
+
+\+  A1A  = 无效
+
+\+  B10A11  = 无效
+
+\+ 一个空 不影响
+
+\+  A10 = (10,-10)
+
+结果 （10， -10）
+
+数据范围：每组输入的字符串长度满足 1≤*n*≤10000 ，坐标保证满足 −2^31≤*x*,*y*≤2^31−1 ，且数字部分仅含正数
+
+### 输入描述：
+
+一行字符串
+
+### 输出描述：
+
+最终坐标，以逗号分隔
+
+## 示例1
+
+输入：
+
+```
+A10;S20;W10;D30;X;A1A;B10A11;;A10;
+```
+
+复制
+
+输出：
+
+```
+10,-10
+```
+
+复制
+
+## 示例2
+
+输入：
+
+```
+ABC;AKL;DA1;
+```
+
+复制
+
+输出：
+
+```
+0,0
+```
+
+```c
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// 定义坐标结构体
+
+
+// 根据方向和距离更新坐标
+void updateCoordinate(int* x,int* y, char direction, int distance) {
+    switch (direction) {
+        case 'A':
+            *x -= distance;
+            break;
+        case 'D':
+            *x += distance;
+            break;
+        case 'W':
+            *y += distance;
+            break;
+        case 'S':
+            *y -= distance;
+            break;
+    }
+}
+
+int main() {
+    char input[10001];
+    fgets(input, sizeof(input), stdin); // 读取输入字符串
+    int len = strlen(input);
+    int x=0,y=0;// 初始坐标
+
+    char* token = strtok(input, ";"); // 使用分号分割输入字符串
+    while (token != NULL) {
+        char direction;
+        int distance;
+        if (sscanf(token, "%c%d", &direction, &distance) == 2 && isdigit(token[strlen(token)-1])) { // 解析坐标
+            updateCoordinate(&x,&y, direction, distance); // 更新坐标
+        }
+        token = strtok(NULL, ";");
+    }
+
+    printf("%d,%d\n", x, y); // 输出最终坐标
+    return 0;
+}
+```
+
+
+
+[**HJ18** **识别有效的IP地址和掩码并进行分类统计**](https://www.nowcoder.com/practice/de538edd6f7e4bc3a5689723a7435682?tpId=37&rp=1&ru=%2Fexam%2Foj%2Fta&qru=%2Fexam%2Foj%2Fta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D37&difficulty=&judgeStatus=&tags=&title=&gioEnter=menu)
+
+## 描述
+
+请解析IP地址和对应的掩码，进行分类识别。要求按照A/B/C/D/E类地址归类，不合法的地址和掩码单独归类。
+
+所有的IP地址划分为 A,B,C,D,E五类
+
+A类地址从1.0.0.0到126.255.255.255;
+
+B类地址从128.0.0.0到191.255.255.255;
+
+C类地址从192.0.0.0到223.255.255.255;
+
+D类地址从224.0.0.0到239.255.255.255；
+
+E类地址从240.0.0.0到255.255.255.255
+
+
+
+私网IP范围是：
+
+从10.0.0.0到10.255.255.255
+
+从172.16.0.0到172.31.255.255
+
+从192.168.0.0到192.168.255.255
+
+子网掩码为二进制下前面是连续的1，然后全是0。（例如：255.255.255.32就是一个非法的掩码）
+
+（注意二进制下全是1或者全是0均为非法子网掩码）
+
+注意：
+
+1. 类似于【0.*.*.*】和【127.*.*.*】的IP地址不属于上述输入的任意一类，也不属于不合法ip地址，计数时请忽略
+2. 私有IP地址和A,B,C,D,E类地址是不冲突的
+
+
+
+
+
+### 输入描述：
+
+多行字符串。每行一个IP地址和掩码，用~隔开。
+
+请参考帖子https://www.nowcoder.com/discuss/276处理循环输入的问题。
+
+### 输出描述：
+
+统计A、B、C、D、E、错误IP地址或错误掩码、私有IP的个数，之间以空格隔开。
+
+## 示例1
+
+输入：
+
+```
+10.70.44.68~255.254.255.0
+1.0.0.1~255.0.0.0
+192.168.0.2~255.255.255.0
+19..0.~255.255.255.0
+```
+
+输出：
+
+```
+1 0 1 0 0 2 1
+```
+
+说明：
+
+```
+10.70.44.68~255.254.255.0的子网掩码非法，19..0.~255.255.255.0的IP地址非法，所以错误IP地址或错误掩码的计数为2；
+1.0.0.1~255.0.0.0是无误的A类地址；
+192.168.0.2~255.255.255.0是无误的C类地址且是私有IP；
+所以最终的结果为1 0 1 0 0 2 1        
+```
+
+## 示例2
+
+输入：
+
+```
+0.201.56.50~255.255.111.255
+127.201.56.50~255.255.111.255
+```
+
+复制
+
+输出：
+
+```
+0 0 0 0 0 0 0
+```
+
+复制
+
+说明：
+
+```
+类似于【0.*.*.*】和【127.*.*.*】的IP地址不属于上述输入的任意一类，也不属于不合法ip地址，计数时请忽略         
+```
+
+```c
+#include <stdio.h>
+
+int main() {
+    int ip[4], mk[4];       //IP地址、子网掩码
+    int addrType[7] = {};   //地址类型
+    int mask, typeId;       //掩码值、类型号
+    int endAddr[] =         //类型尾地址
+    {126, 191, 223, 239, 255};
+    int validInput;
+
+    while (validInput = scanf("%d.%d.%d.%d~%d.%d.%d.%d", //读取IP地址和子网掩码
+                 ip, ip + 1, ip + 2, ip + 3,
+                 mk, mk + 1, mk + 2, mk + 3) == 8) {
+        // Check for incomplete IP address or subnet mask
+        if (ip[0] < 0 || ip[1] < 0 || ip[2] < 0 || ip[3] < 0 ||
+            mk[0] < 0 || mk[1] < 0 || mk[2] < 0 || mk[3] < 0 ||
+            ip[0] > 255 || ip[1] > 255 || ip[2] > 255 || ip[3] > 255 ||
+            mk[0] > 255 || mk[1] > 255 || mk[2] > 255 || mk[3] > 255) {
+            addrType[5]++;  //错误IP或掩码+1
+            continue;
+        }
+
+        if (ip[0] == 0 || ip[0] == 127) //若非指定IP类型
+            continue;
+        //合并子网掩码为掩码值
+        mask = (mk[0] << 24) + (mk[1] << 16) + (mk[2] << 8) + mk[3];
+        if (((~mask + 1) & ~mask) || !~mask) {  //若掩码非连续1后0
+            addrType[5]++;  //错误IP或掩码+1
+            continue;
+        }
+        if (ip[0] == 10 || (ip[0] == 192 && ip[1] == 168) ||
+                (ip[0] == 172 && ip[1] > 15 && ip[1] < 32)) //若为私有地址
+            addrType[6]++;  //私有IP类型+1
+        for (typeId = 0; ip[0] > endAddr[typeId]; typeId++); //遍历查找匹配类型
+        addrType[typeId]++; //对应IP类型+1
+    }
+    if (!validInput) {
+        addrType[5]++;  //错误IP或掩码+1
+    }
+    for (typeId = 0; typeId < 7; typeId++)  //遍历地址类型
+        printf("%d ", addrType[typeId]);    //打印IP类型数
+}
+
+```
+
