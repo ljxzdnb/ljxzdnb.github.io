@@ -10,19 +10,20 @@ int compare(const void *a, const void *b) {
 
     // 如果最低位相同，则按照原始顺序排序
     if (last_digit_num1 == last_digit_num2)
-        return num1 - num2;
+        return 0;
 
     return last_digit_num1 - last_digit_num2; // 按最低位从小到大排序
 }
 
 int main() {
-    int nums[1000];
-    int num, i = 0;
-
+    int nums[1000]={1,2,5,-21,22,11,55,-101,42,8,7,32};
+    int num, i = 12;
+/*
     // 读取输入数组
     while (scanf("%d,", &num) == 1) {
         nums[i++] = num;
     }
+*/
 
     // 使用qsort函数进行排序
     qsort(nums, i, sizeof(int), compare);
@@ -35,4 +36,3 @@ int main() {
 
     return 0;
 }
-
