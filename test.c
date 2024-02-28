@@ -1,40 +1,40 @@
 #include <stdio.h>
-#include <string.h>
+
+#define MAX_ROWS 50
+#define MAX_COLS 50
 
 int max(int a, int b) {
-    return (a > b) ? a : b;
-}
-
-int longestValidPassword(char *s) {
-    int len = strlen(s);
-    int maxLength = 0;
-
-    for (int i = 0; i < len; i++) {
-        // 从当前位置向两侧扩展寻找对称的密码串
-        int left = i, right = i;
-        while (left >= 0 && right < len && s[left] == s[right]) {
-            maxLength = max(maxLength, right - left + 1);
-            left--;
-            right++;
-        }
-
-        left = i;
-        right = i + 1;
-        while (left >= 0 && right < len && s[left] == s[right]) {
-            maxLength = max(maxLength, right - left + 1);
-            left--;
-            right++;
-        }
-    }
-
-    return maxLength;
+    return a > b ? a : b;
 }
 
 int main() {
-    char str[2501]; // 为了容纳'\0'结束符，字符串长度设为2501
-    scanf("%s", str);
-    int result = longestValidPassword(str);
-    printf("%d\n", result);
+    int M, N;
+    int matrix[MAX_ROWS][MAX_COLS];
+
+    // 读取输入
+    scanf("%d %d", &M, &N);
+    for (int i = 0; i < M; ++i) {
+        for (int j = 0; j < N; ++j) {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    // 动态规划求解
+    for (int i = 1; i < M; ++i) {
+        matrix[i][0] += matrix[i - 1][0];
+    }
+    for (int j = 1; j < N; ++j) {
+        matrix[0][j] += matrix[0][j - 1];
+    }
+    for (int i = 1; i < M; ++i) {
+        for (int j = 1; j < N; ++j) {
+            matrix[i][j] += max(matrix[i - 1][j], matrix[i][j - 1]);
+        }
+    }
+
+    // 输出结果
+    printf("%d\n", matrix[M - 1][N - 1]);
+
     return 0;
 }
 
