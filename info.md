@@ -1,37 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
-// 定义比较函数，按照元素的最低位进行比较
+// 定义字符比较函数
 int compare(const void *a, const void *b) {
-    int num1 = *(int *)a;
-    int num2 = *(int *)b;
-    int last_digit_num1 = abs(num1 % 10); // 获取num1的最低位
-    int last_digit_num2 = abs(num2 % 10); // 获取num2的最低位
+    char charA = *(char*)a;
+    char charB = *(char*)b;
 
-    // 如果最低位相同，则按照原始顺序排序
-    if (last_digit_num1 == last_digit_num2)
-        return num1 - num2;
+    // 将字符转换为小写字母进行比较
+    char lowerA = tolower(charA);
+    char lowerB = tolower(charB);
 
-    return last_digit_num1 - last_digit_num2; // 按最低位从小到大排序
+    // 如果字符不同，按照字母顺序排序
+    if (lowerA != lowerB) {
+        return lowerA - lowerB;
+    }
+
+    // 如果字符相同，按照原来的顺序排序
+    return charA - charB;
 }
 
 int main() {
-    int nums[1000];
-    int num, i = 0;
+    char str[1001];
+    char bp[1001]; // 用于保存非字母字符
+    int bpIndex = 0; // bp 的索引
 
-    // 读取输入数组
-    while (scanf("%d,", &num) == 1) {
-        nums[i++] = num;
+    fgets(str, sizeof(str), stdin); // 读取输入字符串
+
+    // 遍历字符串，将非字母字符保存到 bp 中
+    for (int i = 0; str[i] != '\0'; ++i) {
+        if (!isalpha(str[i])) {
+            bp[bpIndex++] = str[i];
+        }
     }
 
-    // 使用qsort函数进行排序
-    qsort(nums, i, sizeof(int), compare);
+    // 对字母部分进行排序
+    qsort(str, strlen(str), sizeof(char), compare);
 
-    // 输出排序后的数组
-    for (int j = 0; j < i; j++) {
-        printf("%d", nums[j]);
-        if (j != i - 1) printf(",");
+    int bpPos = 0;
+    // 将排序后的字母字符串插入到带有非字母字符的字符串中
+    for (int i = 0; str[i] != '\0'; ++i) {
+        if (!isalpha(str[i])) {
+            continue; // 如果是非字母字符，跳过
+        }
+        // 如果是字母字符，则插入排序后的字符
+        while (!isalpha(bp[bpPos])) {
+            bpPos++; // 跳过非字母字符
+        }
+        bp[bpPos++] = str[i];
     }
+
+    printf("%s", bp); // 输出结果
 
     return 0;
 }
