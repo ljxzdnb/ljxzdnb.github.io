@@ -4373,6 +4373,48 @@ while 1:
         break
 ```
 
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// 比较函数，用于 qsort
+int compare(const void *a, const void *b) {
+    const int (*num1)[3] = a;
+    const int (*num2)[3] = b;
+    return (*num2)[1] - (*num1)[1]; // 按照转的钱降序排序
+}
+
+int main() {
+    int n;
+    while (scanf("%d", &n) != EOF) {
+        int nums[n][3];
+        for (int i = 0; i < n; ++i) {
+            scanf("%d %d %d", &nums[i][0], &nums[i][1], &nums[i][2]);
+        }
+
+        // 使用 qsort 进行排序
+        qsort(nums, n, sizeof(nums[0]), compare);
+
+        int dp[n + 1];
+        memset(dp, 0, (n + 1) * sizeof(int));
+
+        int start = 0;
+        for (int i = 0; i < n; ++i) {
+            start = nums[i][1] < start ? nums[i][1] : start;
+            dp[nums[i][1]] += ((nums[i][2] + dp[nums[i][0]]) / 100) * 15;
+        }
+
+        printf("%d %d\n", start, dp[start]);
+    }
+
+    return 0;
+}
+
+```
+
+
+
 # 最大时间
 
 # 题目描述
@@ -5844,5 +5886,108 @@ int main(void)
     return 0;
 }
 
+```
+
+[**HJ74** **参数解析**](https://www.nowcoder.com/practice/668603dc307e4ef4bb07bcd0615ea677?tpId=37&tqId=21297&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D2%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+在命令行输入如下命令：
+
+xcopy /s c:\\ d:\\e，
+
+各个参数如下：
+
+参数1：命令字xcopy
+
+参数2：字符串/s
+
+参数3：字符串c:\\
+
+参数4: 字符串d:\\e
+
+请编写一个参数解析程序，实现将命令行各个参数解析出来。
+
+
+
+解析规则：
+
+1.参数分隔符为空格
+2.对于用""包含起来的参数，如果中间有空格，不能解析为多个参数。比如在命令行输入xcopy /s "C:\\program files" "d:\"时，参数仍然是4个，第3个参数应该是字符串C:\\program files，而不是C:\\program，注意输出参数时，需要将""去掉，引号不存在嵌套情况。
+3.参数不定长
+
+4.输入由用例保证，不会出现不符合要求的输入
+
+数据范围：字符串长度： 1≤*s*≤1000 
+
+进阶：时间复杂度： *O*(*n*) ，空间复杂度：O*(*n*) 
+
+### 输入描述：
+
+输入一行字符串，可以有空格
+
+### 输出描述：
+
+输出参数个数，分解后的参数，每个参数都独占一行
+
+## 示例1
+
+输入：
+
+```
+xcopy /s c:\\ d:\\e
+```
+
+复制
+
+输出：
+
+```
+4
+xcopy
+/s
+c:\\
+d:\\e
+```
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+int main() {
+    char str[1001];
+    char* strs[32];
+    while (fgets(str, sizeof(str), stdin) != NULL) {
+        int len = strlen(str);
+        int count = 0;
+        bool inQuotes = false;
+
+        // 替换空格为换行符
+        for (int i = 0; i < len; ++i) {
+            if (str[i] == '"') {
+                inQuotes = !inQuotes;
+            } else if (str[i] == ' ' && !inQuotes) {
+                str[i] = '\n';
+            }
+        }
+
+        // 统计参数个数并输出
+        char* token = strtok(str, "\n");
+        while (token != NULL) {
+            // 去除引号
+            strs[count] = token;
+            ++count;
+            token = strtok(NULL, "\n");
+        }
+        printf("%d\n", count);
+        for(int i=0;i<count;i++){
+            if (strs[i][0] == '"' && strs[i][strlen(strs[i]) - 1] == '"') {
+                printf("%.*s\n", (int)strlen(strs[i]) - 2, strs[i] + 1);
+            } else {
+                printf("%s\n", strs[i]);
+            }
+        }
+    }
+    return 0;
+}
 ```
 

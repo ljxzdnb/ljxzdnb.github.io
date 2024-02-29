@@ -2620,6 +2620,277 @@ bool isMatch(char * s, char * p){
 }
 ```
 
+[44. 通配符匹配](https://leetcode.cn/problems/wildcard-matching/)
+
+给你一个输入字符串 (`s`) 和一个字符模式 (`p`) ，请你实现一个支持 `'?'` 和 `'*'` 匹配规则的通配符匹配：
+
+- `'?'` 可以匹配任何单个字符。
+- `'*'` 可以匹配任意字符序列（包括空字符序列）。
+
+判定匹配成功的充要条件是：字符模式必须能够 **完全匹配** 输入字符串（而不是部分匹配）。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "aa", p = "a"
+输出：false
+解释："a" 无法匹配 "aa" 整个字符串。
+```
+
+**示例 2：**
+
+```
+输入：s = "aa", p = "*"
+输出：true
+解释：'*' 可以匹配任意字符串。
+```
+
+**示例 3：**
+
+```
+输入：s = "cb", p = "?a"
+输出：false
+解释：'?' 可以匹配 'c', 但第二个 'a' 无法匹配 'b'。
+```
+
+ 
+
+**提示：**
+
+- `0 <= s.length, p.length <= 2000`
+- `s` 仅由小写英文字母组成
+- `p` 仅由小写英文字母、`'?'` 或 `'*'` 组成
+
+我发在了我的CSDN博客，https://blog.csdn.net/Xixo0628/article/details/105874722
+
+读完题目以后第一个反应就是动态规划，主要有这么几种情况要讨论：
+
+if(p[i]==s[j]) ,dp\[i][j] =dp\[i-1][j-1]
+if(p[i] == '?'),dp\[i][k] = dp\[i-1][k-1]
+if(p[i]=='*'),dp\[i][j] = dp\[i-1][j-1] || dp\[i][j-1] || dp\[i-1][j];
+初始边界处理，特别要注意当p是以若干个连续的‘*’开头的情况
+初步代码如下：
+
+```c
+bool isMatch(char * s, char * p){
+    int len_s = strlen(s), len_p = strlen(p);
+    
+    int** dp = (int**)malloc(sizeof(int*)*(len_s+1));
+    for (int i = 0; i <= len_s; ++i){
+        *(dp+i) = (int*)malloc(sizeof(int)*(len_p+1));
+        memset(*(dp+i), 0, sizeof(int)*(len_p+1));
+    }
+    
+    dp[0][0] = 1;
+    for (int i = 1; i <= len_p; ++i){ 
+        // 考虑边界条件,p前面若干位为*就在对应位置赋值1，当p出现非*字符时跳出
+        if (p[i-1] == '*')
+            dp[0][i] = 1;
+        else
+            break;
+    }
+    
+    for (int i = 1; i <= len_s; i++){
+        for (int j = 1; j <= len_p; j++){
+            if (s[i-1] == p[j-1])
+                dp[i][j] = dp[i-1][j-1];
+            else{
+                if (p[j-1] == '?')
+                    dp[i][j] = dp[i-1][j-1];
+                else if (p[j-1] == '*')
+                    dp[i][j] = dp[i-1][j-1] || dp[i][j-1] || dp[i-1][j];
+            }
+        }
+    }
+    
+    return dp[len_s][len_p];
+}
+```
+运行结果：
+
+
+效率相当一般。肯定还存在优化空间。
+
+首先是动态规划空间的申请，因为其实变量里面只存储true和false，因此完全不需要用int，改用bool就可以从4字节降到3字节。
+
+其次如果使用calloc来申请空间，就不需要调用memset函数了（这个优化效果应该微乎其微）
+
+最后我尝试了一下先动p的下标，再动s的下标，发现多了一种可以快速判断的情况：当p结尾是*的情况下，可以直接把该位所有对应下标置true，否则直接跳出循环（不去改变数值就是保持为false）。
+感觉说的可能还没有代码清楚。这种情况的代码块如下
+
+```c
+if(p[p_index] == '*') {
+    for (s_index = 0; s_index < s_len + 1; s_index++) {
+        if(dp[p_index][s_index]) {
+            for (; s_index < s_len + 1; s_index++) {
+                dp[p_index + 1][s_index] = true;
+            }
+            break;
+        }
+    }
+}
+```
+
+优化动态规划代码
+
+```c
+bool isMatch(char * s, char * p){
+    int s_len = strlen(s);
+    int p_len = strlen(p);
+    if (p_len <= 1){
+        if (s_len == 0 && p_len == 0) return true;  //两者均空
+        else if (p[0] == '*') return true;   //p为单字符‘*’
+        else if (s_len != 1) return false;  //s长度大于1
+        else if (p[0] == '?' || s[0] == p[0]) return true;  //都为1位且匹配
+    }
+    // s做行，p做列
+    bool **dp = (bool **) calloc(p_len + 1, sizeof(bool *));
+    int i = 0;
+    for (i = 0; i < p_len + 1; i++) {
+        dp[i] = (bool *) calloc(s_len + 1, sizeof(bool));
+    }
+    dp[0][0] = true;
+    int s_index = 0, p_index = 0;
+    for (p_index = 0; p_index < p_len; p_index++) {
+        if(p[p_index] == '*') {
+            for (s_index = 0; s_index < s_len + 1; s_index++) {
+                if(dp[p_index][s_index]) {
+                    for (; s_index < s_len + 1; s_index++) {
+                        dp[p_index + 1][s_index] = true;
+                    }
+                    break;
+                }
+            }
+        } else if (p[p_index] == '?') {
+            for (s_index = 0; s_index < s_len; s_index++) {
+                dp[p_index + 1][s_index + 1] = dp[p_index][s_index];
+            } 
+        } else {
+            for (s_index = 0; s_index < s_len; s_index++) {
+            //把s[s_index]==p[p_index]的if判断改成用&&连接
+                dp[p_index + 1][s_index + 1] = dp[p_index][s_index] && (s[s_index] == p[p_index]);
+            }
+        }
+    }
+    return dp[p_len][s_len];
+}
+```
+
+
+优化后运行结果：
+
+
+不得不说，用时和内存消耗都明明减半了，一个排名翻倍了，一个排名一个点都没有动，真是太奇怪了。
+
+空间还是申请了太多，还有没有什么好办法？动态规划空间开销几乎是固定的那么多，还能优化吗？
+我注意到其实生成p_index的那一整行的下标时，我其实只用到了p_index - 1 那一行，而且最后也只用返回最后一行的值，不需要返回匹配的方式意味着我不需要回溯，可以把用过的数据覆盖掉！也就是说，我完全可以只申请两行空间然后交替使用——就像桐人老爷和爱丽丝两个人爬塔一样，用两根棍子，一根垫脚、一根用于向上攀登，当用于攀登的棍子沦为垫脚后就把原来垫脚的那根回收，并再次将它作位向上攀登用的新棍子——虽然我只有两行空间，但是合理利用可以达到够用的目的！交替使用的办法就是把行号改成对2取余数。好吧,我承认之前那个桐人老爷的例子不够生动,换种说法吧,比如要过一条河,只有两块木板,怎么过?之前正常方法就是木板一路铺过去就能过河,现在我每走到一块木板上,就得把后面的木板抽出来放在前面,以此类推,没错就是这个意思,如果还没解释清楚的话就请看代码吧......
+
+我修改了代码，尝试了一下发现会产生一个新的bug：那就是我之前为了用break跳出了循环（因为后面位默认是0），现在因为有一个覆盖重写的问题导致后面那几位可能不是0，产生结果将一些false输出为true。所以我需要每个循环重写每一位。（这个开销应该不算大）
+
+两块木板过河_究极省空间的动态规划
+
+```c
+bool isMatch(char * s, char * p){
+    int s_len = strlen(s);
+    int p_len = strlen(p);
+    if (p_len <= 1){
+        if (s_len == 0 && p_len == 0) return true;  //两者均空
+        else if (p[0] == '*') return true;   //p为单字符‘*’
+        else if (s_len != 1) return false;  //s长度大于1
+        else if (p[0] == '?' || s[0] == p[0]) return true;  //都为1位且匹配
+    }
+    // s做行，p做列
+    bool **dp = (bool **) calloc(2 , sizeof(bool *));
+    int i = 0;
+    for (i = 0; i < 2 ;i++) {
+        dp[i] = (bool *) calloc(s_len + 1, sizeof(bool));
+    }
+    dp[0][0] = true;
+    int s_index = 0, p_index = 0;
+    for (p_index = 0; p_index < p_len; p_index++) {
+    	if (p_index >= 1) dp[(p_index+1)%2][0] = dp[(p_index)%2][0] && (p[p_index] == '*');
+        // putchar('\n');
+        if(p[p_index] == '*') {
+            for (s_index = 0; s_index < s_len + 1; s_index++) {
+               if(dp[p_index%2][s_index]) {
+                    for (; s_index < s_len + 1; s_index++) {
+                        dp[(p_index + 1)%2][s_index] = true;
+                        // printf("%d,",dp[(p_index + 1)%2][s_index]);
+                    }
+                    break;
+                }else {
+                    dp[(p_index + 1)%2][s_index] = false;
+                    // printf("%d,",dp[(p_index + 1)%2][s_index]);
+                }
+            }
+        } else if (p[p_index] == '?') {
+            for (s_index = 0; s_index < s_len; s_index++) {
+                dp[(p_index + 1)%2][s_index + 1] = dp[p_index%2][s_index];
+                // printf("%d,",dp[(p_index + 1)%2][s_index + 1]); 
+            } 
+        } else {
+            for (s_index = 0; s_index < s_len; s_index++) {
+            //把s[s_index]==p[p_index]的if判断改成用&&连接
+                dp[(p_index + 1)%2][s_index + 1] = dp[p_index%2][s_index] && (s[s_index] == p[p_index]);
+                // printf("%d,",dp[(p_index + 1)%2][s_index + 1]);
+            }
+        }
+    }
+    return dp[p_len%2][s_len];
+}
+```
+
+没错,就是这样!运行结果的空间开销令我满意:
+看到这个结果,我真是感动得泪流满面,因为我调试了大半天.....请看图:
+
+可能看起来我改的代码不多,但是化身为bug斗士两小时的我眼泪流下来……这一切只为了实现一个两块木板过河的动态规划.说一下最关键的一步吧:
+
+if (p_index >= 1) dp\[(p_index+1)%2][0] = dp\[(p_index)%2][0] && (p[p_index] == '*');
+就是这行命令,因为之前如果不强行省空间的话只需要dp\[0][0]=1,就可以了,其他行默认就有dp[*][0] = 1,用两块木板的话,dp\[2k+1][0] 默认就是1了……就是为了找&&改好这个bug，我费了九牛二虎之力。当然还有其他bug，这个是我认为最难找也最难改的一个。
+看到这里的小伙伴，应该就算是出于同情也该给我点个赞吧……
+
+好了，以上就是动态规划方法了，我认为我已经优化到了极致，那有没有其他办法解决这个问题呢？在拟写解答的过程中，我就注意到了一个方法：深度优先搜索。
+需要回溯的地方只有通配符出现的时候，用链个变量记录连续若干个 * 的最后一个的时候两个变量各自的位置，当一次深度优先搜索失败的时候就回溯到这个变量指示的位置。又是到了我最喜欢的名言：
+
+talk is cheap,show me the code
+
+深度优先搜索&&回溯
+
+```c
+bool isMatch(char * s, char * p){
+    int j = 0;
+    int start = 0;
+    int last = 0;
+    for(int i = 0; i < strlen(s);) {
+        if(j < strlen(p) && (s[i] == p[j] || p[j] == '?')){
+            i++;
+            j++;
+        } else if(j < strlen(p) && p[j] == '*') {
+            last = i;
+            start = ++j;
+        } else if(start != 0){
+            i = ++last;
+            j = start;
+        } else {
+            return false;
+        }
+    }
+    for(; j<strlen(p)&& p[j]=='*'; ++j);
+    return j==strlen(p);
+}
+```
+
+哇，这长度，这空间，不用跑就知道，结果一定很棒！
+
+放弃动态规划以后的运行结果
+
+
+妈妈咪啊，结果比我想象得还要好……深刻诠释了什么叫做动态规划从入门到优化到debug到放弃。
+
+朋友，都看到这里了，难道不愿意给在这道题目上死磕了半天的我点一个小小的赞嘛~
+
 [498. 对角线遍历](https://leetcode.cn/problems/diagonal-traverse/)
 
 给你一个大小为 `m x n` 的矩阵 `mat` ，请以对角线遍历的顺序，用一个数组返回这个矩阵中的所有元素。
