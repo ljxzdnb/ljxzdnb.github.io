@@ -3646,6 +3646,68 @@ while 1:
 
 ```
 
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// 定义国家信息结构体
+typedef struct {
+    char name[20];
+    int gold;
+    int silver;
+    int bronze;
+} Country;
+
+// 比较函数，用于qsort排序
+int compare(const void *a, const void *b) {
+    const Country *countryA = (const Country *)a;
+    const Country *countryB = (const Country *)b;
+    
+    // 按金牌数降序排列
+    if (countryA->gold != countryB->gold)
+        return countryB->gold - countryA->gold;
+    // 金牌数相等，按银牌数降序排列
+    else if (countryA->silver != countryB->silver)
+        return countryB->silver - countryA->silver;
+    // 金银牌数相等，按铜牌数降序排列
+    else if (countryA->bronze != countryB->bronze)
+        return countryB->bronze - countryA->bronze;
+    // 金银铜牌数均相等，按国家名称字母序升序排列
+    else
+        return strcmp(countryA->name, countryB->name);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n); // 输入国家的个数
+    
+    // 分配内存存储国家信息
+    Country *countries = (Country *)malloc(n * sizeof(Country));
+    
+    // 输入每个国家的信息
+    for (int i = 0; i < n; i++) {
+        scanf("%s %d %d %d", countries[i].name, &countries[i].gold, &countries[i].silver, &countries[i].bronze);
+    }
+    
+    // 使用qsort函数按照规则排序
+    qsort(countries, n, sizeof(Country), compare);
+    
+    // 输出排名结果
+    for (int i = 0; i < n; i++) {
+        printf("%s %d %d %d\n", countries[i].name, countries[i].gold, countries[i].silver, countries[i].bronze);
+    }
+    
+    // 释放动态分配的内存
+    free(countries);
+    
+    return 0;
+}
+
+```
+
+
+
 # 整型数组按个位值排序
 
 题目描述
@@ -3703,6 +3765,48 @@ while 1:
         break
 
 ```
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+// 定义比较函数，按照元素的最低位进行比较
+int compare(const void *a, const void *b) {
+    int num1 = *(int *)a;
+    int num2 = *(int *)b;
+    int last_digit_num1 = abs(num1 % 10); // 获取num1的最低位
+    int last_digit_num2 = abs(num2 % 10); // 获取num2的最低位
+
+    // 如果最低位相同，则按照原始顺序排序
+    if (last_digit_num1 == last_digit_num2)
+        return 0;
+
+    return last_digit_num1 - last_digit_num2; // 按最低位从小到大排序
+}
+
+int main() {
+    int nums[1000];
+    int num, i = 0;
+
+    // 读取输入数组
+    while (scanf("%d,", &num) == 1) {
+        nums[i++] = num;
+    }
+
+    // 使用qsort函数进行排序
+    qsort(nums, i, sizeof(int), compare);
+
+    // 输出排序后的数组
+    for (int j = 0; j < i; j++) {
+        printf("%d", nums[j]);
+        if (j != i - 1) printf(",");
+    }
+
+    return 0;
+}
+```
+
+
 
 # 磁盘容量排序
 
@@ -4479,6 +4583,51 @@ while 1:
 
 ```
 
+```c
+#include <stdio.h>
+
+#define MAX_ROWS 50
+#define MAX_COLS 50
+
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+int main() {
+    int M, N;
+    int matrix[MAX_ROWS][MAX_COLS];
+
+    // 读取输入
+    scanf("%d %d", &M, &N);
+    for (int i = 0; i < M; ++i) {
+        for (int j = 0; j < N; ++j) {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    // 动态规划求解
+    for (int i = 1; i < M; ++i) {
+        matrix[i][0] += matrix[i - 1][0];
+    }
+    for (int j = 1; j < N; ++j) {
+        matrix[0][j] += matrix[0][j - 1];
+    }
+    for (int i = 1; i < M; ++i) {
+        for (int j = 1; j < N; ++j) {
+            matrix[i][j] += max(matrix[i - 1][j], matrix[i][j - 1]);
+        }
+    }
+
+    // 输出结果
+    printf("%d\n", matrix[M - 1][N - 1]);
+
+    return 0;
+}
+
+```
+
+
+
 # HJ65 查找两个字符串a,b中的最长公共子串
 
 题目描述
@@ -4889,6 +5038,810 @@ int main() {
     }
     for (typeId = 0; typeId < 7; typeId++)  //遍历地址类型
         printf("%d ", addrType[typeId]);    //打印IP类型数
+}
+
+```
+
+[**HJ33** **整数与IP地址间的转换**](https://www.nowcoder.com/practice/66ca0e28f90c42a196afd78cc9c496ea?tpId=37&tqId=21256&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+原理：ip地址的每段可以看成是一个0-255的整数，把每段拆分成一个二进制形式组合起来，然后把这个二进制数转变成
+一个长整数。
+举例：一个ip地址为10.0.3.193
+每段数字       相对应的二进制数
+10          00001010
+0          00000000
+3          00000011
+193         11000001
+
+组合起来即为：00001010 00000000 00000011 11000001,转换为10进制数就是：167773121，即该IP地址转换后的数字就是它了。
+
+数据范围：保证输入的是合法的 IP 序列
+
+
+
+### 输入描述：
+
+输入 
+1 输入IP地址
+2 输入10进制型的IP地址
+
+### 输出描述：
+
+输出
+1 输出转换成10进制的IP地址
+2 输出转换后的IP地址
+
+## 示例1
+
+输入：
+
+```
+10.0.3.193
+167969729
+```
+
+输出：
+
+```
+167773121
+10.3.3.193
+```
+
+```c
+#include <stdio.h>
+int main(void)
+{
+    int a,b,c,d;
+    unsigned int n1,n2;
+    while(scanf("%d.%d.%d.%d",&a,&b,&c,&d) != EOF)
+    {
+        scanf("%u",&n1);
+        n2 = (a<<24)+(b<<16)+(c<<8)+d;
+        printf("%u\n",n2);
+        a=(n1>>24);
+        b=(n1>>16)&255;
+        c=(n1>>8)&255;
+        d=n1&255;
+        printf("%d.%d.%d.%d\n",a,b,c,d);
+    }
+}
+
+```
+
+[**HJ39** **判断两个IP是否属于同一子网**](https://www.nowcoder.com/practice/34a597ee15eb4fa2b956f4c595f03218?tpId=37&tqId=21262&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+IP地址是由4个0-255之间的整数构成的，用"."符号相连。
+
+二进制的IP地址格式有32位，例如：10000011，01101011，00000011，00011000;每八位用十进制表示就是131.107.3.24
+
+子网掩码是用来判断任意两台计算机的IP地址是否属于同一子网络的根据。
+
+子网掩码与IP地址结构相同，是32位二进制数，由1和0组成，且1和0分别连续，其中网络号部分全为“1”和主机号部分全为“0”。
+
+你可以简单的认为子网掩码是一串连续的1和一串连续的0拼接而成的32位二进制数，左边部分都是1，右边部分都是0。
+
+利用子网掩码可以判断两台主机是否在同一子网中。
+
+若两台主机的IP地址分别与它们的子网掩码进行逻辑“与”运算（按位与/AND）后的结果相同，则说明这两台主机在同一子网中。
+
+
+
+示例：
+I P 地址　 192.168.0.1
+子网掩码　 255.255.255.0
+
+转化为二进制进行运算：
+
+I P 地址　 11000000.10101000.00000000.00000001
+子网掩码　11111111.11111111.11111111.00000000
+
+AND运算  11000000.10101000.00000000.00000000
+
+转化为十进制后为：
+192.168.0.0
+
+
+
+I P 地址　 192.168.0.254
+子网掩码　 255.255.255.0
+
+
+转化为二进制进行运算：
+
+I P 地址　11000000.10101000.00000000.11111110
+子网掩码 11111111.11111111.11111111.00000000
+
+AND运算 11000000.10101000.00000000.00000000
+
+转化为十进制后为：
+192.168.0.0
+
+通过以上对两台计算机IP地址与子网掩码的AND运算后，我们可以看到它运算结果是一样的。均为192.168.0.0，所以这二台计算机可视为是同一子网络。
+
+输入一个子网掩码以及两个ip地址，判断这两个ip地址是否是一个子网络。
+
+若IP地址或子网掩码格式非法则输出1，若IP1与IP2属于同一子网络输出0，若IP1与IP2不属于同一子网络输出2。
+
+注:
+
+有效掩码与IP的性质为：
+
+1. 掩码与IP每一段在 0 - 255 之间
+2. 掩码的二进制字符串前缀为网络号，都由‘1’组成；后缀为主机号，都由'0'组成
+
+
+
+### 输入描述：
+
+3行输入，第1行是输入子网掩码、第2，3行是输入两个ip地址
+题目的示例中给出了三组数据，但是在实际提交时，你的程序可以只处理一组数据（3行）。
+
+### 输出描述：
+
+若IP地址或子网掩码格式非法则输出1，若IP1与IP2属于同一子网络输出0，若IP1与IP2不属于同一子网络输出2
+
+## 示例1
+
+输入：
+
+```
+255.255.255.0
+192.168.224.256
+192.168.10.4
+255.0.0.0
+193.194.202.15
+232.43.7.59
+255.255.255.0
+192.168.0.254
+192.168.0.1
+```
+
+输出：
+
+```
+1
+2
+0
+```
+
+说明：
+
+```
+对于第一个例子:
+255.255.255.0
+192.168.224.256
+192.168.10.4
+其中IP:192.168.224.256不合法，输出1
+
+对于第二个例子:
+255.0.0.0
+193.194.202.15
+232.43.7.59
+2个与运算之后，不在同一个子网，输出2
+
+对于第三个例子，2个与运算之后，如题目描述所示，在同一个子网，输出0
+```
+
+```c
+#include <stdio.h>
+#include <stdbool.h>
+
+
+
+void str_2_ip(int  addr[4],int* ip){
+    *ip = (addr[0]<<24)+(addr[1]<<16)+(addr[2]<<8)+addr[3];
+}
+
+void ip_2_addr(int ip,int* addr){
+        addr[0]=(ip>>24);
+        addr[1]=(ip>>16)&255;
+        addr[2]=(ip>>8)&255;
+        addr[3]=ip&255;
+}
+
+bool addrvalid(int addr[4]){
+        for (int i = 0; i < 4; i++) {
+        if (addr[i] > 255 || addr[i] < 0)
+            return false;
+    }
+    return true;
+}
+
+int main() {
+    int subnet_mask, ip1, ip2;
+    int tmp[4];
+    // 输入子网掩码
+    while (scanf("%d.%d.%d.%d", tmp,tmp+1,tmp+2,tmp+3) != EOF) {
+        int state = 0;
+        if(!addrvalid(tmp))
+            state = 1;
+        str_2_ip(tmp,&subnet_mask);
+        // 输入两个IP地址
+        scanf("%d.%d.%d.%d", tmp,tmp+1,tmp+2,tmp+3);
+        if(!addrvalid(tmp))
+            state = 1;
+        str_2_ip(tmp,&ip1);
+        scanf("%d.%d.%d.%d", tmp,tmp+1,tmp+2,tmp+3);
+        if(!addrvalid(tmp))
+            state = 1;
+        str_2_ip(tmp,&ip2);
+        if (state == 1) {
+            printf("1\n");
+            continue;
+        }
+        //判断子网掩码是否合法
+        if (!(~subnet_mask & (~subnet_mask + 1)) || !~subnet_mask) {
+            // 判断IP地址是否合法
+            if ((ip1 & subnet_mask) == (ip2 & subnet_mask)) {
+                printf("0\n"); // 属于同一子网络
+            } else {
+                printf("2\n"); // 不属于同一子网络
+            }
+        } else {
+            printf("1\n"); // 子网掩码非法
+        }
+    }
+}
+
+```
+
+[**HJ26** **字符串排序**](https://www.nowcoder.com/practice/5190a1db6f4f4ddb92fd9c365c944584?tpId=37&tqId=21249&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+编写一个程序，将输入字符串中的字符按如下规则排序。
+
+规则 1 ：英文字母从 A 到 Z 排列，不区分大小写。
+
+如，输入： Type 输出： epTy
+
+规则 2 ：同一个英文字母的大小写同时存在时，按照输入顺序排列。
+
+如，输入： BabA 输出： aABb
+
+规则 3 ：非英文字母的其它字符保持原来的位置。
+
+
+
+如，输入： By?e 输出： Be?y
+
+数据范围：输入的字符串长度满足 1≤*n*≤1000 
+
+
+
+### 输入描述：
+
+输入字符串
+
+### 输出描述：
+
+输出字符串
+
+## 示例1
+
+输入：
+
+```
+A Famous Saying: Much Ado About Nothing (2012/8).
+```
+
+输出：
+
+```
+A aaAAbc dFgghh: iimM nNn oooos Sttuuuy (2012/8).
+```
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+// 定义字符比较函数
+int compare(const void *a, const void *b) {
+    char charA = *(char*)a;
+    char charB = *(char*)b;
+
+    // 将字符转换为小写字母进行比较
+    return tolower(charA)-tolower(charB);
+}
+
+int main() {
+    char str[1001]={0};
+    char bp[1001]={0}; // 用于保存非字母字符
+    int bpIndex = 0; // bp 的索引
+
+    fgets(str, sizeof(str), stdin); // 读取输入字符串
+    // 遍历字符串，将非字母字符保存到 bp 中
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (isalpha(str[i])) {
+            bp[bpIndex++] = str[i];
+        }
+    }
+    // 对字母部分进行排序
+    qsort(bp, strlen(bp), sizeof(char), compare);
+
+    int bpPos = 0;
+    // 将排序后的字母字符串插入到带有非字母字符的字符串中
+    for (int i = 0; str[i] != '\0'; ++i) {
+        if (!isalpha(str[i])) {
+            continue; // 如果是非字母字符，跳过
+        }
+        else {
+            str[i] = bp[bpPos++];
+        }
+    }
+
+    printf("%s", str); // 输出结果
+
+    return 0;
+}
+
+```
+
+[**HJ36** **字符串加密**](https://www.nowcoder.com/practice/e4af1fe682b54459b2a211df91a91cf3?tpId=37&tqId=21259&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+有一种技巧可以对数据进行加密，它使用一个单词作为它的密匙。下面是它的工作原理：首先，选择一个单词作为密匙，如TRAILBLAZERS。如果单词中包含有重复的字母，只保留第1个，将所得结果作为新字母表开头，并将新建立的字母表中未出现的字母按照正常字母表顺序加入新字母表。如下所示：
+
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+
+T R A I L B Z E S C D F G H J K M N O P Q U V W X Y (实际需建立小写字母的字母表，此字母表仅为方便演示）
+
+上面其他用字母表中剩余的字母填充完整。在对信息进行加密时，信息中的每个字母被固定于顶上那行，并用下面那行的对应字母一一取代原文的字母(字母字符的大小写状态应该保留)。因此，使用这个密匙， Attack AT DAWN (黎明时攻击)就会被加密为Tpptad TP ITVH。
+
+请实现下述接口，通过指定的密匙和明文得到密文。
+
+数据范围： 1≤*n*≤100 ，保证输入的字符串中仅包含小写字母
+
+### 输入描述：
+
+先输入key和要加密的字符串
+
+### 输出描述：
+
+返回加密后的字符串
+
+## 示例1
+
+输入：
+
+```
+nihao
+ni
+```
+
+输出：
+
+```
+le
+```
+
+```c
+#include <stdio.h>
+
+int main() {
+    char str[101] ={0};
+    char key[101] = {0};
+    char bp[101]= {0};
+    char alpha[32]={0};
+    int bpindex=0;
+    while (scanf("%s", str) != EOF) { // 注意 while 处理多个 case
+        scanf("%s", key);
+        // 64 位输出请用 printf("%lld") to 
+        for(int i = 0;str[i]!='\0';i++){
+            if(alpha[str[i]-'a']==0){
+                bp[bpindex++] = str[i];
+                alpha[str[i]-'a']=1;
+            }
+        }
+        for(int j=0;j<26;j++){
+            if(alpha[j]==0)
+                bp[bpindex++] = 'a'+j;
+        }
+        for(int k=0;key[k]!='\0';k++){
+            printf("%c",bp[key[k]-'a']);
+        }
+        
+    }
+    return 0;
+}
+```
+
+## 描述
+
+Catcher是MCA国的情报员，他工作时发现敌国会用一些对称的密码进行通信，比如像这些ABBA，ABA，A，123321，但是他们有时会在开始或结束时加入一些无关的字符以防止别国破解。比如进行下列变化 ABBA->12ABBA,ABA->ABAKK,123321->51233214　。因为截获的串太长了，而且存在多种可能的情况（abaaab可看作是aba,或baaab的加密形式），Cathcer的工作量实在是太大了，他只能向电脑高手求助，你能帮Catcher找出最长的有效密码串吗？
+
+数据范围：字符串长度满足 1≤*n*≤2500 
+
+### 输入描述：
+
+输入一个字符串（字符串的长度不超过2500）
+
+### 输出描述：
+
+返回有效密码串的最大长度
+
+## 示例1
+
+输入：
+
+```
+ABBA
+```
+
+复制
+
+输出：
+
+```
+4
+```
+
+复制
+
+## 示例2
+
+输入：
+
+```
+ABBBA
+```
+
+输出：
+
+```
+5
+```
+
+## 示例3
+
+输入：
+
+```
+12HHHHA
+```
+
+输出：
+
+```
+4
+```
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int cmplen(char* s,int left,int right,int maxLength,int len){
+    while (left > -1 && right < len && s[left] == s[right]) 
+        maxLength = fmax(maxLength, right++ - left-- + 1);
+    return maxLength;
+}
+
+int longestValidPassword(char *s) {
+    int len = strlen(s);
+    int maxLength = 0;
+
+    for (int i = 0; i < len; i++) {
+        // 从当前位置向两侧扩展寻找对称的密码串
+        maxLength = cmplen(s,i,i,maxLength,len);
+        if(s[i]==s[i+1])
+        maxLength = cmplen(s,i,i+1,maxLength,len);
+    }
+
+    return maxLength;
+}
+
+int main() {
+    char str[2501]; // 为了容纳'\0'结束符，字符串长度设为2501
+    scanf("%s", str);
+    int result = longestValidPassword(str);
+    printf("%d\n", result);
+    return 0;
+}
+
+```
+
+[**HJ4** **字符串分隔**](https://www.nowcoder.com/practice/d9162298cb5a437aad722fccccaae8a7?tpId=37&tqId=21227&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+•输入一个字符串，请按长度为8拆分每个输入字符串并进行输出；
+
+•长度不是8整数倍的字符串请在后面补数字0，空字符串不处理。
+
+### 输入描述：
+
+连续输入字符串(每个字符串长度小于等于100)
+
+### 输出描述：
+
+依次输出所有分割后的长度为8的新字符串
+
+## 示例1
+
+输入：
+
+```
+abc
+```
+
+输出：
+
+```
+abc00000
+```
+
+```c
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char str[9]={0};
+    while(scanf("%8s", str) != EOF)
+    {
+        int len = 8 - strlen(str);
+        printf("%.8s", str);
+        for(int i = 0; i < len; i++)
+            printf("0");
+        printf("\n");
+    }
+}
+```
+
+[**HJ55** **挑7**](https://www.nowcoder.com/practice/ba241b85371c409ea01ac0aa1a8d957b?tpId=37&tqId=21278&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+输出 1到n之间 的与 7 有关数字的个数。
+
+一个数与7有关是指这个数是 7 的倍数，或者是包含 7 的数字（如 17 ，27 ，37 ... 70 ，71 ，72 ，73...）
+
+数据范围： 1≤*n*≤30000 
+
+### 输入描述：
+
+一个正整数 n 。( n 不大于 30000 )
+
+### 输出描述：
+
+一个整数，表示1到n之间的与7有关的数字个数。
+
+## 示例1
+
+输入：
+
+```
+20
+```
+
+输出：
+
+```
+3
+```
+
+说明：
+
+```
+输入20，1到20之间有关的数字包括7,14,17共3个。 
+```
+
+```c
+#include <stdio.h>
+int main(void) {
+    int n;
+    while (scanf("%d", &n) != EOF) {
+        int i, m, b;
+        int cnt = 0;
+        for (i = 1; i <= n; i++) {
+            m = i;
+            while (m) {
+                b = m % 10;
+                m = m / 10;
+                if (b == 7 || m == 7 || i % 7 == 0) {
+                    cnt++;
+                    break;
+                }
+            }
+        }
+        printf("%d\n", cnt);
+    }
+}
+```
+
+[**HJ103** **Redraiment的走法**](https://www.nowcoder.com/practice/24e6243b9f0446b081b1d6d32f2aa3aa?tpId=37&tqId=21326&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+Redraiment是走梅花桩的高手。Redraiment可以选择任意一个起点，从前到后，但只能从低处往高处的桩子走。他希望走的步数最多，你能替Redraiment研究他最多走的步数吗？
+
+数据范围：每组数据长度满足 1≤*n*≤200 ， 数据大小满足 1≤*v**a**l*≤350 
+
+### 输入描述：
+
+数据共2行，第1行先输入数组的个数，第2行再输入梅花桩的高度
+
+### 输出描述：
+
+输出一个结果
+
+## 示例1
+
+输入：
+
+```
+6
+2 5 1 5 4 5 
+```
+
+输出：
+
+```
+3
+```
+
+说明：
+
+```
+6个点的高度各为 2 5 1 5 4 5
+如从第1格开始走,最多为3步, 2 4 5 ，下标分别是 1 5 6
+从第2格开始走,最多只有1步,5
+而从第3格开始走最多有3步,1 4 5， 下标分别是 3 5 6
+从第5格开始走最多有2步,4 5， 下标分别是 5 6
+所以这个结果是3。     
+```
+
+```c
+#include <stdio.h>
+
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int height[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &height[i]);
+    }
+
+    int dp[n];
+    int res = 0;
+    for (int i = 0; i < n; i++) {
+        dp[i] = 1;
+        for (int j = 0; j < i; j++) {
+            if (height[j] < height[i]) {
+                dp[i] = fmax(dp[i], dp[j] + 1);
+            }
+        }
+        res = fmax(res, dp[i]);
+    }
+
+    printf("%d\n", res);
+
+    return 0;
+}
+
+```
+
+[**HJ77** **火车进站**](https://www.nowcoder.com/practice/97ba57c35e9f4749826dc3befaeae109?tpId=37&tqId=21300&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+给定一个正整数N代表火车数量，0<N<10，接下来输入火车入站的序列，一共N辆火车，每辆火车以数字1-9编号，火车站只有一个方向进出，同时停靠在火车站的列车中，只有后进站的出站了，先进站的才能出站。
+
+要求输出所有火车出站的方案，以字典序排序输出。
+
+数据范围：1≤*n*≤10 
+
+进阶：时间复杂度：O*(*n*!) ，空间复杂度：O*(*n*) 
+
+### 输入描述：
+
+第一行输入一个正整数N（0 < N <= 10），第二行包括N个正整数，范围为1到10。
+
+### 输出描述：
+
+输出以字典序从小到大排序的火车出站序列号，每个编号以空格隔开，每个输出序列换行，具体见sample。
+
+## 示例1
+
+输入：
+
+```
+3
+1 2 3
+```
+
+复制
+
+输出：
+
+```
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 2 1
+```
+
+复制
+
+说明：
+
+```
+第一种方案：1进、1出、2进、2出、3进、3出
+第二种方案：1进、1出、2进、3进、3出、2出
+第三种方案：1进、2进、2出、1出、3进、3出
+第四种方案：1进、2进、2出、3进、3出、1出
+第五种方案：1进、2进、3进、3出、2出、1出
+请注意，[3,1,2]这个序列是不可能实现的。
+```
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int N;
+int train[10] = {0};
+int in_train[10] = {0};
+int out_train[10] = {0};
+char res[60000][10] = {0};
+int kind = 0;
+
+int cmp(void *a, void *b)
+{
+    return strcmp((char *)a, (char *)b); 
+}
+
+void DFS(int in_num, int out_num, int index)
+{
+    if (out_num == N) {
+        for (int i = 0; i < N; i++) {
+            res[kind][i] = out_train[i] + '0';
+        }
+        kind++;
+        //printf("RETURN: in_num=%d, out_num=%d, index=%d, kind=%d\n", in_num, out_num, index, kind);
+        return;
+    }
+    
+    // 进站
+    if (index < N) {
+        in_train[++in_num] = train[index++];
+        //printf("IN: in_num=%d, out_num=%d, index=%d, in=%d\n", in_num, out_num, index, in_train[in_num - 1]);
+        DFS(in_num, out_num, index);
+        in_num--;
+        index--;
+    }
+    
+    // 出站
+    if (in_num >= 0) {
+        out_train[out_num++] = in_train[in_num--];
+        //printf("OUT: in_num=%d, out_num=%d, index=%d, out=%d\n", in_num, out_num, index, in_train[in_num + 1]);
+        DFS(in_num, out_num, index);
+        in_train[++in_num] = out_train[--out_num];
+    }
+}
+
+int main(void)
+{
+    scanf("%d", &N);
+    for (int i = 0; i < N; i++) {
+        scanf("%d", &train[i]);
+    }
+    
+    DFS(-1, 0, 0);
+    
+    qsort(res, kind, sizeof(res[0]), cmp);
+    
+    //printf("%d\n", kind);
+    for (int i = 0; i < kind; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%c ", res[i][j]);
+        }
+        printf("\n");
+    }
+    
+    return 0;
 }
 
 ```
