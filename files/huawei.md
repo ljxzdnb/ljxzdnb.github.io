@@ -6089,3 +6089,219 @@ int main() {
 
 ```
 
+[**HJ93** **数组分组**](https://www.nowcoder.com/practice/9af744a3517440508dbeb297020aca86?tpId=37&tqId=21316&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D2%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+输入int型数组，询问该数组能否分成两组，使得两组中各元素加起来的和相等，并且，所有5的倍数必须在其中一个组中，所有3的倍数在另一个组中（不包括5的倍数），不是5的倍数也不是3的倍数能放在任意一组，可以将数组分为空数组，能满足以上条件，输出true；不满足时输出false。
+
+数据范围：每个数组大小满足 1≤*n*≤50 ，输入的数据大小满足  ∣*v**a**l*∣≤500 
+
+### 输入描述：
+
+第一行是数据个数，第二行是输入的数据
+
+### 输出描述：
+
+返回true或者false
+
+## 示例1
+
+输入：
+
+```
+4
+1 5 -5 1
+```
+
+输出：
+
+```
+true
+```
+
+说明：
+
+```
+第一组：5 -5 1
+第二组：1      
+```
+
+## 示例2
+
+输入：
+
+```
+3
+3 5 8
+```
+
+输出：
+
+```
+false
+```
+
+说明：
+
+```
+由于3和5不能放在同一组，所以不存在一种分法。  
+```
+
+```c
+#include<stdio.h>
+
+
+int solu(int N1,int N2,int arr[],int idx,int n);
+
+
+int main(){
+    int N1 = 0;
+    int N2 = 0;
+    
+    int n;
+    int arr[50];
+    while(scanf("%d",&n)!=EOF){
+        for(int i=0;i<n;i++){
+            scanf("%d",&arr[i]);
+        }
+        int idx = 0;
+        int r = solu(N1,N2,arr,idx,n);
+        if(r>0)
+            printf("true");
+        else
+            printf("false");
+            
+    }
+    
+}
+
+int solu(int N1,int N2,int arr[],int idx,int n){
+    if(idx==n){
+        if(N1==N2)
+            return 1;
+        else
+            return 0;
+    }
+    else{
+        if(arr[idx]%5==0){
+            return solu(N1-arr[idx],N2,arr,idx+1,n);
+        }
+        else if(arr[idx]%3==0){
+            return solu(N1,N2-arr[idx],arr,idx+1,n);
+        }
+        else{
+            return solu(N1-arr[idx],N2,arr,idx+1,n)+solu(N1,N2-arr[idx],arr,idx+1,n);
+        }
+    }
+}
+```
+
+[**HJ19** **简单错误记录**](https://www.nowcoder.com/practice/2baa6aba39214d6ea91a2e03dff3fbeb?tpId=37&tqId=21242&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D2%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+开发一个简单错误记录功能小模块，能够记录出错的代码所在的文件名称和行号。
+
+
+
+处理：
+
+
+
+1、 记录最多8条错误记录，循环记录，最后只用输出最后出现的八条错误记录。对相同的错误记录只记录一条，但是**错误计数增加。最后一个斜杠后面的带后缀名的部分（保留最后16位）和行号完全匹配的记录才做算是****“****相同****”****的错误记录。**
+
+2、 超过16个字符的文件名称，只记录文件的最后有效16个字符；
+
+3、 输入的文件可能带路径，记录文件名称不能带路径。**也就是说，哪怕不同路径下的文件，如果它们的名字的后16个字符相同，也被视为相同的错误记录**
+
+4、循环记录时，只以第一次出现的顺序为准，后面重复的不会更新它的出现时间，仍以第一次为准
+
+数据范围：错误记录数量满足 1≤�≤100 1≤*n*≤100 ，每条记录长度满足 1≤���≤100 1≤*l**e**n*≤100 
+
+### 输入描述：
+
+每组只包含一个测试用例。一个测试用例包含一行或多行字符串。每行包括带路径文件名称，行号，以空格隔开。
+
+### 输出描述：
+
+将所有的记录统计并将结果输出，格式：文件名 代码行数 数目，一个空格隔开，如：
+
+## 示例1
+
+输入：
+
+```
+D:\zwtymj\xccb\ljj\cqzlyaszjvlsjmkwoqijggmybr 645
+E:\je\rzuwnjvnuz 633
+C:\km\tgjwpb\gy\atl 637
+F:\weioj\hadd\connsh\rwyfvzsopsuiqjnr 647
+E:\ns\mfwj\wqkoki\eez 648
+D:\cfmwafhhgeyawnool 649
+E:\czt\opwip\osnll\c 637
+G:\nt\f 633
+F:\fop\ywzqaop 631
+F:\yay\jc\ywzqaop 631
+D:\zwtymj\xccb\ljj\cqzlyaszjvlsjmkwoqijggmybr 645
+```
+
+输出：
+
+```
+rzuwnjvnuz 633 1
+atl 637 1
+rwyfvzsopsuiqjnr 647 1
+eez 648 1
+fmwafhhgeyawnool 649 1
+c 637 1
+f 633 1
+ywzqaop 631 2
+```
+
+说明：
+
+```
+由于D:\cfmwafhhgeyawnool 649的文件名长度超过了16个字符，达到了17，所以第一个字符'c'应该被忽略。
+记录F:\fop\ywzqaop 631和F:\yay\jc\ywzqaop 631由于文件名和行号相同，因此被视为同一个错误记录，哪怕它们的路径是不同的。
+由于循环记录时，只以第一次出现的顺序为准，后面重复的不会更新它的出现时间，仍以第一次为准，所以D:\zwtymj\xccb\ljj\cqzlyaszjvlsjmkwoqijggmybr 645不会被记录。  
+```
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+struct recordline{
+    char name[128];
+    int line;
+    int num;
+};
+
+int main() {
+    int i=0,index = 0;
+    char name[128] = {0};
+    struct recordline tmp ={{0},0,1};
+    struct recordline record[128] = {0};
+    while (scanf("%s %d", name, &tmp.line) == 2) { // 注意 while 处理多个 case
+        char* sec = strtok(name, "\\"),*old=NULL;
+        while (sec) {
+            old = sec;
+            sec = strtok(NULL, "\\");
+        }
+        strcpy(tmp.name, old);
+        for(i = 0;i<index+1;i++){
+            if(tmp.line == record[i].line && strcmp(tmp.name,record[i].name)==0){
+                record[i].num++;
+                index--;
+                break;
+            }else if(i == index)
+                record[i] = tmp;
+        }
+        index++;
+    }
+    for(i = index - 8 > 0 ? index - 8 : 0; i < index; i++)
+        printf("%s %d %d\n",&record[i].name[(int)strlen(record[i].name) - 16 >0?strlen(record[i].name)-16:0],record[i].line,record[i].num);
+    
+    return 0;
+}
+```
+
