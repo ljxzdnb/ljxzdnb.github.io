@@ -300,6 +300,52 @@ def longestValidParentheses(self, s: str) -> int:
         return 0
 ```
 
+dp:
+
+```c
+int longestValidParentheses(char* s) {
+    int maxans = 0, n = strlen(s);
+    if (n == 0) return 0;
+    int dp[n];
+    memset(dp, 0, sizeof(dp));
+    for (int i = 1; i < n; i++) {
+        if (s[i] == ')') {
+            if (s[i - 1] == '(') {
+                dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+            } else if (i - dp[i - 1] > 0 && s[i - dp[i - 1] - 1] == '(') {
+                dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+            }
+            maxans = fmax(maxans, dp[i]);
+        }
+    }
+    return maxans;
+}
+
+```
+
+stack:
+
+```c
+int longestValidParentheses(char* s) {
+    int maxans = 0, n = strlen(s);
+    int stk[n + 1], top = -1;
+    stk[++top] = -1;
+    for (int i = 0; i < n; i++) {
+        if (s[i] == '(') {
+            stk[++top] = i;
+        } else {
+            --top;
+            if (top == -1) {
+                stk[++top] = i;
+            } else {
+                maxans = fmax(maxans, i - stk[top]);
+            }
+        }
+    }
+    return maxans;
+}
+```
+
 栈：
 
 具体做法是我们始终保持栈底元素为当前已经遍历过的元素中「最后一个没有被匹配的右括号的下标」，这样的做法主要是考虑了边界条件的处理，栈里其他元素维护左括号的下标：
