@@ -706,8 +706,6 @@ int maxArea(int* height, int heightSize) {
 }
 ```
 
-
-
 ```python
 def maxArea(self, height: List[int]) -> int:
     l, r = 0, len(height) - 1
