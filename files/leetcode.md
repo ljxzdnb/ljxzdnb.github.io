@@ -637,6 +637,45 @@ n 对括号，则有多少种 “括号匹配” 的括号序列
 ```
 
 ```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char map[10][5]={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+char *path;
+char **ans;
+int pathsize,anssize,n;
+void backtrace(int idx,char *digits)
+{
+    if(idx==n) //注意c语言字符串处理
+    {
+        char *temp=(char*)malloc(sizeof(char)*(n+1));
+        memcpy(temp,path,sizeof(char)*n);
+        temp[n]=0;
+        ans[anssize++]=temp;
+        return;
+    }
+    char *words=map[digits[idx]-'0'];
+    for(int i=0;i<strlen(words);i++) //选或不选当前字符
+    {
+        path[pathsize++]=words[i];
+        backtrace(idx+1,digits);
+        pathsize--;
+    }
+}
+char ** letterCombinations(char * digits, int* returnSize){
+    n=strlen(digits);
+    path=(char*)malloc(sizeof(char)*n);
+    ans=(char**)malloc(sizeof(char*)*300);
+    anssize=pathsize=0;
+    if(n==0)
+    {
+        *returnSize=0;
+        return ans;
+    }
+    backtrace(0,digits);
+    *returnSize=anssize;
+    return ans;
+}
 
 ```
 
