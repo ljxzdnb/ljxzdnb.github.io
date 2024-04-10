@@ -6305,3 +6305,211 @@ int main() {
 }
 ```
 
+[**HJ63** **DNA序列**](https://www.nowcoder.com/practice/e8480ed7501640709354db1cc4ffd42a?tpId=37&tqId=21286&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D2%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+一个 DNA 序列由 A/C/G/T 四个字母的排列组合组成。 G 和 C 的比例（定义为 GC-Ratio ）是序列中 G 和 C 两个字母的总的出现次数除以总的字母数目（也就是序列长度）。在基因工程中，这个比例非常重要。因为高的 GC-Ratio 可能是基因的起始点。
+
+给定一个很长的 DNA 序列，以及限定的子串长度 N ，请帮助研究人员在给出的 DNA 序列中从左往右找出 GC-Ratio 最高且长度为 N 的第一个子串。
+
+DNA序列为 ACGT 的子串有: ACG , CG , CGT 等等，但是没有 AGT ， CT 等等
+
+数据范围：字符串长度满足 1≤*n*≤1000 ，输入的字符串只包含 A/C/G/T 字母
+
+### 输入描述：
+
+输入一个string型基因序列，和int型子串的长度
+
+### 输出描述：
+
+找出GC比例最高的子串,如果有多个则输出第一个的子串
+
+## 示例1
+
+输入：
+
+```
+ACGT
+2
+```
+
+输出：
+
+```
+CG
+```
+
+说明：
+
+```
+ACGT长度为2的子串有AC,CG,GT3个，其中AC和GT2个的GC-Ratio都为0.5，CG为1，故输出CG   
+```
+
+## 示例2
+
+输入：
+
+```
+AACTGTGCACGACCTGA
+5
+```
+
+输出：
+
+```
+GCACG
+```
+
+说明：
+
+```
+虽然CGACC的GC-Ratio也是最高，但它是从左往右找到的GC-Ratio最高的第2个子串，所以只能输出GCACG。    
+```
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STR_LEN 1000
+
+int main(void)
+{
+    char str[MAX_STR_LEN + 1] = {0};
+    int strLen;
+    int winLen;
+    int cntGC;
+    int winLeft;
+    int winRight;
+    int i;
+    int max = 0;
+    int index = 0;
+    
+    scanf("%s%d", str,&winLen);
+    strLen = strlen(str);
+    cntGC = 0;
+    winLeft = 0;
+    winRight = winLen - 1;
+    /* 先计算出初始窗口的GC个数 */
+    for (i = 0; i < winLen; i++) {
+        if (str[i] == 'G' || str[i] == 'C') {
+            cntGC++;
+        }    
+    }
+    /* 保存初始的GC max数 */
+    max = cntGC;
+    /* 滑动窗口 */
+    for (i = 0; i < strLen - winLen; i++) {
+        winRight++;
+        /* 划入右边窗口判断 */
+        if (str[winRight] == 'G' || str[winRight] == 'C') {
+            cntGC++;
+        }
+        /* 弹出左边窗口判断 */
+        if (str[winLeft] == 'G' || str[winLeft] == 'C') {
+            cntGC--; 
+        }
+        winLeft++;
+        /* 判断最大GC，并记录index */
+        if (max < cntGC) {
+            max = cntGC;
+            index = winLeft;
+        }
+    }
+    printf("%.*s\n", winLen, &str[index]);
+    return 0;
+}
+```
+
+[**HJ64** **MP3光标位置**](https://www.nowcoder.com/practice/eaf5b886bd6645dd9cfb5406f3753e15?tpId=37&tqId=21287&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D2%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+MP3 Player因为屏幕较小，显示歌曲列表的时候每屏只能显示几首歌曲，用户要通过上下键才能浏览所有的歌曲。为了简化处理，假设每屏只能显示4首歌曲，光标初始的位置为第1首歌。
+
+
+
+现在要实现通过上下键控制光标移动来浏览歌曲列表，控制逻辑如下：
+
+1. 歌曲总数<=4的时候，不需要翻页，只是挪动光标位置。
+
+光标在第一首歌曲上时，按Up键光标挪到最后一首歌曲；光标在最后一首歌曲时，按Down键光标挪到第一首歌曲。
+
+![img](http://uploadfiles.nowcoder.com/images/20151225/60_1451044435725_D0096EC6C83575373E3A21D129FF8FEF)
+
+其他情况下用户按Up键，光标挪到上一首歌曲；用户按Down键，光标挪到下一首歌曲。
+
+![img](http://uploadfiles.nowcoder.com/images/20151225/60_1451044443725_032B2CC936860B03048302D991C3498F)
+
+2. 歌曲总数大于4的时候（以一共有10首歌为例）：
+
+
+
+特殊翻页：屏幕显示的是第一页（即显示第1 – 4首）时，光标在第一首歌曲上，用户按Up键后，屏幕要显示最后一页（即显示第7-10首歌），同时光标放到最后一首歌上。同样的，屏幕显示最后一页时，光标在最后一首歌曲上，用户按Down键，屏幕要显示第一页，光标挪到第一首歌上。
+
+![img](http://uploadfiles.nowcoder.com/images/20151225/60_1451044452440_18E2999891374A475D0687CA9F989D83)
+
+一般翻页：屏幕显示的不是第一页时，光标在当前屏幕显示的第一首歌曲时，用户按Up键后，屏幕从当前歌曲的上一首开始显示，光标也挪到上一首歌曲。光标当前屏幕的最后一首歌时的Down键处理也类似。
+
+![img](http://uploadfiles.nowcoder.com/images/20151225/60_1451044460400_FE5DF232CAFA4C4E0F1A0294418E5660)
+
+其他情况，不用翻页，只是挪动光标就行。
+
+数据范围：命令长度 1≤*s*≤100 ，歌曲数量 1≤*n*≤150 
+
+进阶：时间复杂度：O*(*n*) ，空间复杂度： *O*(*n*) 
+
+### 输入描述：
+
+输入说明：
+1 输入歌曲数量
+2 输入命令 U或者D
+
+### 输出描述：
+
+输出说明
+1 输出当前列表
+2 输出当前选中歌曲
+
+## 示例1
+
+输入：
+
+```
+10
+UUUU
+```
+
+输出：
+
+```
+7 8 9 10
+7
+```
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int n, a[105], s=1, l=1, r, sig=1;
+char c [105];
+
+int main() {
+scanf("%d",&n);
+scanf("%s",c + 1);
+s = strlen(c + 1);
+r = fmin(n, 4);
+
+for (int i = 1; i <= s; i++)
+    {
+    if (c [i] == 68)    sig = sig % n + 1;
+    else                sig = (sig - 1 - 1 + n) % n + 1;
+    if (sig < l)        {l = sig;   r = sig + 3;}
+    else if (sig > r)   {r = sig;   l = sig - 3;}
+    }
+
+for (int i = l; i <= r; i++)
+        printf("%d ",i);
+printf("\n%d",sig);
+return 0;
+}
+```
+

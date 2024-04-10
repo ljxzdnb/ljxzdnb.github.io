@@ -423,9 +423,7 @@ int longestValidParentheses(char * s){
 方法一：动态规划
 对于下标 iii，下雨后水能到达的最大高度等于下标 iii 两边的最大高度的最小值，下标 iii 处能接的雨水量等于下标 iii 处的水能到达的最大高度减去 height[i]\textit{height}[i]height[i]。
 
-朴素的做法是对于数组 height\textit{height}height 中的每个元素，分别向左和向右扫描并记录左边和右边的最大高度，然后计算每个下标位置能接的雨水量。假设数组 height\textit{height}height 的长度为 nnn，该做法需要对每个下标位置使用 O(n)O(n)O(n) 的时间向两边扫描并得到最大高度，因此总时间复杂度是 O(n2)O(n^2)O(n 
-2
- )。
+朴素的做法是对于数组 height\textit{height}height 中的每个元素，分别向左和向右扫描并记录左边和右边的最大高度，然后计算每个下标位置能接的雨水量。假设数组 height\textit{height}height 的长度为 nnn，该做法需要对每个下标位置使用 O(n)O(n)O(n) 的时间向两边扫描并得到最大高度，因此总时间复杂度是 O(n2)O(n^2)O(n^2)。
 
 上述做法的时间复杂度较高是因为需要对每个下标位置都向两边扫描。如果已经知道每个位置两边的最大高度，则可以在 O(n)O(n)O(n) 的时间内得到能接的雨水总量。使用动态规划的方法，可以在 O(n)O(n)O(n) 的时间内预处理得到每个位置两边的最大高度。
 
@@ -469,8 +467,6 @@ int trap(int* height, int heightSize) {
     return ans;
 }
 ```
-
-
 
 # [括号生成](https://leetcode.cn/problems/generate-parentheses/)(动态规划):
 
@@ -625,60 +621,6 @@ n 对括号，则有多少种 “括号匹配” 的括号序列
 
 ![img](https://pic1.zhimg.com/80/v2-b21b64ee36af600e1c9d989f79306a6c_1440w.webp)
 
-# [电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/):
-
-给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
-
-给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
-
-```c
-输入：digits = "23"
-输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
-```
-
-```c
-/**
- * Note: The returned array must be malloced, assume caller calls free().
- */
-char map[10][5]={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
-char *path;
-char **ans;
-int pathsize,anssize,n;
-void backtrace(int idx,char *digits)
-{
-    if(idx==n) //注意c语言字符串处理
-    {
-        char *temp=(char*)malloc(sizeof(char)*(n+1));
-        memcpy(temp,path,sizeof(char)*n);
-        temp[n]=0;
-        ans[anssize++]=temp;
-        return;
-    }
-    char *words=map[digits[idx]-'0'];
-    for(int i=0;i<strlen(words);i++) //选或不选当前字符
-    {
-        path[pathsize++]=words[i];
-        backtrace(idx+1,digits);
-        pathsize--;
-    }
-}
-char ** letterCombinations(char * digits, int* returnSize){
-    n=strlen(digits);
-    path=(char*)malloc(sizeof(char)*n);
-    ans=(char**)malloc(sizeof(char*)*300);
-    anssize=pathsize=0;
-    if(n==0)
-    {
-        *returnSize=0;
-        return ans;
-    }
-    backtrace(0,digits);
-    *returnSize=anssize;
-    return ans;
-}
-
-```
-
 # [盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/):(贪心)
 
 ![](/home/ljxnb/lib/leetcode/question_11.jpg)
@@ -786,10 +728,6 @@ bool exist(char **board, int boardSize, int *boardColSize, char *word)
     return false;
 }
 ```
-
-
-
-
 
 # [最大矩形](https://leetcode.cn/problems/maximal-rectangle/):(前缀和)
 
@@ -926,17 +864,7 @@ round() 方法返回浮点数 x 的四舍五入值，准确的说保留值将保
 
 # [最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/):
 
-输入：s = "babad"
-输出："bab"
-解释："aba" 同样是符合题意的答案。
 
-有两种情况，一种是奇数个回文串，另一种是偶数个回文串，同时考虑即可。
-
-首先，设定一个最大回文子串为空字符串，res = ''，之后再逐步更新维护这个res。
-
-然后，遍历整个数组，i为指针。根据i的位置向前找回文子串，这里要注意，我们只需要去找长度大于res的回文子串就可以了，所以定位到回文子串的开头的前一位应该是：start = i - len(s) - 1, 但是start可能会小于0，因此做一个截断start = max(0, i-len(s)-1)。
-
-最后，根据选定的回文子串的索引范围，对字符串做切片，并判断是否是回文子串。这里需要注意，此时分为开头讨论的两种情况，即奇数个回文子串和偶数个回文子串，命中其一种条件，就把寻找到的回文子串重新赋值给res，这样res的长度会随着指针的遍历越来越大，遍历结束后，res即为最长回文子串。
 
 ```python
     def longestPalindrome(self, s: str) -> str:
@@ -968,6 +896,40 @@ aba aba 3
 abad 2
 aba abad 3
 aba
+```
+
+解题思路
+此处撰写解题思路
+使用中心扩散法寻找回文数组，但是回文数组有两种可能，奇数个和偶数个。
+设置两个指针left和right，分别位于对称中心的两边，向两边扩散，中心对称点是重复字符串则当成一个字符处理。
+
+代码
+
+```c
+char * longestPalindrome(char * s){
+    if(strlen(s)==0||strlen(s)==1) return s;
+    int i,start,left,right,count,len;
+    start = len =0;
+    for(i=0;s[i]!='\0';i+=count){
+        count = 1;
+        left=i-1;
+        right = i+1;
+        while(s[right]!='\0'&&s[i]==s[right]){ //处理重复字符串
+            right++;
+            count++;
+        }
+        while(left>=0 && s[right]!='\0' && s[left] == s[right]){
+            left--;
+            right++;
+        }
+        if(right-left-1>len){
+            start = left+1;
+            len = right-left-1;
+        }
+    }
+    s[start + len] = '\0';      // 原地修改返回
+    return s + start;
+}
 ```
 
 
@@ -1004,6 +966,31 @@ aba
             
         return not stack
 ```
+
+```c
+bool isValid(char* s) {
+    char stk[10010];
+    int tt = -1;//这里默认下标从-1开始（个人习惯）
+    for(int i = 0;i < strlen(s);i++){
+        if(s[i] == '(' || s[i] == '[' || s[i] == '{') stk[++tt] = s[i];
+        else{
+            if(s[i] == ')'){
+                if(tt == -1 || stk[tt] != '(') return false;
+                else if(stk[tt] == '(') tt--;
+            }else if(s[i] == ']'){
+                if(tt == -1 || stk[tt] != '[') return false;
+                else if(stk[tt] == '[') tt--;
+            }else if(s[i] == '}'){
+                if(tt == -1 || stk[tt] != '{') return false;
+                else if(stk[tt] == '{') tt--;
+            }
+        }
+    }
+    return tt == -1;
+}
+```
+
+
 
 # [单词拆分](https://leetcode.cn/problems/word-break/):(huawei)
 
@@ -1148,6 +1135,62 @@ class Solution:
         return True
 ```
 
+该解法是比较暴力的遍历解法
+首先是遍历整个二维数组（碰到'.'就跳过）把所有数都放入check（自己编写）中
+
+在check中我们实现一次性对三个条件进行检查
+
+首先是行：
+由于我们传入了原数组的坐标
+并且写了一个循环使得a从0到9不断增加
+所以只要保持j（传入的纵坐标）不变不断增加横坐标就可以遍历整个行，（跳过自身：a和i相同时条件不能漏）
+
+列同理
+
+再者时33的范围（本题最妙的一个地方）
+首先确定传入的坐标处于哪个范围
+由i/3和j/3可以得出（一共有9个范围）
+之后再分别给(i/3)和(j/3)乘3可以得到初始位置
+之后随着a从0-9增加
+如何使得在范围遍历呢
+已知(0-9)%3会经历3个（0-3）的循环
+而（0-9）/3会在（0-2）时等于0，（3-5）时等于1，（6-8）时等于2（很类似2进制）
+已知这两个条件就可以进行遍历
+设m=3(i/3)+a%3
+设n=3*(j/3)+a/3
+就可以进行遍历
+
+之后再进行整体判断就可以遍历所有数组元素
+详见注释
+
+```c
+bool check(char** board,int num,int i,int j){
+    for(int a=0;a<9;a++){
+        int m=3*(i/3)+a%3;
+        int n=3*(j/3)+a/3;
+        if((board[m][n]==num&&m!=i&&n!=j)||(board[i][a]==num&&a!=j)||(board[a][j]==num&&a!=i)){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool isValidSudoku(char** board, int boardSize, int* boardColSize){
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            if(board[i][j]=='.')
+                continue;
+        if(!check(board,board[i][j],i,j))
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+
+
 # 滑动窗口
 
 给定一个含有 `n` 个正整数的数组和一个正整数 `target` **。**
@@ -1255,6 +1298,10 @@ class Solution:
         # 返回结果
         return 0 if result == len(nums) + 1 else result
 ```
+
+
+
+
 
 # 水果搬运问题(排序)
 
@@ -2047,13 +2094,53 @@ int main() {
 }
 ```
 
+```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char map[10][5]={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+char *path;
+char **ans;
+int pathsize,anssize,n;
+void backtrace(int idx,char *digits)
+{
+    if(idx==n) //注意c语言字符串处理
+    {
+        char *temp=(char*)malloc(sizeof(char)*(n+1));
+        memcpy(temp,path,sizeof(char)*n);
+        temp[n]=0;
+        ans[anssize++]=temp;
+        return;
+    }
+    char *words=map[digits[idx]-'0'];
+    for(int i=0;i<strlen(words);i++) //选或不选当前字符
+    {
+        path[pathsize++]=words[i];
+        backtrace(idx+1,digits);
+        pathsize--;
+    }
+}
+char ** letterCombinations(char * digits, int* returnSize){
+    n=strlen(digits);
+    path=(char*)malloc(sizeof(char)*n);
+    ans=(char**)malloc(sizeof(char*)*300);
+    anssize=pathsize=0;
+    if(n==0)
+    {
+        *returnSize=0;
+        return ans;
+    }
+    backtrace(0,digits);
+    *returnSize=anssize;
+    return ans;
+}
+```
+
+
+
 复杂度分析
 
-时间复杂度：$$O(3^m×4^n)$$，其中 mmm 是输入中对应 333 个字母的数字个数（包括数字 222、333、444、555、666、888），nnn 是输入中对应 444 个字母的数字个数（包括数字 777、999），m+nm+nm+n 是输入数字的总个数。当输入包含 mmm 个对应 333 个字母的数字和 nnn 个对应 444 个字母的数字时，不同的字母组合一共有 3m×4n3^m \times 4^n3 
-m
- ×4 
-n
-  种，需要遍历每一种字母组合。
+时间复杂度：O(3^m×4^n)，其中 mmm 是输入中对应 333 个字母的数字个数（包括数字 222、333、444、555、666、888），nnn 是输入中对应 444 个字母的数字个数（包括数字 777、999），m+nm+nm+n 是输入数字的总个数。当输入包含 mmm 个对应 333 个字母的数字和 nnn 个对应 444 个字母的数字时，不同的字母组合一共有 3m×4n3^m \times 4^n3 m×4 n种，需要遍历每一种字母组合。
 
 空间复杂度：O(m+n)，其中 mmm 是输入中对应 333 个字母的数字个数，nnn 是输入中对应 444 个字母的数字个数，m+nm+nm+n 是输入数字的总个数。除了返回值以外，空间复杂度主要取决于哈希表以及回溯过程中的递归调用层数，哈希表的大小与输入无关，可以看成常数，递归调用层数最大为 m+nm。
 
