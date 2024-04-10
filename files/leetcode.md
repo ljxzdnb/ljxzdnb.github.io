@@ -3647,3 +3647,199 @@ int longestSubarray(int* nums, int numsSize, int limit){
 }
 ```
 
+[**HJ71** **字符串通配符**](https://www.nowcoder.com/practice/43072d50a6eb44d2a6c816a283b02036?tpId=37&tqId=21294&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D2%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+## 描述
+
+问题描述：在计算机中，通配符一种特殊语法，广泛应用于文件搜索、数据库、正则表达式等领域。现要求各位实现字符串通配符的算法。
+要求：
+实现如下2个通配符：
+*：匹配0个或以上的字符（注：能被*和?匹配的字符仅由英文字母和数字0到9组成，下同）
+？：匹配1个字符
+
+注意：匹配时不区分大小写。
+
+输入：
+通配符表达式；
+一组字符串。
+
+输出：
+
+返回不区分大小写的匹配结果，匹配成功输出true，匹配失败输出false
+
+数据范围：字符串长度： 1≤*s*≤100 
+
+进阶：时间复杂度： *O*(*n*2) ，空间复杂度：O*(*n*) 
+
+### 输入描述：
+
+先输入一个带有通配符的字符串，再输入一个需要匹配的字符串
+
+### 输出描述：
+
+返回不区分大小写的匹配结果，匹配成功输出true，匹配失败输出false
+
+## 示例1
+
+输入：
+
+```
+te?t*.*
+txt12.xls
+```
+
+复制
+
+输出：
+
+```
+false
+```
+
+复制
+
+## 示例2
+
+输入：
+
+```
+z
+zz
+```
+
+输出：
+
+```
+false
+```
+
+## 示例3
+
+输入：
+
+```
+pq
+pppq
+```
+
+输出：
+
+```
+false
+```
+
+## 示例4
+
+输入：
+
+```
+**Z
+0QZz
+```
+
+输出：
+
+```
+true
+```
+
+## 示例5
+
+输入：
+
+```
+?*Bc*?
+abcd
+```
+
+输出：
+
+```
+true
+```
+
+## 示例6
+
+输入：
+
+```
+h*?*a
+h#a
+```
+
+输出：
+
+```
+false
+```
+
+说明：
+
+```
+根据题目描述可知能被*和?匹配的字符仅由英文字母和数字0到9组成，所以?不能匹配#，故输出false      
+```
+
+## 示例7
+
+输入：
+
+```
+p*p*qp**pq*p**p***ppq
+pppppppqppqqppqppppqqqppqppqpqqqppqpqpppqpppqpqqqpqqp
+```
+
+输出：
+
+```
+false
+```
+
+```c
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+
+int match(char *str1, char *str2)
+{
+    if(str1[0]=='\0' && str2[0]=='\0')
+        return 1;
+    else if(str1[0]=='\0' || str2[0]=='\0')
+        return 0;
+    if(str1[0]=='?' || str1[0]==str2[0])
+        return match(str1+1, str2+1);
+    if(str1[0]=='*')
+    {
+        if(*(str1+1)=='*')
+            return (match(str1+2, str2) || match(str1+2, str2+1) || match(str1+1,str2+1));
+        else
+            return (match(str1+1, str2) || match(str1+1, str2+1) || match(str1, str2+1));
+    }
+    return 0;
+}
+
+int main()
+{
+    char str1[101], str2[101];
+    scanf("%s %s", str1, str2);
+    int flag = 1;
+    for(int i=0; i<strlen(str1); i++)
+    {
+        if(str1[i]>='A' && str1[i]<='Z')
+            str1[i] += 32;
+    }
+    for(int i=0; i<strlen(str2); i++)
+    {
+        if(str2[i]>='A' && str2[i]<='Z')
+            str2[i] += 32;
+        if(isalpha(str2[i])==0 && isdigit(str2[i])==0 && str2[i]!='.')
+            flag = 0;
+    }
+    if(flag && match(str1, str2))
+        printf("true\n");
+    else
+        printf("false\n");
+    return 0;
+}
+
+```
+
