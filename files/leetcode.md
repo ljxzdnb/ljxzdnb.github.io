@@ -3843,3 +3843,597 @@ int main()
 
 ```
 
+[74. 搜索二维矩阵](https://leetcode.cn/problems/search-a-2d-matrix/)
+
+给你一个满足下述两条属性的 `m x n` 整数矩阵：
+
+- 每行中的整数从左到右按非严格递增顺序排列。
+- 每行的第一个整数大于前一行的最后一个整数。
+
+给你一个整数 `target` ，如果 `target` 在矩阵中，返回 `true` ；否则，返回 `false` 。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/05/mat.jpg)
+
+```
+输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+输出：true
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/11/25/mat2.jpg)
+
+```
+输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+输出：false
+```
+
+ 
+
+**提示：**
+
+- `m == matrix.length`
+- `n == matrix[i].length`
+- `1 <= m, n <= 100`
+- `-104 <= matrix[i][j], target <= 104`
+
+```c
+bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target) {
+    int m = matrixSize, n = matrixColSize[0];
+    int low = 0, high = m * n - 1;
+    while (low <= high) {
+        int mid = (high - low) / 2 + low;
+        int x = matrix[mid / n][mid % n];
+        if (x < target) {
+            low = mid + 1;
+        } else if (x > target) {
+            high = mid - 1;
+        } else {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+[55. 跳跃游戏](https://leetcode.cn/problems/jump-game/)
+
+给你一个非负整数数组 `nums` ，你最初位于数组的 **第一个下标** 。数组中的每个元素代表你在该位置可以跳跃的最大长度。
+
+判断你是否能够到达最后一个下标，如果可以，返回 `true` ；否则，返回 `false` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [2,3,1,1,4]
+输出：true
+解释：可以先跳 1 步，从下标 0 到达下标 1, 然后再从下标 1 跳 3 步到达最后一个下标。
+```
+
+**示例 2：**
+
+```
+输入：nums = [3,2,1,0,4]
+输出：false
+解释：无论怎样，总会到达下标为 3 的位置。但该下标的最大跳跃长度是 0 ， 所以永远不可能到达最后一个下标。
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 104`
+- `0 <= nums[i] <= 105`
+
+```c
+bool canJump(int* nums, int numsSize) {
+    for (int i = 0, cur = 0; i < numsSize; i++) {
+        if (i <= cur) {
+            cur = fmax(cur, i + nums[i]);
+            if (cur >= numsSize - 1) {
+                return true;
+            }
+        } else {
+            break;
+        }
+    }
+    return false;
+}
+```
+
+[45. 跳跃游戏 II](https://leetcode.cn/problems/jump-game-ii/)
+
+给定一个长度为 `n` 的 **0 索引**整数数组 `nums`。初始位置为 `nums[0]`。
+
+每个元素 `nums[i]` 表示从索引 `i` 向前跳转的最大长度。换句话说，如果你在 `nums[i]` 处，你可以跳转到任意 `nums[i + j]` 处:
+
+- `0 <= j <= nums[i]` 
+- `i + j < n`
+
+返回到达 `nums[n - 1]` 的最小跳跃次数。生成的测试用例可以到达 `nums[n - 1]`。
+
+ 
+
+**示例 1:**
+
+```
+输入: nums = [2,3,1,1,4]
+输出: 2
+解释: 跳到最后一个位置的最小跳跃数是 2。
+     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+```
+
+**示例 2:**
+
+```
+输入: nums = [2,3,0,1,4]
+输出: 2
+```
+
+```c
+int jump(int* nums, int numsSize) {
+    int steps = 0;
+    int maxReach = 0;
+    int lastJump = 0;
+
+    for (int i = 0; i < numsSize - 1; ++i) {
+        maxReach = (i + nums[i] > maxReach) ? i + nums[i] : maxReach;
+
+        if (i == lastJump) {
+            lastJump = maxReach;
+            ++steps;
+
+            if (maxReach >= numsSize - 1) {
+                return steps;
+            }
+        }
+    }
+
+    return 0;
+}
+
+```
+
+
+
+
+
+[337. 打家劫舍 III](https://leetcode.cn/problems/house-robber-iii/)
+
+小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为 `root` 。
+
+除了 `root` 之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。 如果 **两个直接相连的房子在同一天晚上被打劫** ，房屋将自动报警。
+
+给定二叉树的 `root` 。返回 ***在不触动警报的情况下** ，小偷能够盗取的最高金额* 。
+
+ 
+
+**示例 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/10/rob1-tree.jpg)
+
+```
+输入: root = [3,2,3,null,3,null,1]
+输出: 7 
+解释: 小偷一晚能够盗取的最高金额 3 + 3 + 1 = 7
+```
+
+**示例 2:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/10/rob2-tree.jpg)
+
+```
+输入: root = [3,4,5,1,3,null,1]
+输出: 9
+解释: 小偷一晚能够盗取的最高金额 4 + 5 = 9
+```
+
+ 
+
+**提示：**
+
+
+
+- 树的节点数在 `[1, 104]` 范围内
+- `0 <= Node.val <= 104`
+
+```c
+struct SubtreeStatus {
+    int selected;
+    int notSelected;
+};
+
+struct SubtreeStatus dfs(struct TreeNode *node) {
+    if (!node) {
+        return (struct SubtreeStatus){0, 0};
+    }
+    struct SubtreeStatus l = dfs(node->left);
+    struct SubtreeStatus r = dfs(node->right);
+    int selected = node->val + l.notSelected + r.notSelected;
+    int notSelected = fmax(l.selected, l.notSelected) + fmax(r.selected, r.notSelected);
+    return (struct SubtreeStatus){selected, notSelected};
+}
+
+int rob(struct TreeNode *root) {
+    struct SubtreeStatus rootStatus = dfs(root);
+    return fmax(rootStatus.selected, rootStatus.notSelected);
+}
+```
+
+[104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
+
+二叉树的 **最大深度** 是指从根节点到最远叶子节点的最长路径上的节点数。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/11/26/tmp-tree.jpg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：3
+```
+
+**示例 2：**
+
+```
+输入：root = [1,null,2]
+输出：2
+```
+
+ 
+
+**提示：**
+
+- 树中节点的数量在 `[0, 104]` 区间内。
+- `-100 <= Node.val <= 100`
+
+```c
+int maxDepth(struct TreeNode* root) {
+    if(root) 
+    {
+        int depth;
+        depth = fmax(maxDepth(root->left), maxDepth(root->right)) + 1;
+        return depth;
+    }
+    return 0;
+}
+```
+
+[111. 二叉树的最小深度](https://leetcode.cn/problems/minimum-depth-of-binary-tree/)
+
+给定一个二叉树，找出其最小深度。
+
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+**说明：**叶子节点是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：2
+```
+
+**示例 2：**
+
+```
+输入：root = [2,null,3,null,4,null,5,null,6]
+输出：5
+```
+
+```c
+int minDepth(struct TreeNode *root) {
+    if (root == NULL) {
+        return 0;
+    }
+
+    if (root->left == NULL && root->right == NULL) {
+        return 1;
+    }
+
+    int min_depth = INT_MAX;
+    if (root->left != NULL) {
+        min_depth = fmin(minDepth(root->left), min_depth);
+    }
+    if (root->right != NULL) {
+        min_depth = fmin(minDepth(root->right), min_depth);
+    }
+
+    return min_depth + 1;
+}
+
+```
+
+
+
+[114. 二叉树展开为链表](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
+
+给你二叉树的根结点 `root` ，请你将它展开为一个单链表：
+
+- 展开后的单链表应该同样使用 `TreeNode` ，其中 `right` 子指针指向链表中下一个结点，而左子指针始终为 `null` 。
+- 展开后的单链表应该与二叉树 [**先序遍历**](https://baike.baidu.com/item/先序遍历/6442839?fr=aladdin) 顺序相同。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/14/flaten.jpg)
+
+```
+输入：root = [1,2,5,3,4,null,6]
+输出：[1,null,2,null,3,null,4,null,5,null,6]
+```
+
+**示例 2：**
+
+```
+输入：root = []
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：root = [0]
+输出：[0]
+```
+
+```c
+void flatten(struct TreeNode* root) {
+    struct TreeNode* curr = root;
+    while (curr != NULL) {
+        if (curr->left != NULL) {
+            struct TreeNode* next = curr->left;
+            struct TreeNode* predecessor = next;
+            while (predecessor->right != NULL) {
+                predecessor = predecessor->right;
+            }
+            predecessor->right = curr->right;
+            curr->left = NULL;
+            curr->right = next;
+        }
+        curr = curr->right;
+    }
+}
+
+```
+
+[236. 二叉树的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+[百度百科](https://baike.baidu.com/item/最近公共祖先/8918834?fr=aladdin)中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（**一个节点也可以是它自己的祖先**）。”
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png)
+
+```
+输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+输出：3
+解释：节点 5 和节点 1 的最近公共祖先是节点 3 。
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2018/12/14/binarytree.png)
+
+```
+输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+输出：5
+解释：节点 5 和节点 4 的最近公共祖先是节点 5 。因为根据定义最近公共祖先节点可以为节点本身。
+```
+
+**示例 3：**
+
+```
+输入：root = [1,2], p = 1, q = 2
+输出：1
+```
+
+```c
+typedef struct TreeNode TreeNode;
+
+struct TreeNode* lowestCommonAncestor(struct TreeNode* root, struct TreeNode* p, struct TreeNode* q) {
+    // 如果一个节点的左右节点同时存在p和q，则该节点为最近的公共祖先
+    if(!root || root == p || root == q) return root;
+
+    TreeNode* left = lowestCommonAncestor(root->left, p, q);
+    TreeNode* right = lowestCommonAncestor(root->right, p, q);
+
+    if(left && right) return root;
+
+    return !left ? right : left;
+}
+
+```
+
+[112. 路径总和](https://leetcode.cn/problems/path-sum/)
+
+给你二叉树的根节点 `root` 和一个表示目标和的整数 `targetSum` 。判断该树中是否存在 **根节点到叶子节点** 的路径，这条路径上所有节点值相加等于目标和 `targetSum` 。如果存在，返回 `true` ；否则，返回 `false` 。
+
+**叶子节点** 是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum1.jpg)
+
+```
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+输出：true
+解释：等于目标和的根节点到叶节点路径如上图所示。
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg)
+
+```
+输入：root = [1,2,3], targetSum = 5
+输出：false
+解释：树中存在两条根节点到叶子节点的路径：
+(1 --> 2): 和为 3
+(1 --> 3): 和为 4
+不存在 sum = 5 的根节点到叶子节点的路径。
+```
+
+**示例 3：**
+
+```
+输入：root = [], targetSum = 0
+输出：false
+解释：由于树是空的，所以不存在根节点到叶子节点的路径。
+```
+
+ 
+
+**提示：**
+
+- 树中节点的数目在范围 `[0, 5000]` 内
+- `-1000 <= Node.val <= 1000`
+- `-1000 <= targetSum <= 1000`
+
+```c
+bool hasPathSum(struct TreeNode* root, int targetSum){
+    if(root == NULL){
+        return false;
+    }
+    if(root -> left == NULL && root -> right == NULL){
+        return targetSum == root -> val;
+    }
+    return hasPathSum(root -> left,targetSum - root -> val) || hasPathSum(root -> right,targetSum - root -> val);
+}
+
+```
+
+[113. 路径总和 II](https://leetcode.cn/problems/path-sum-ii/)
+
+给你二叉树的根节点 `root` 和一个整数目标和 `targetSum` ，找出所有 **从根节点到叶子节点** 路径总和等于给定目标和的路径。
+
+**叶子节点** 是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/pathsumii1.jpg)
+
+```
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+输出：[[5,4,11,2],[5,8,4,5]]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg)
+
+```
+输入：root = [1,2,3], targetSum = 5
+输出：[]
+```
+
+[124. 二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
+
+二叉树中的 **路径** 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 **至多出现一次** 。该路径 **至少包含一个** 节点，且不一定经过根节点。
+
+**路径和** 是路径中各节点值的总和。
+
+给你一个二叉树的根节点 `root` ，返回其 **最大路径和** 。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/13/exx1.jpg)
+
+```
+输入：root = [1,2,3]
+输出：6
+解释：最优路径是 2 -> 1 -> 3 ，路径和为 2 + 1 + 3 = 6
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/13/exx2.jpg)
+
+```
+输入：root = [-10,9,20,null,null,15,7]
+输出：42
+解释：最优路径是 15 -> 20 -> 7 ，路径和为 15 + 20 + 7 = 42
+```
+
+```c
+int max;
+int calculate(struct TreeNode* root){
+    if(root == NULL){
+        return 0;
+    }
+    int left_num = fmax(0,calculate(root -> left));
+    int right_num = fmax(0,calculate(root -> right));
+    max = fmax(max,left_num + right_num + root -> val);
+    return root -> val + fmax(left_num,right_num);
+}
+int maxPathSum(struct TreeNode* root) {
+    max = INT_MIN;//初始化max
+    calculate(root);
+    return max;
+}
+```
+
+[面试题 04.12. 求和路径](https://leetcode.cn/problems/paths-with-sum-lcci/)
+
+给定一棵二叉树，其中每个节点都含有一个整数数值(该值或正或负)。设计一个算法，打印节点数值总和等于某个给定值的所有路径的数量。注意，路径不一定非得从二叉树的根节点或叶节点开始或结束，但是其方向必须向下(只能从父节点指向子节点方向)。
+
+**示例:**
+给定如下二叉树，以及目标和 `sum = 22`，
+
+```
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+```
+
+返回:
+
+```
+3
+解释：和为 22 的路径有：[5,4,11,2], [5,8,4,5], [4,11,7]
+```
+
+提示：
+
+- `节点总数 <= 10000`
+
+```c
+struct TreeNode* inorderSuccessor(struct TreeNode* root, struct TreeNode* p){
+    if (root == NULL) return NULL;
+
+    if (root->val <= p->val) {
+        return inorderSuccessor(root->right, p);
+    } else {
+        struct TreeNode* q = inorderSuccessor(root->left, p);
+        return  ((q == NULL) ? root : q);
+    }
+}
+```
+
