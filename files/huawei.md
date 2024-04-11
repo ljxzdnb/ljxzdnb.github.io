@@ -6275,7 +6275,7 @@ struct recordline{
 int main() {
     int i=0,index = 0;
     char name[128] = {0};
-    struct recordline tmp ={{0},0,1};
+    struct recordline tmp ={0,0,1};
     struct recordline record[128] = {0};
     while (scanf("%s %d", name, &tmp.line) == 2) { // 注意 while 处理多个 case
         char* sec = strtok(name, "\\"),*old=NULL;
