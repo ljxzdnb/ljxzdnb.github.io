@@ -430,13 +430,13 @@ int longestValidParentheses(char * s){
 
 显然，leftMax[0]=height[0]，rightMax[n−1]=height[n−1]。两个数组的其余元素的计算如下：
 
-* 当 $$1 \le i \le n-1 时， leftMax[i]=max⁡(leftMax[i−1],height[i])$$；
+* $$ 当  1 \le i \le n-1 时， leftMax[i]=max⁡(leftMax[i−1],height[i])$$；
 
-* 当 $$0 \le i \le n-2 时，rightMax[i]=max⁡(rightMax[i+1],height[i])$$.
+* $$ 当 0 \le i \le n-2 时，rightMax[i]=max⁡(rightMax[i+1],height[i])$$ .
 
 因此可以正向遍历数组 height得到数组 leftMax 的每个元素值，反向遍历数组 height得到数组 rightMax的每个元素值。
 
-在得到数组 leftMax和 rightMax 的每个元素值之后，对于$$ 0 \le i<n$$，下标 i处能接的雨水量等于 min⁡(leftMax[i],rightMax[i])−height[i] 。遍历每个下标位置即可得到能接的雨水总量。
+在得到数组 leftMax和 rightMax 的每个元素值之后，对于 0 <= i<n，下标 i处能接的雨水量等于 min⁡(leftMax[i],rightMax[i])−height[i] 。遍历每个下标位置即可得到能接的雨水总量。
 
 动态规划做法可以由下图体现。
 
