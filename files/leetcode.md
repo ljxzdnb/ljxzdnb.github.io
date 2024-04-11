@@ -994,39 +994,72 @@ bool isValid(char* s) {
 
 # [单词拆分](https://leetcode.cn/problems/word-break/):(huawei)
 
-给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+给你一个字符串 `s` 和一个字符串列表 `wordDict` 作为字典。如果可以利用字典中出现的一个或多个单词拼接出 `s` 则返回 `true`。
 
-注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+**注意：**不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
 
+ 
+
+**示例 1：**
+
+```
 输入: s = "leetcode", wordDict = ["leet", "code"]
 输出: true
 解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+```
 
-![](/home/ljxnb/lib/leetcode/2a834dafa7bf590df1413fc742b07099854b6c6b842a5f7677564ccd044b5d69.png)
+**示例 2：**
 
-1. $$
-   初始化 dp=[False,\cdots,False]dp=[False,⋯,False]，长度为 n+1。n 为字符串长度。\\dp[i] 表示 s的前 i位是否可以用 wordDictwordDict 中的单词表示。
-   $$
+```
+输入: s = "applepenapple", wordDict = ["apple", "pen"]
+输出: true
+解释: 返回 true 因为 "applepenapple" 可以由 "apple" "pen" "apple" 拼接成。
+     注意，你可以重复使用字典中的单词。
+```
 
-2. $$
-   初始化 dp[0]=True，空字符可以被表示。
-   $$
+**示例 3：**
 
-3. $$
-   遍历字符串的所有子串，遍历开始索引 i，遍历区间 [0,n)[0,n)：
-   $$
+```
+输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+输出: false
+```
 
+解题思路
+算法思想就是动态规划，dp[i]的含义为s的前i个字母组成的子串是否可以被拆分为字典中的单词。
 
-* $$
-  遍历结束索引 j，遍历区间 [i+1,n+1)[i+1,n+1)：
-  $$
+大致思路：
+以“leetcode”为例，字典为“leet”和“code”，显然dp[4]为true,我们要的是dp[8] （即dp[sLen]）
+观察可知dp[8]可以由dp[4]和字典推导来，就是知道了dp[4]为true，从s+4开始，枚举看之后的单词是否能与
+字典匹配。语言比较苍白，直接看代码吧（附注释）
 
-  * $$
-    若 dp[i]=True 且 s[i,\cdots,j)s[i,⋯,j) 在 wordlistwordlist 中：\\dp[j]=True。解释：dp[i]=True 说明 s 的前 i 位可以用 \\wordDictwordDict 表示，则 s[i,\cdots,j)s[i,⋯,j)\\ 出现在 wordDictwordDict 中，
-    说明 s 的前 j 位可以表示。
-    $$
-  
+代码
+
+```c
+bool wordBreak(char * s, char ** wordDict, int wordDictSize){
+    int sLen = strlen(s);
+    bool dp[sLen + 1];
+    memset(dp, false, sizeof(dp));
+    dp[0] = true;           /* 初始化，以便状态转移 */
+    for (int i = 1; i <= sLen; i++) /* 从s的第一个字母开始枚举 */
+    /* 枚举到第i个字母时，i之前的dp已经全部算出来了，我们再枚举字典中的单词，根据每个单词的
+    长度决定分割点，假设分割点是k，当分割点后的子串能与字典单词匹配且dp[k]为true，则dp[i]为true
+    */
+        for (int j = 0; j < wordDictSize; j++) {  
+            int len = strlen(wordDict[j]);
+            int k = i - len;        /* 分割点是由i和字典单词长度决定的 */
+            if (k < 0)
+                continue;
+            dp[i] = (dp[k] && !strncmp(s + k, wordDict[j], len)) || dp[i];
+                                /* 这里注意要限制长度，故用strncmp */
+                                /* 进一步追求速度可用哈希法等代替strncmp */
+        }
     
+  /* for (int i = 1; i <= sLen; i++)
+        printf("%d ", dp[i]); */
+    return dp[sLen];
+}
+
+```
 
 
 ```python
