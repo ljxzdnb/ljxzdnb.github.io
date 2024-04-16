@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 # [两数之和](https://leetcode.cn/problems/two-sum/):(hashmap)
 
 输入：nums = [2,7,11,15], target = 26
@@ -546,7 +550,7 @@ char** generateParenthesis(int n, int *returnSize) {
 
 [「算法入门笔记」卡特兰数](https://zhuanlan.zhihu.com/p/97619085)
 
-## **一、引言**
+一、**引言**
 
 卡特兰数（Catalan number）是 **组合数学** 中一个常出现在各种 **计数问题** 中的 **数列**。
 
@@ -554,9 +558,9 @@ char** generateParenthesis(int n, int *returnSize) {
 
 本文将会选取几个经典的卡特兰问题，难度先易后难，带领读者逐个击破解决，最后给出相关的解题模板。
 
-## 二、**经典问题**
+二、**经典问题**
 
-### **2.1 进出栈序列**
+**2.1 进出栈序列**
 
 这是一道 **最经典** 的入门级卡特兰数题目，如果能把这题看懂，相信后面的题目也能迎刃而解。
 
@@ -590,7 +594,7 @@ n 个元素进栈序列为：1，2，3，4，...，n，则有多少种出栈序�
 
 此时我们就得到了卡特兰数的通项  $C_{2n}^{n+1}-C_{2n}^{n}=\frac{C_{2n}^{n}}{n+1}$，至于具体如何计算结果将会在后面进行介绍。
 
-### **2.2 括号序列**
+# **括号序列**
 
 **题目描述**
 
@@ -602,7 +606,7 @@ n 对括号，则有多少种 “括号匹配” 的括号序列
 
 左括号看成 +1，右括号看成 -1，那么就和上题的进出栈一样，共有 $\frac{C_{2n}^{n}}{n+1}$ 种序列。
 
-### **2.3 二叉树**
+# **二叉树**
 
 **题目描述**
 
@@ -1794,7 +1798,7 @@ REQUEST=10
 30
 0
 
-# n皇后问题：
+# n皇后问题
 输入整数n，要求n个国际象棋的皇后，摆在n*n的棋盘上，互相不能攻击，输出全部方案。
 
 输入：
@@ -2550,11 +2554,11 @@ int main(){
 - `1 <= row, cols <= 200`
 - `matrix[i][j]` 为 `'0'` 或 `'1'`
 
-### 解题思路
+解题思路
 
 ![image.png](https://pic.leetcode-cn.com/dd7d0b6e71bb5fdfad37502174cd09f2fb393dc0be3a8bdb6cfbbfb750ca052d-image.png)
 
-### 代码
+代码：
 
 ```c
 typedef struct {
@@ -3683,7 +3687,7 @@ int longestSubarray(int* nums, int numsSize, int limit){
 
 [**HJ71** **字符串通配符**](https://www.nowcoder.com/practice/43072d50a6eb44d2a6c816a283b02036?tpId=37&tqId=21294&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D2%26tpId%3D37%26type%3D37&difficulty=undefined&judgeStatus=undefined&tags=&title=)
 
-## 描述
+描述
 
 问题描述：在计算机中，通配符一种特殊语法，广泛应用于文件搜索、数据库、正则表达式等领域。现要求各位实现字符串通配符的算法。
 要求：
@@ -3705,15 +3709,15 @@ int longestSubarray(int* nums, int numsSize, int limit){
 
 进阶：时间复杂度： *O*(*n*2) ，空间复杂度：O*(*n*) 
 
-### 输入描述：
+输入描述：
 
 先输入一个带有通配符的字符串，再输入一个需要匹配的字符串
 
-### 输出描述：
+输出描述：
 
 返回不区分大小写的匹配结果，匹配成功输出true，匹配失败输出false
 
-## 示例1
+* 示例1
 
 输入：
 
@@ -3732,7 +3736,7 @@ false
 
 复制
 
-## 示例2
+* 示例2
 
 输入：
 
@@ -3747,7 +3751,7 @@ zz
 false
 ```
 
-## 示例3
+* 示例3
 
 输入：
 
@@ -3762,7 +3766,7 @@ pppq
 false
 ```
 
-## 示例4
+* 示例4
 
 输入：
 
@@ -3777,7 +3781,7 @@ false
 true
 ```
 
-## 示例5
+* 示例5
 
 输入：
 
@@ -3792,7 +3796,7 @@ abcd
 true
 ```
 
-## 示例6
+* 示例6
 
 输入：
 
@@ -3813,7 +3817,7 @@ false
 根据题目描述可知能被*和?匹配的字符仅由英文字母和数字0到9组成，所以?不能匹配#，故输出false      
 ```
 
-## 示例7
+* 示例7
 
 输入：
 
@@ -4470,4 +4474,6 @@ struct TreeNode* inorderSuccessor(struct TreeNode* root, struct TreeNode* p){
     }
 }
 ```
+
+
 
