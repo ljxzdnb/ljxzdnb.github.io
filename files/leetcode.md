@@ -727,7 +727,7 @@ bool exist(char **board, int boardSize, int *boardColSize, char *word)
     return false;
 }
 ```
-![search_word](search_word.gif)
+![](files/search_word.gif)
 
 
 # [最大矩形](https://leetcode.cn/problems/maximal-rectangle/):(前缀和)
