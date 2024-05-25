@@ -21,7 +21,7 @@
 ---
 
 * **math format**:
-  $$ y(x,t) = y = A \sin(kx - \omega t) $$
+  $$ y(x,t) = y = A \sin(kx - \omega t);\left[\frac{1}{2}\right] $$
 
 ---
 
