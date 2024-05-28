@@ -23,13 +23,6 @@
 * **math format**:
   $$ y(x,t) = y = A \sin(kx - \omega t);\left[\frac{1}{2}\right] $$
 
-  $$\begin{bmatrix}
-a_{11}&a_{12}&\cdots&a_{1n}\\
-a_{21}&a_{22}&\cdots&a_{2n}\\
-\vdots&\vdots&\ddots&\vdots\\
-a_{1n}&a_{1n}&\cdots&a_{1n}\\
-\end{bmatrix}$$
-
 ---
 
 * **code format**:
