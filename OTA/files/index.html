@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Information Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        neutral: '#1F2937',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .table-shadow {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .hover-highlight {
+                @apply transition-colors duration-200 hover:bg-blue-50;
+            }
+            .toast {
+                @apply fixed bottom-4 right-4 px-4 py-3 rounded shadow-lg transform transition-all duration-300 translate-y-20 opacity-0 z-50;
+            }
+            .toast.show {
+                @apply translate-y-0 opacity-100;
+            }
+            .toast.success {
+                @apply bg-green-50 text-green-800 border border-green-200;
+            }
+            .toast.error {
+                @apply bg-red-50 text-red-800 border border-red-200;
+            }
+            .icon-wrapper {
+                @apply w-8 h-8 rounded flex items-center justify-center mr-2;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-neutral">
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <div class="flex items-center">
+            <i id="toastIcon" class="mr-2"></i>
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="mb-8 text-center">
+            <h1 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-neutral mb-2">
+                <i class="fa fa-folder-open text-primary mr-3"></i>File Management System
+            </h1>
+            <p class="text-gray-600">View and manage your files with detailed information</p>
+        </header>
+
+        <main class="bg-white rounded-lg p-6 table-shadow">
+            <div id="loading" class="text-center py-12">
+                <i class="fa fa-circle-o-notch fa-spin text-3xl text-primary mb-4"></i>
+                <p>Loading file information from server...</p>
+            </div>
+
+            <div id="error" class="hidden text-center py-12 text-red-600">
+                <i class="fa fa-exclamation-circle text-3xl mb-4"></i>
+                <p>Error loading file information</p>
+                <p id="errorDetails" class="mt-2 text-sm"></p>
+            </div>
+
+            <div id="fileTable" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">File List</h2>
+                    <div class="text-sm text-gray-500">
+                        <span id="fileCount" class="font-medium text-primary"></span> files found
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Filename
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Type
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Size
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Modified Date
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    MD5 Hash
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="fileList" class="bg-white divide-y divide-gray-200">
+                            <!-- File rows will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>File Management System &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // 配置 - 根据您的服务器设置修改
+        const config = {
+            // 文件下载的基础路径（根据您的服务器文件存储位置调整）
+            downloadBasePath: '/files/'  // 例如：如果文件存储在服务器的/files目录下
+        };
+
+        // DOM元素
+        const loadingDiv = document.getElementById('loading');
+        const errorDiv = document.getElementById('error');
+        const errorDetails = document.getElementById('errorDetails');
+        const fileTableDiv = document.getElementById('fileTable');
+        const fileList = document.getElementById('fileList');
+        const fileCount = document.getElementById('fileCount');
+        const toast = document.getElementById('toast');
+        const toastIcon = document.getElementById('toastIcon');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // 显示通知提示
+        function showToast(message, isSuccess = true) {
+            toastMessage.textContent = message;
+            toastIcon.className = isSuccess ? 'fa fa-check-circle mr-2' : 'fa fa-exclamation-circle mr-2';
+            
+            // 移除所有提示类并添加适当的类
+            toast.classList.remove('show', 'success', 'error');
+            toast.classList.add(isSuccess ? 'success' : 'error');
+            
+            // 显示提示
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // 复制MD5到剪贴板
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    showToast('MD5 copied to clipboard successfully!');
+                })
+                .catch(err => {
+                    showToast('Failed to copy MD5: ' + err.message, false);
+                    console.error('Copy failed: ', err);
+                });
+        }
+
+        // 下载文件 - 服务器环境下有效
+        function downloadFile(filename) {
+            // 创建下载链接
+            const downloadUrl = config.downloadBasePath + filename;
+            
+            // 检查文件是否存在的简单方法（通过HEAD请求）
+            fetch(downloadUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        // 文件存在，触发下载
+                        const a = document.createElement('a');
+                        a.href = downloadUrl;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        showToast(`File "${filename}" download started`);
+                    } else {
+                        throw new Error(`File not found (Status: ${response.status})`);
+                    }
+                })
+                .catch(err => {
+                    showToast(`Download failed: ${err.message}`, false);
+                    console.error('Download error: ', err);
+                });
+        }
+
+        // 显示文件数据
+        function displayFileData(files) {
+            // 隐藏加载指示器
+            loadingDiv.classList.add('hidden');
+            
+            if (!files || files.length === 0) {
+                errorDiv.classList.remove('hidden');
+                errorDiv.innerHTML = '<i class="fa fa-exclamation-circle text-3xl mb-4"></i><p>No file information available</p>';
+                return;
+            }
+
+            // 更新文件计数
+            fileCount.textContent = files.length;
+
+            // 清空现有条目
+            fileList.innerHTML = '';
+
+            // 添加每个文件到表格
+            files.forEach(file => {
+                const row = document.createElement('tr');
+                row.className = 'hover-highlight';
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="icon-wrapper ${file.type.color}">
+                                <i class="fa ${file.type.icon}"></i>
+                            </div>
+                            <div class="text-sm font-medium text-gray-900">${file.name}</div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500">${file.type.name}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${file.size}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${file.date}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-gray-900 break-all max-w-md">${file.md5}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button class="text-primary hover:text-primary/80 mr-4 copy-btn" 
+                                data-md5="${file.md5}">
+                            <i class="fa fa-copy mr-1"></i>Copy MD5
+                        </button>
+                        <button class="text-secondary hover:text-secondary/80 download-btn"
+                                data-filename="${file.name}">
+                            <i class="fa fa-download mr-1"></i>Download
+                        </button>
+                    </td>
+                `;
+                
+                fileList.appendChild(row);
+            });
+
+            // 显示表格
+            fileTableDiv.classList.remove('hidden');
+
+            // 为复制按钮添加事件监听器
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const md5 = this.getAttribute('data-md5');
+                    copyToClipboard(md5);
+                });
+            });
+
+            // 为下载按钮添加事件监听器
+            document.querySelectorAll('.download-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const filename = this.getAttribute('data-filename');
+                    downloadFile(filename);
+                });
+            });
+        }
+
+        // 从服务器加载JSON数据
+        function loadJsonData() {
+            // 从服务器加载index.json文件
+            fetch('index.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Request failed with status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayFileData(data);
+                })
+                .catch(error => {
+                    console.error('Error loading JSON file:', error);
+                    loadingDiv.classList.add('hidden');
+                    errorDiv.classList.remove('hidden');
+                    errorDetails.textContent = `Details: ${error.message}`;
+                });
+        }
+
+        // 页面加载完成后开始加载数据
+        window.addEventListener('DOMContentLoaded', loadJsonData);
+    </script>
+</body>
+</html>
+
