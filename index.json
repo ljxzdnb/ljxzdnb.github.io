@@ -1,0 +1,153 @@
+[{
+        "name":"download",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "00dd29902ff1ef26e617afa74f92e356",
+        "size": "181.40 KB",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"dealdir",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "3cb037877c114e3c7dcc4c541c13843a",
+        "size": "54.20 KB",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"index.html",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "09bf5de6c9c637206a458f71207dd376",
+        "size": "12.88 KB",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"files",
+        "type": {
+            "name": "文件夹",
+            "icon": "fa-folder",
+            "color": "bg-blue-100 text-blue-600"
+        },
+	"nums": "4",
+        "size": "4.00 KB",
+        "date": "2026-01-11 13:55",
+        "children":[{
+        "name":"d0",
+        "type": {
+            "name": "文件夹",
+            "icon": "fa-folder",
+            "color": "bg-blue-100 text-blue-600"
+        },
+	"nums": "3",
+        "size": "4.00 KB",
+        "date": "2026-01-11 13:55",
+        "children":[{
+        "name":"f3",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "c8510153348da0765085c147fa8fd7dd",
+        "size": "39.00 B",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"f2",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "8c29c66ee41dcb7e1499024379da0a56",
+        "size": "33.00 B",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"f1",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "19ad0e09dcead472b77aa7365182d3e2",
+        "size": "13.00 B",
+        "date": "2026-01-11 13:55"
+        }]}
+,{
+        "name":"t3",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "c8510153348da0765085c147fa8fd7dd",
+        "size": "39.00 B",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"t2",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "8c29c66ee41dcb7e1499024379da0a56",
+        "size": "33.00 B",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"t1",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "19ad0e09dcead472b77aa7365182d3e2",
+        "size": "13.00 B",
+        "date": "2026-01-11 13:55"
+        }]}
+,{
+        "name":"download.c",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "9ec371ce8e3a674862045f5e19f889dd",
+        "size": "1.17 KB",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"index.json",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "020a5b756b04cd16a56f3b5711461403",
+        "size": "579.00 B",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"download.sh",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "b87362756ae637820b3c2d3109f57825",
+        "size": "265.00 B",
+        "date": "2026-01-11 13:55"
+        },{
+        "name":"t1",
+        "type": {
+            "name": "文本文件",
+            "icon": "fa-file-text",
+            "color": "bg-gray-100 text-gray-600"
+        },
+	"md5": "930a44a07876b8beb2901907f9f809ab",
+        "size": "36.00 B",
+        "date": "2026-01-11 13:55"
+        }]
