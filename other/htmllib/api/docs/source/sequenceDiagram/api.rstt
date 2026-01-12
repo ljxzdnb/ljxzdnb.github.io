@@ -1,7 +1,0 @@
-API
-===
-.. toctree::
-   myapi.md
-
-.. autosummary::
-   :toctree: generated

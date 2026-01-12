@@ -1,7 +1,0 @@
-API
-===
-.. toctree::
-   sequenceDiagram.md
-
-.. autosummary::
-   :toctree: generated
