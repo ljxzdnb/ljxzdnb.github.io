@@ -1,1 +1,1 @@
-gcc download.c ../http.c ../../../event/event.c ../../../meta.c ../../../sys/file/file.c ../../../sys/sock/sock.c ../../../sys/mpool/mpool.c ../../../data/json/json.c ../../../data/string/string.c ../../../data/vector/vector.c ../../../format/md5/md5.c -o download
+#gcc download.c ../http.c ../../../event/event.c ../../../meta.c ../../../sys/file/file.c ../../../sys/sock/sock.c ../../../sys/mpool/mpool.c ../../../data/json/json.c ../../../data/string/string.c ../../../data/vector/vector.c ../../../format/md5/md5.c -o download
