@@ -20,11 +20,6 @@
 
 ---
 
-* **math format**:
-  $$ y(x,t) = y = A \sin(kx - \omega t);\left[\frac{1}{2}\right] $$
-
----
-
 * **code format**:
 
 ```c
@@ -43,8 +38,8 @@ int main(){
 
 ---
 
-捐助地址：
-* **images**:
+
+* **donate**:
 
 ![](./wechat.png)
 
@@ -64,16 +59,3 @@ int main(){
 
 [baidu](www.baidu.com)
 
-
-
-<br>
-
-* **graphviz**:
-
-```dot
-digraph G { rankdir = LR; a -> b }
-```
-  
-  
-  
-  
