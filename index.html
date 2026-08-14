@@ -169,13 +169,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="nav-1" href="javascript:void(0);" data-nav="call">
-                    <i class="far fa-clone"></i><span data-i18n="nav-call">联系</span>
+                <a class="nav-link" id="nav-1" href="javascript:void(0);" data-nav="visualizer">
+                    <i class="far fa-clone"></i><span data-i18n="nav-visualizer">可视化</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="nav-2" href="javascript:void(0);" data-nav="leetcode">
-                    <i class="far fa-bookmark"></i><span data-i18n="nav-leetcode">力扣</span>
+                <a class="nav-link" id="nav-2" href="javascript:void(0);" data-nav="webdownload">
+                    <i class="far fa-bookmark"></i><span data-i18n="nav-webdownload">网页下载</span>
                 </a>
             </li>
         </ul>
@@ -290,18 +290,6 @@
                 }
             }, 100);
             
-            // 处理 graphviz
-            setTimeout(function() {
-                var dotelems = document.querySelectorAll('#markdown .language-dot');
-                for (var i = 0; i < dotelems.length; i++) {
-                    var elem = dotelems[i];
-                    if (!elem.classList.contains('d3-processed')) {
-                        elem.classList.add('d3-processed');
-                        d3ize(elem);
-                    }
-                }
-            }, 200);
-            
             console.log('✅ 渲染完成');
         } catch(e) {
             console.error('渲染错误:', e);
@@ -387,13 +375,13 @@
         var navMap = {
             'zh': {
                 'nav-info': '信息',
-                'nav-call': '联系',
-                'nav-leetcode': '力扣'
+                'nav-visualizer': '可视化',
+                'nav-webdownload': '网页下载'
             },
             'en': {
                 'nav-info': 'Info',
-                'nav-call': 'Call',
-                'nav-leetcode': 'LeetCode'
+                'nav-visualizer': 'Visualizer',
+                'nav-webdownload': 'Webdownload'
             }
         };
         var navData = navMap[currentLang];

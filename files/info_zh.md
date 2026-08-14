@@ -38,11 +38,6 @@ int main(){
 
 ---
 
-* **捐助**:
-
-![](./wechat.png)
-
----
 
 * **表格**:
 
@@ -54,6 +49,13 @@ int main(){
 
 ---
 
+
+* **捐助**:
+
+![](./wechat.png)
+---
+
+
 * **链接**:
 
-[baidu](www.baidu.com)
+[文件下载地址：Download/index.html](Download/index.html)

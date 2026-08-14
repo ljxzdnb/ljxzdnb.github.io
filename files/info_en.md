@@ -39,11 +39,6 @@ int main(){
 ---
 
 
-* **donate**:
-
-![](./wechat.png)
-
----
 
 * **tables**:
 
@@ -55,7 +50,14 @@ int main(){
 
 ---
 
+
+* **donate**:
+
+![](./wechat.png)
+
+---
+
 * **hyperlink**:
 
-[baidu](www.baidu.com)
+[file download address: Download/index.html](Download/index.html)
 
