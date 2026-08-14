@@ -1,6 +1,6 @@
-## Code Visualizer
+## 代码可视化工具
 
-a code visualizer tool write by me,the basic principle is the gcc compilation option.
+这是我编写的一个代码可视化工具，其基本原理是利用GCC的编译选项。
 
 ```c
 void main_constructor( void )
@@ -16,13 +16,13 @@ void __cyg_profile_func_exit( void *, void * )
         __attribute__ ((no_instrument_function));
 ```
 
-these four functions will be called before and after executing the function, as long as the processing logic is written,code detection can be realized.
+这四个函数会在函数执行前后被调用，只要编写好处理逻辑，就可以实现代码检测功能。
 
 ```c
 #include <execinfo.h>
 ```
 
-the header file contains a function that can print the function call stack,function pointer and names can be obtained by string matching
+这个头文件包含了一个可以打印函数调用栈的函数，通过字符串匹配可以获取函数指针和函数名。
 
 ```c
 void main_constructor( void )
@@ -39,7 +39,7 @@ void main_constructor( void )
 }
 ```
 
-open a file to write a scripts in .dot language before entering the main function
+在进入主函数之前，打开一个文件用于写入.dot语言格式的脚本。
 
 ```c
 void __cyg_profile_func_enter(void* func_address, void* call_site)
@@ -54,7 +54,7 @@ void __cyg_profile_func_enter(void* func_address, void* call_site)
 }
 ```
 
-log enter time and memory status of each function
+记录每个函数进入时的时间和内存状态。
 
 ```c
 void __cyg_profile_func_exit( void *func_address, void *call_site )
@@ -90,9 +90,9 @@ void __cyg_profile_func_exit( void *func_address, void *call_site )
 }
 ```
 
-log exit time and memory status of each function
+记录每个函数退出时的时间和内存状态。
 
-code under test:
+待测试代码：
 
 main.c
 
@@ -136,11 +136,11 @@ gcc -g -rdynamic -finstrument-functions -fsanitize=address main.c gcc.c other.c 
 dot -Tpng graph.dot -o graph.png
 ```
 
-the effect is as follows:
+效果如下图所示：
 
 ![../graph.png](../graph.png)
 
-all codes:
+完整代码如下：
 
 ```c
 #define _GNU_SOURCE

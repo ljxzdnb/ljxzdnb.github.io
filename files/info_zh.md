@@ -1,6 +1,6 @@
 ## *欢迎来到 <u>markdown</u> 文件 ~~浏览器~~*
 
-> the following files written by markdown format,and those will be show up on website by html format.
+> 以下文件以Markdown格式编写，这些文件将以HTML格式显示在网站上。
 
 ---
 
@@ -44,7 +44,7 @@ int main(){
 
 ---
 
-* **tables**:
+* **表格**:
 
 | A1   | B1   | C1   |
 | ---- | ---- | ---- |
