@@ -115,15 +115,34 @@
             }
         }
 
-        /* ===== 其他样式 ===== */
-        .content .left textarea {
-            display: none;
-        }
+        /* ===== 修复 Markdown 内容宽度 - 占满全屏 ===== */
         .markdown-body {
-            padding: 30px 20px;
-            max-width: 900px;
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 30px 40px !important;
             margin: 0 auto;
             min-height: 400px;
+            box-sizing: border-box;
+        }
+        
+        /* 大屏幕可以适当限制最大宽度，防止内容过长影响阅读 */
+        @media (min-width: 1600px) {
+            .markdown-body {
+                max-width: 1400px !important;
+                padding: 30px 60px !important;
+            }
+        }
+        
+        /* 平板和手机适配 */
+        @media (max-width: 768px) {
+            .markdown-body {
+                padding: 20px 15px !important;
+                max-width: 100% !important;
+            }
+        }
+        
+        .content .left textarea {
+            display: none;
         }
         .headcontent {
             position: sticky;
