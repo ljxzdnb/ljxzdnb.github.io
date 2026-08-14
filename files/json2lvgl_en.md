@@ -1,140 +1,139 @@
-### 概述
+### Overview
 
-designer.c 是一个基于 LVGL 图形库的 UI 动态构建工具，通过解析 JSON 配置文件来创建和管理图形界面组件。该工具采用类似工厂模式的设计，将 UI 组件的创建和属性配置进行解耦，实现了声明式的 UI 构建方式。
-核心设计思想
+designer.c is a UI dynamic construction tool based on the LVGL graphics library. It creates and manages graphical interface components by parsing JSON configuration files. The tool adopts a factory pattern-like design to decouple UI component creation from property configuration, implementing a declarative approach to UI construction.
 
-**1. 声明式 UI 构建**
+**1. Declarative UI Construction**
 
-通过 JSON 配置文件描述 UI 结构，程序在运行时解析配置并动态创建相应的 LVGL 控件，实现了 UI 设计与代码逻辑的分离。
+The UI structure is described through JSON configuration files. The program parses the configuration at runtime and dynamically creates corresponding LVGL widgets, achieving separation between UI design and code logic.
 
-**2. 工厂模式 + 策略模式**
+**2. Factory Pattern + Strategy Pattern**
 
-* **工厂模式**：根据 JSON 中指定的控件类型，调用对应的创建函数
+* **Factory Pattern**：Invokes the corresponding creation function based on the widget type specified in JSON
 
-* **策略模式**：每种控件属性都有对应的处理函数，可灵活扩展
+* **Strategy Pattern**：Each widget property has a corresponding handler function, allowing flexible extension
 
-### 核心数据结构
-#### 控件创建函数类型
+### Core Data Structures
+#### Widget Creation Function Type
 
 ```c
 typedef lv_obj_t* (*_widget_create_f)(lv_obj_t *parent, node* widget);
 ```
 
-* 功能：创建 LVGL 控件对象
+* Function：Creates an LVGL widget object
 
-* 参数：父容器对象、JSON 节点
+* Parameters：Parent container object, JSON node
 
-* 返回：创建的控件对象指针
+* Returns：Pointer to the created widget object
 
-#### 控件属性函数类型
+#### Widget Property Function Type
 ```c
 typedef void (*_widget_arg_f)(lv_obj_t *parent, void* arg);
 ```
 
-* 功能：设置控件属性
+* Function：Sets widget properties
 
-* 参数：目标控件对象、属性值（经过解析的 JSON 数据）
+* Parameters：Target widget object, property value (parsed JSON data)
 
-* 返回：无
+* Returns: None
 
-#### 控件注册表结构
+#### Widget Registry Structure
 ```c
 struct _widget_ui_t {
-    const char* type;                     // 控件类型名称
-    const _widget_create_f new;          // 创建函数
-    const struct _widget_arg_t* attr;     // 属性配置数组
-    const int num;                       // 属性数量
+    const char* type;                     // Widget type name
+    const _widget_create_f new;          // Creation function
+    const struct _widget_arg_t* attr;     // Property configuration array
+    const int num;                       // Number of properties
 };
 ```
 
-控件支持
-**已实现的控件类型**
+Widget Support
+**Implemented Widget Types**
 
-| 控件类型 | 创建函数 | 说明 | 
+| Widget Type | Creation Function | Description | 
 | --- | --- | --- |
-| LV_OBJ | _widget_obj_f | 基础对象容器 |
-| LV_BUTTON |  _widget_button_f  |  按钮控件 |
-| LV_LABEL |   _widget_label_f | 文本标签 |
-| LV_TABVIEW | _widget_tabview_f |  标签页视图 |
-| LV_TABBAR |  _widget_tabbar_f  |  标签栏 |
-| LV_TAB | _widget_tab_f  | 单个标签页 | 
-| LV_TEXTAREA | _widget_textarea_f | 文本输入框 | 
+| LV_OBJ | _widget_obj_f | Base object container |
+| LV_BUTTON |  _widget_button_f  |  Button widget |
+| LV_LABEL |   _widget_label_f | Text label |
+| LV_TABVIEW | _widget_tabview_f |  Tab view |
+| LV_TABBAR |  _widget_tabbar_f  |  Tab bar |
+| LV_TAB | _widget_tab_f  | Individual tab | 
+| LV_TEXTAREA | _widget_textarea_f | Text input box | 
 ---
 
-支持的属性
+Supported Properties
 
-| 属性名称 | 处理函数 | 数据类型  |  说明 |
+|Property | Name | Handler Function  | Data Type | Description |
 | --- | --- | --- | --- |
-| size  |  _widget_size_f|  [w, h] | 控件尺寸（支持百分比）|
-| flag |    _widget_flag_f  | int | LVGL 标志位 | 
-| flow |    _widget_flow_f  | int | Flex 布局方向 | 
-| pad | _widget_pad_f   | int | 内边距（全部）| 
-| pad_left |    _widget_pad_left_f  | int | 左内边距 | 
-| margin |  _widget_margin_f    | int | 外边距 | 
-| row | _widget_row_f   | int | 行间距 | 
-| col | _widget_col_f   | int | 列间距 | 
-| text  |   _widget_text_f  | string |  文本内容 | 
-| align |   _widget_align_f | [flag, number] |  对齐方式 | 
-| color |   _widget_color_f | [R, G, B]  |  文本颜色 | 
-| bg_color |    _widget_bg_color_f  | [R, G, B]  |  背景颜色 | 
-| border_width |    _widget_border_width_f  | int | 边框宽度 | 
-| border_color |    _widget_border_color_f  | [R, G, B]  |  边框颜色 | 
-| radius |  _widget_radius_f    | int | 圆角半径 | 
-| disp_size |   _widget_disp_size_f | int |  标签栏大小 | 
-| placeholder | _widget_placeholder_f   | string  | 占位文本 | 
-| chars |   _widget_chars_f | string |  允许输入的字符集 | 
-| one_line |    _widget_one_line_f  | bool |    单行模式 | 
-| children |    _widget_children_f  | JSON  |   子控件列表 | 
+| size  |  _widget_size_f|  [w, h] | Widget size (supports percentages) |
+| flag |    _widget_flag_f  | int | LVGL flag | 
+| flow |    _widget_flow_f  | int | Flex layout direction | 
+| pad | _widget_pad_f   | int | Padding (all sides) | 
+| pad_left |    _widget_pad_left_f  | int | Left padding | 
+| margin |  _widget_margin_f    | int | Margin | 
+| row | _widget_row_f   | int | Row gap | 
+| col | _widget_col_f   | int | Column gap | 
+| text  |   _widget_text_f  | string |  Text content | 
+| align |   _widget_align_f | [flag, number] |  Alignment | 
+| color |   _widget_color_f | [R, G, B]  |  Text color | 
+| bg_color |    _widget_bg_color_f  | [R, G, B]  |  Background color | 
+| border_width |    _widget_border_width_f  | int | Border width | 
+| border_color |    _widget_border_color_f  | [R, G, B]  |  Border color | 
+| radius |  _widget_radius_f    | int | Corner radius | 
+| disp_size |   _widget_disp_size_f | int |  Tab bar size | 
+| placeholder | _widget_placeholder_f   | string  | Placeholder text | 
+| chars |   _widget_chars_f | string |  Allowed character set | 
+| one_line |    _widget_one_line_f  | bool |    Single line mode | 
+| children |    _widget_children_f  | JSON  |   Child widget list | 
 ---
 
-### 宏定义机制
-#### WIDGETS 宏
+### Macro Definition Mechanism
+#### WIDGETS Macro
 
-使用宏定义统一管理所有控件类型，避免重复代码：
+Uses macros to uniformly manage all widget types, avoiding code duplication:
 ```c
 #define WIDGETS \
-    WIDGET(LV_OBJ,      _widget_obj_f,      ({...属性列表...})) \
-    WIDGET(LV_BUTTON,   _widget_button_f,   ({...属性列表...})) \
+    WIDGET(LV_OBJ,      _widget_obj_f,      ({...property list...})) \
+    WIDGET(LV_BUTTON,   _widget_button_f,   ({...property list...})) \
     // ...
 ```
-#### 自动生成枚举
+#### Automatic Enum Generation
 ```c
 #define WIDGET(TYPE,NEW,ARG) TYPE,
 enum { WIDGETS };
 ```
-自动生成控件类型枚举，方便索引访问。
+Automatically generates widget type enums for convenient index access.
 
-#### 自动生成属性数组
+#### Automatic Property Array Generation
 ```c
 #define WIDGET(TYPE,NEW,ARG) struct _widget_arg_t _WIDGET_##TYPE[] = WIDGET_ARG ARG
 ```
-为每个控件生成独立的属性数组。
+Generates an independent property array for each widget.
 
-#### 类型识别宏
+#### Type Identification Macro
 ```c
 #define WIDGET_INDEX(s) \
     s[3] == 'O' && s[4] == 'B' && s[5] == 'J' ? LV_OBJ : \
     // ...
 ```
-通过字符串匹配快速识别控件类型（基于类型名称的特定位置字符）。
+Quickly identifies widget types through string matching (based on specific character positions in type names).
 
-### 核心工作流程
+### Core Workflow
 
-#### 1. 初始化阶段
+#### 1. Initialization Phase
 ```c
-// 1. 初始化 LVGL
+// 1. Initialize LVGL
 lv_init();
 hal_init(1024, 768);
 
-// 2. 创建全局 Hash 表（存储控件引用）
+// 2. Create global Hash table (stores widget references)
 WINUI = &hs;
 
-// 3. 加载配置文件
+// 3. Load configuration file
 conf.open("data.json", O_RDONLY);
 ```
-#### 2. JSON 解析流程
+#### 2. JSON Parsing Flow
 ![](./files/json.png)
-#### 3. 属性解析示例
+#### 3. Property Parsing Example
 ```c
 {
   "type": "LV_BUTTON",
@@ -145,15 +144,15 @@ conf.open("data.json", O_RDONLY);
   ]
 }
 ```
-解析过程：
+Parsing Process：
 
-1. 识别类型为 LV_BUTTON，调用 _widget_button_f 创建按钮
-2. 处理 size 属性：[0.5, 50] → 宽度 50%，高度 50px
-3. 处理 flag 属性：设置布局忽略标志
-4. 递归处理 children 子节点
+1. Identifies type as LV_BUTTON, invokes _widget_button_f to create button
+2. Processes size property: [0.5, 50] → width 50%, height 50px
+3. Processes flag property: sets layout ignore flag
+4. Recursively processes children child nodes
 ---
-### 技术特点
-**1. 百分比尺寸支持**
+### Technical Features
+**1. Percentage Size Support**
 ```c
 static void _widget_size_f(lv_obj_t* obj, void* arg) {
     VECTOR* widgetsize = arg;
@@ -166,33 +165,33 @@ static void _widget_size_f(lv_obj_t* obj, void* arg) {
     );
 }
 ```
-**2. 控件引用管理**
+**2. Widget Reference Management**
 
-使用全局 HASH 表存储所有创建的控件对象，可通过节点名称快速访问：
+Uses a global HASH table to store all created widget objects, allowing quick access by node name:
 ```c
 WINUI->set(Lnode(nod->key, obj));
-// 后续可通过 WINUI->get("widget_name") 获取控件指针
+// Later can retrieve widget pointer via WINUI->get("widget_name")
 ```
 
-**3. 递归子控件处理**
+**3. Recursive Child Widget Processing**
 ```c
 static void _widget_children_f(lv_obj_t* obj, void* arg) {
     JSON* children = arg;
     children->foreach(_widget_parse_f, obj);
 }
 ```
-**4. 灵活的容器设计**
+**4. Flexible Container Design**
 
-支持多种布局方式：
+Supports multiple layout approaches:
 
-* Flex 布局（通过 flow 属性）
+* Flex layout (via flow property)
 
-* 手动布局（通过 align 属性）
+* Manual layout (via align property)
 
-* 子控件嵌套（通过 children 属性）
+* Child widget nesting (via children property)
 
-### 使用示例
-配置文件示例 (data.json)
+### Usage Example
+Configuration File Example (data.json)
 ```json
 {
   "frame": {
@@ -219,35 +218,35 @@ static void _widget_children_f(lv_obj_t* obj, void* arg) {
   }
 }
 ```
-### 获取控件引用
+### Retrieving Widget References
 ```c
-// 在 main 函数中
+// In main function
 lv_obj_t* title = WINUI->get("title");
 lv_obj_t* input = WINUI->get("input");
-// 后续可进行动态操作
+// Subsequent dynamic operations
 lv_label_set_text(title, "Updated Text");
 ```
-### 优点
+### Advantages
 
-1. **UI 与逻辑分离**：界面布局通过 JSON 配置，便于调整和版本管理
+1. **UI and Logic Separation**：Interface layout is configured via JSON, facilitating adjustments and version management
 
-2. **可扩展性强**：新增控件只需在 WIDGETS 宏中添加一条记录
+2. **High Extensibility**：Adding a new widget only requires adding one entry in the WIDGETS macro
 
-3. **类型安全**：通过枚举和函数指针确保类型匹配
+3. **Type Safety**：Enums and function pointers ensure type matching
 
-4. **运行时动态创建**：支持根据配置动态生成界面
+4. **Runtime Dynamic Creation**：Supports dynamically generating interfaces based on configuration
 
-5. **支持嵌套结构**：可构建复杂的 UI 层次
+5. **Nested Structure Support**：Can build complex UI hierarchies
 
-### 编译与运行
+### Compilation and Execution
 ```bash
-# 编译（需要链接 LVGL 和自定义库）
+# Compilation (requires linking LVGL and custom libraries)
 gcc -o designer designer.c -llvgl -ljson -lhash
 
-# 运行
+# Run
 ./designer
 ```
 
-### 总结
+### Summary
 
-designer.c 实现了一个高效、灵活的 UI 动态构建系统。通过声明式配置、工厂模式和策略模式的结合，成功将 UI 创建逻辑与具体代码解耦，为嵌入式 GUI 开发提供了便捷的解决方案。其宏定义机制巧妙地减少了代码重复，提高了可维护性。
+designer.c implements an efficient and flexible UI dynamic construction system. Through the combination of declarative configuration, factory pattern, and strategy pattern, it successfully decouples UI creation logic from concrete code, providing a convenient solution for embedded GUI development. Its macro definition mechanism cleverly reduces code duplication and improves maintainability.
