@@ -41,7 +41,6 @@ int parser_URL(char *url, http_t *info)
 解析URL以提取协议、主机、端口和URI路径。支持HTTP和HTTPS协议。
 
 ```c
-/* http://127.0.0.1:8080/testfile */
 if(strncasestr(tmp, "http://"))
 {   
     tmp += strlen("http://");
@@ -49,7 +48,7 @@ if(strncasestr(tmp, "http://"))
 else if(strncasestr(tmp, "https://"))
 {
     tmp += strlen("https://");
-    info->port = 443; //https port 443
+    info->port = 443; //https端口443
 }
 ```
 
@@ -81,9 +80,9 @@ int set_socket_option(int sock)
     struct timeval timeout;
     timeout.tv_sec = RCV_SND_TIMEOUT/1000;
     timeout.tv_usec = RCV_SND_TIMEOUT%1000*1000;
-    // set send timeout
+    // 设置发送超时
     setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeout, sizeof(struct timeval));
-    // set receive timeout
+    // 设置接收超时
     setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(struct timeval));
 }
 ```
@@ -124,19 +123,19 @@ int parse_http_header(http_t *info)
 ```c
 char *pos = strncasestr(info->buffer, "HTTP/");
 if (pos)
-    sscanf(pos, "%*s %d", &info->status_code);  // get status code
+    sscanf(pos, "%*s %d", &info->status_code);  // 获取状态码
 
 pos = strncasestr(info->buffer, "Content-Type:");
 if (pos)
-    sscanf(pos, "%*s %s", info->content_type);  // get content type
+    sscanf(pos, "%*s %s", info->content_type);  // 获取内容类型
 
 pos = strncasestr(info->buffer, "Content-Length:");
 if (pos)
-    sscanf(pos, "%*s %ld", &info->content_length);  // get content length
+    sscanf(pos, "%*s %ld", &info->content_length);  // 获取内容长度
 
 pos = strncasestr(info->buffer, "location:");
 if (pos)
-    sscanf(pos, "%*s %s", info->location);  // get redirect URL
+    sscanf(pos, "%*s %s", info->location);  // 获取重定向URL
 ```
 ---
 
