@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel='stylesheet' href='github-markdown.css'>
     <link rel='stylesheet' href='github.css'>
-    <!-- highlight.js 样式 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="shortcut icon" href="icon.ico" type="image/x-icon"/>
     <link rel="icon" href="icon.png" sizes="32x32" type="image/png"/>
     <style>
@@ -118,8 +116,8 @@
         }
 
         /* ===== 其他样式 ===== */
-        .content .right {
-            max-width: 100%;
+        .content .left textarea {
+            display: none;
         }
         .markdown-body {
             padding: 30px 20px;
@@ -151,14 +149,6 @@
         .loading-tip i {
             margin-right: 10px;
         }
-        /* graphviz 容器样式 */
-        .graphviz {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .graphviz svg {
-            max-width: 100%;
-        }
     </style>
 </head>
 <body>
@@ -166,7 +156,7 @@
 <main class="headcontent">
 <nav class="navbar navbar-expand-custom navbar-mainbg">
     <a class="navbar-brand" href="#" onclick="toggleFullScreen()">
-        <i class="fas fa-code" style="margin-right:8px;"></i>ljx's site
+        <i class="fas fa-code" style="margin-right:8px;"></i><span id="brandTitle">ljx 的个人网站</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars text-white" style="font-size:1.4rem;"></i>
@@ -192,7 +182,7 @@
         <!-- 中英文切换按钮 -->
         <div class="lang-switch-wrapper">
             <span class="lang-btn" id="langToggle" onclick="toggleLanguage()">
-                <i class="fas fa-globe-asia"></i> <span id="langLabel">中文</span>
+                <i class="fas fa-globe-asia"></i> <span id="langLabel">English</span>
             </span>
         </div>
     </div>
@@ -215,16 +205,9 @@
 <script src='https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js'></script>
 <script src="script.js"></script>
-<!-- 使用 CDN 加载 marked 和 highlight -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src='marked.js'></script>
+<script src='highlight.min.js'></script>
 <script src="markdown.js"></script>
-<script src="chatgpt.js"></script>
-
-<!-- d3 / graphviz -->
-<script src="https://unpkg.com/d3@5.16.0/dist/d3.min.js"></script>
-<script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
-<script src="https://unpkg.com/d3-graphviz@3.1.0/build/d3-graphviz.min.js"></script>
 
 <script>
     // ---------- 全屏切换 ----------
@@ -244,42 +227,58 @@
     let currentNav = 'info';
     let isLoading = false;
 
+    // ---------- 代码高亮 ----------
+    function highlightCode() {
+        try {
+            // 尝试多种 highlight.js API
+            if (typeof hljs !== 'undefined') {
+                // 方法1: 使用 highlightAll (新版)
+                if (typeof hljs.highlightAll === 'function') {
+                    hljs.highlightAll();
+                    console.log('✅ 使用 hljs.highlightAll()');
+                }
+                // 方法2: 使用 highlightBlock (旧版)
+                else if (typeof hljs.highlightBlock === 'function') {
+                    document.querySelectorAll('#markdown pre code').forEach(function(block) {
+                        hljs.highlightBlock(block);
+                    });
+                    console.log('✅ 使用 hljs.highlightBlock()');
+                }
+                // 方法3: 使用 highlightElement (某些版本)
+                else if (typeof hljs.highlightElement === 'function') {
+                    document.querySelectorAll('#markdown pre code').forEach(function(block) {
+                        hljs.highlightElement(block);
+                    });
+                    console.log('✅ 使用 hljs.highlightElement()');
+                }
+                // 方法4: 手动遍历
+                else {
+                    document.querySelectorAll('#markdown pre code').forEach(function(block) {
+                        var code = block.textContent;
+                        var result = hljs.highlightAuto(code);
+                        block.innerHTML = result.value;
+                        block.className = 'hljs ' + result.language;
+                    });
+                    console.log('✅ 使用 hljs.highlightAuto()');
+                }
+            }
+        } catch(e) {
+            console.warn('代码高亮失败:', e.message);
+        }
+    }
+
     // ---------- 渲染 Markdown ----------
     function renderMarkdown(content) {
         var markdownDiv = document.getElementById('markdown');
         if (!markdownDiv) return;
         
         try {
-            // 使用 marked 渲染
             var html = marked.parse(content);
             markdownDiv.innerHTML = html;
             
-            // 代码高亮 - 使用正确的 API
+            // 代码高亮
             setTimeout(function() {
-                if (typeof hljs !== 'undefined') {
-                    // 使用 highlightAll 或 highlightElement
-                    if (hljs.highlightAll) {
-                        hljs.highlightAll();
-                    } else if (hljs.highlightElement) {
-                        document.querySelectorAll('#markdown pre code').forEach(function(block) {
-                            hljs.highlightElement(block);
-                        });
-                    } else if (hljs.initHighlighting) {
-                        hljs.initHighlighting();
-                    } else {
-                        // 手动遍历
-                        document.querySelectorAll('#markdown pre code').forEach(function(block) {
-                            try {
-                                var result = hljs.highlight(block.textContent, {
-                                    language: block.className.replace(/^language-/, '') || 'plaintext'
-                                });
-                                block.innerHTML = result.value;
-                            } catch(e) {
-                                console.warn('高亮失败:', e);
-                            }
-                        });
-                    }
-                }
+                highlightCode();
             }, 50);
             
             // 重新渲染 MathJax
@@ -289,7 +288,7 @@
                 } else if (window.MathJax && MathJax.Hub) {
                     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                 }
-            }, 150);
+            }, 100);
             
             // 处理 graphviz
             setTimeout(function() {
@@ -301,7 +300,7 @@
                         d3ize(elem);
                     }
                 }
-            }, 300);
+            }, 200);
             
             console.log('✅ 渲染完成');
         } catch(e) {
@@ -312,11 +311,9 @@
 
     // ---------- 加载 Markdown 文件 ----------
     function loadMarkdownFile(nav, lang) {
-        // 重置加载状态
         isLoading = true;
         console.log('📂 加载: files/' + nav + '_' + lang + '.md');
 
-        // 显示加载提示
         var markdownDiv = document.getElementById('markdown');
         if (markdownDiv) {
             markdownDiv.innerHTML = '<div class="loading-tip"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>';
@@ -354,7 +351,6 @@
         console.log('🔀 切换到: ' + nav);
         currentNav = nav;
         
-        // 更新导航 active 状态
         document.querySelectorAll('.navbar-nav .nav-item').forEach(function(item) {
             item.classList.remove('active');
         });
@@ -366,7 +362,6 @@
             }
         }
         
-        // 加载对应的文件
         loadMarkdownFile(nav, currentLang);
     }
 
@@ -376,9 +371,16 @@
         currentLang = newLang;
         console.log('🌐 切换语言: ' + (currentLang === 'zh' ? '中文' : 'English'));
         
+        // 更新品牌标题
+        var brandTitle = document.getElementById('brandTitle');
+        if (brandTitle) {
+            brandTitle.innerText = (currentLang === 'zh') ? 'ljx 的个人网站' : "ljx's personal website";
+        }
+        
+        // 更新切换按钮文字
         var langLabel = document.getElementById('langLabel');
         if (langLabel) {
-            langLabel.innerText = (currentLang === 'zh') ? '中文' : 'English';
+            langLabel.innerText = (currentLang === 'zh') ? 'English' : '中文';
         }
 
         // 更新导航文字
@@ -408,7 +410,6 @@
 
     // ---------- 导航点击事件 ----------
     document.addEventListener('DOMContentLoaded', function() {
-        // 为导航链接绑定点击事件
         document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
             link.addEventListener('click', function(e) {
                 var nav = this.getAttribute('data-nav');
@@ -418,26 +419,12 @@
             });
         });
 
-        // 初始化加载
         setTimeout(function() {
             console.log('🚀 初始化加载 info_cn.md');
             loadMarkdownFile('info', 'zh');
         }, 200);
     });
 
-    // ---------- graphviz 处理 ----------
-    window.d3ize = function(elem) {
-        var par = elem.parentElement;
-        if (!par) return;
-        if (par.querySelector('.graphviz')) return;
-        try {
-            var dotContent = elem.innerText;
-            d3.select(par).append('div').graphviz().renderDot(dotContent);
-            d3.select(elem).style('display', 'none');
-        } catch(e) {
-            console.warn('graphviz error:', e);
-        }
-    };
 
     console.log('✅ 中英文切换已配置，从 files/ 文件夹加载');
     console.log('📁 文件格式: files/{nav}_{lang}.md');
