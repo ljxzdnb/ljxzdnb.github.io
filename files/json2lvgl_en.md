@@ -62,7 +62,7 @@ Widget Support
 
 Supported Properties
 
-|Property | Name | Handler Function  | Data Type | Description |
+|Property Name | Handler Function  | Data Type | Description |
 | --- | --- | --- | --- |
 | size  |  _widget_size_f|  [w, h] | Widget size (supports percentages) |
 | flag |    _widget_flag_f  | int | LVGL flag | 
