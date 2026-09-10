@@ -214,6 +214,11 @@
                     <i class="far fa-bookmark"></i><span data-i18n="nav-json2lvgl">json2lvgl</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" id="nav-4" href="javascript:void(0);" data-nav="local">
+                    <i class="far fa-file-code"></i><span data-i18n="nav-local">local</span>
+                </a>
+            </li>
         </ul>
         <!-- 中英文切换按钮 -->
         <div class="lang-switch-wrapper">
@@ -266,28 +271,23 @@
     // ---------- 代码高亮 ----------
     function highlightCode() {
         try {
-            // 尝试多种 highlight.js API
             if (typeof hljs !== 'undefined') {
-                // 方法1: 使用 highlightAll (新版)
                 if (typeof hljs.highlightAll === 'function') {
                     hljs.highlightAll();
                     console.log('✅ 使用 hljs.highlightAll()');
                 }
-                // 方法2: 使用 highlightBlock (旧版)
                 else if (typeof hljs.highlightBlock === 'function') {
                     document.querySelectorAll('#markdown pre code').forEach(function(block) {
                         hljs.highlightBlock(block);
                     });
                     console.log('✅ 使用 hljs.highlightBlock()');
                 }
-                // 方法3: 使用 highlightElement (某些版本)
                 else if (typeof hljs.highlightElement === 'function') {
                     document.querySelectorAll('#markdown pre code').forEach(function(block) {
                         hljs.highlightElement(block);
                     });
                     console.log('✅ 使用 hljs.highlightElement()');
                 }
-                // 方法4: 手动遍历
                 else {
                     document.querySelectorAll('#markdown pre code').forEach(function(block) {
                         var code = block.textContent;
@@ -312,12 +312,10 @@
             var html = marked.parse(content);
             markdownDiv.innerHTML = html;
             
-            // 代码高亮
             setTimeout(function() {
                 highlightCode();
             }, 50);
             
-            // 重新渲染 MathJax
             setTimeout(function() {
                 if (window.MathJax && MathJax.typesetPromise) {
                     MathJax.typesetPromise().catch(function() {});
@@ -365,6 +363,49 @@
             });
     }
 
+    // ---------- 加载 local.json ----------
+    function loadLocalJson() {
+        isLoading = true;
+        console.log('📂 加载: files/local.json');
+
+        var markdownDiv = document.getElementById('markdown');
+        if (markdownDiv) {
+            markdownDiv.innerHTML = '<div class="loading-tip"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>';
+        }
+
+        fetch('files/local.json', { cache: 'no-store' })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status + ': files/local.json');
+                }
+                return response.json();   // 直接解析 JSON
+            })
+            .then(function(data) {
+                console.log('✅ local.json 加载成功');
+                isLoading = false;
+
+                // 提取 choices[0].message.content
+                var content = '';
+                try {
+                    content = data.choices[0].message.content;
+                } catch (e) {
+                    throw new Error('无法提取 choices[0].message.content：' + e.message);
+                }
+
+                if (!content) {
+                    throw new Error('content 字段为空');
+                }
+
+                // 复用现有 renderMarkdown 渲染
+                renderMarkdown(content);
+            })
+            .catch(function(error) {
+                console.error('❌ local.json 加载失败:', error.message);
+                isLoading = false;
+                renderMarkdown('# 加载失败\n\n无法加载 `files/local.json`。\n\n错误信息: ' + error.message);
+            });
+    }
+
     // ---------- 切换导航 ----------
     function switchNav(nav) {
         if (nav === currentNav && !isLoading) {
@@ -386,7 +427,12 @@
             }
         }
         
-        loadMarkdownFile(nav, currentLang);
+        // === 新增分支 ===
+        if (nav === 'local') {
+            loadLocalJson();
+        } else {
+            loadMarkdownFile(nav, currentLang);
+        }
     }
 
     // ---------- 切换语言 ----------
@@ -395,31 +441,30 @@
         currentLang = newLang;
         console.log('🌐 切换语言: ' + (currentLang === 'zh' ? '中文' : 'English'));
         
-        // 更新品牌标题
         var brandTitle = document.getElementById('brandTitle');
         if (brandTitle) {
             brandTitle.innerText = (currentLang === 'zh') ? 'ljx 的个人网站' : "ljx's personal website";
         }
         
-        // 更新切换按钮文字
         var langLabel = document.getElementById('langLabel');
         if (langLabel) {
             langLabel.innerText = (currentLang === 'zh') ? 'English' : '中文';
         }
 
-        // 更新导航文字
         var navMap = {
             'zh': {
                 'nav-info': '信息',
                 'nav-visualizer': '可视化',
                 'nav-webdownload': '网页下载',
-                'nav-json2lvgl': 'json2lvgl'
+                'nav-json2lvgl': 'json2lvgl',
+                'nav-local': 'local'
             },
             'en': {
                 'nav-info': 'Info',
                 'nav-visualizer': 'Visualizer',
                 'nav-webdownload': 'Webdownload',
-                'nav-json2lvgl': 'json2lvgl'
+                'nav-json2lvgl': 'json2lvgl',
+                'nav-local': 'local'
             }
         };
         var navData = navMap[currentLang];
@@ -430,8 +475,11 @@
             }
         });
 
-        // 重新加载当前导航对应的文件
-        loadMarkdownFile(currentNav, currentLang);
+        if (currentNav === 'local') {
+            loadLocalJson();
+        } else {
+            loadMarkdownFile(currentNav, currentLang);
+        }
     };
 
     // ---------- 导航点击事件 ----------
@@ -454,6 +502,7 @@
 
     console.log('✅ 中英文切换已配置，从 files/ 文件夹加载');
     console.log('📁 文件格式: files/{nav}_{lang}.md');
+    console.log('📁 local.json 格式: 原始 DeepSeek 响应 JSON');
 </script>
 
 </body>
