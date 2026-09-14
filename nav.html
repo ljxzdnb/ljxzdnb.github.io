@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>叠层标签页 · 顶部耳朵 · 上下收放</title>
+  <title>叠层标签页 · 圆角耳朵</title>
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -17,61 +17,98 @@
     .tab {
       position: absolute;
       left: 0;
-      bottom: 0;               /* 底部对齐 */
+      bottom: 0;
       width: 100vw;
-      box-shadow: 0 -6px 6px rgba(0, 0, 0, 0.3);
       transition: transform 0.5s ease;
       will-change: transform;
       overflow: visible;
     }
 
-    /* 高度递减，顶边错开 */
     #tab0 { height: 100vh; background: black;    z-index: 5;  }
     #tab1 { height: 90vh;  background: #31152B;  z-index: 10; }
     #tab2 { height: 90vh;  background: #723147;  z-index: 15; }
     #tab3 { height: 90vh;  background: #CC4452;  z-index: 20; }
     #tab4 { height: 90vh;  background: #E6B098;  z-index: 25; }
 
-    /* 耳朵：顶部，向上伸出 */
-    #tab1::after, #tab2::after, #tab3::after, #tab4::after {
-      content: '';
-      position: absolute;
-      width: 25vw;
-      height: 10vh;
-      top: -10vh;               /* 伸出顶边之外 */
-      border-radius: 8px 8px 0 0;
-    }
-    #tab1::after { background: #31152B; left: 75%; }
-    #tab2::after { background: #723147; left: 50%; }
-    #tab3::after { background: #CC4452; left: 25%; }
-    #tab4::after { background: #E6B098; left: 0%; }
-
-    /* 点击区，和耳朵重合 */
-    .hit {
-      position: absolute;
-      width: 25vw;
-      height: 10vh;
-      top: -10vh;
-      cursor: pointer;
-      z-index: 2;
-    }
-    #tab1 .hit { left: 75%; }
-    #tab2 .hit { left: 50%; }
-    #tab3 .hit { left: 25%; }
-    #tab4 .hit { left: 0%; }
-
-    /* 收回：向下移出 */
     .tab.collapsed {
       transform: translateY(90vh);
     }
+
+    /* ===== 耳朵 ===== */
+    .ear {
+      position: absolute;
+      top: -69px;
+      width: 20%;
+      height: 10%;
+      border-radius: 12px 12px 0 0;
+      cursor: pointer;
+      font-size: 14px;
+      user-select: none;
+      z-index: 30;
+    }
+
+    /* 内凹圆角 */
+    .ear::before,
+    .ear::after {
+      position: absolute;
+      bottom: 0;
+      content: '';
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      box-shadow: 0 0 0 40px transparent;
+      transition: .2s;
+    }
+    .ear::before {
+      left: -20px;
+      clip-path: inset(50% -10px 0 50%);
+    }
+    .ear::after {
+      right: -20px;
+      clip-path: inset(50% 50% 0 -10px);
+    }
+
+    /* 文字背后的提亮块：比耳朵四周小 10px */
+    .ear-label {
+      position: absolute;
+      inset: 10px;                 /* 上下左右各留 10px */
+      border-radius: 8px;
+      background: transparent;
+      transition: background .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .ear:hover .ear-label {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* 各层配色 */
+    #tab1 .ear { left: 60%; background: #31152B; color: #fff; }
+    #tab1 .ear::before,
+    #tab1 .ear::after { box-shadow: 0 0 0 30px #31152B; }
+
+    #tab2 .ear { left: 40%; background: #723147; color: #fff; }
+    #tab2 .ear::before,
+    #tab2 .ear::after { box-shadow: 0 0 0 30px #723147; }
+
+    #tab3 .ear { left: 20%; background: #CC4452; color: #fff; }
+    #tab3 .ear::before,
+    #tab3 .ear::after { box-shadow: 0 0 0 30px #CC4452; }
+
+    #tab4 .ear { left: 0%; background: #E6B098; color: #333; }
+    #tab4 .ear::before,
+    #tab4 .ear::after { box-shadow: 0 0 0 30px #E6B098; }
   </style>
 </head>
 <body>
   <div id="tab0" class="tab"></div>
-  <div id="tab1" class="tab"><label class="hit" data-index="1"></label></div>
-  <div id="tab2" class="tab"><label class="hit" data-index="2"></label></div>
-  <div id="tab3" class="tab"><label class="hit" data-index="3"></label></div>
-  <div id="tab4" class="tab"><label class="hit" data-index="4"></label></div>
+  <div id="tab1" class="tab"><div class="ear" data-index="1"><span class="ear-label">标签1</span></div></div>
+  <div id="tab2" class="tab"><div class="ear" data-index="2"><span class="ear-label">标签2</span></div></div>
+  <div id="tab3" class="tab"><div class="ear" data-index="3"><span class="ear-label">标签3</span></div></div>
+  <div id="tab4" class="tab"><div class="ear" data-index="4"><span class="ear-label">标签4</span></div></div>
 
   <script>
     const tabs = {
@@ -89,10 +126,10 @@
       }
     }
 
-    document.querySelectorAll('.hit').forEach(hit => {
-      hit.addEventListener('click', (e) => {
+    document.querySelectorAll('.ear').forEach(ear => {
+      ear.addEventListener('click', (e) => {
         e.stopPropagation();
-        const n = Number(hit.dataset.index);
+        const n = Number(ear.dataset.index);
         for (let i = 1; i <= n; i++) open[i] = true;
         for (let i = n + 1; i <= 4; i++) open[i] = false;
         render();
