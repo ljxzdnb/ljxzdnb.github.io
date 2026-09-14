@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>叠层标签页 · 点耳朵切换</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .tab {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-shadow: 6px 0px 6px rgba(0, 0, 0, 0.3);
+      transition: transform 0.5s ease;
+      will-change: transform;
+      overflow: visible;
+    }
+
+    #tab0 { width: 100vw; background: black;    z-index: 5;  }
+    #tab1 { width: 95vw;  background: #31152B;  z-index: 10; }
+    #tab2 { width: 95vw;  background: #723147;  z-index: 15; }
+    #tab3 { width: 95vw;  background: #CC4452;  z-index: 20; }
+    #tab4 { width: 95vw;  background: #E6B098;  z-index: 25; }
+
+    /* 耳朵 */
+    #tab1::after, #tab2::after, #tab3::after, #tab4::after {
+      content: '';
+      position: absolute;
+      width: 5vw;
+      height: 25vh;
+      border-radius: 0 20px 20px 0;
+      right: -4vw;
+    }
+    #tab1::after { background: #31152B; top: 75%; }
+    #tab2::after { background: #723147; top: 50%; }
+    #tab3::after { background: #CC4452; top: 25%; }
+    #tab4::after { background: #E6B098; top: 0;   }
+
+    /* 耳朵点击区 */
+    .hit {
+      position: absolute;
+      width: 5vw;
+      height: 25vh;
+      right: -4vw;
+      cursor: pointer;
+      z-index: 2;
+    }
+    #tab1 .hit { top: 75%; }
+    #tab2 .hit { top: 50%; }
+    #tab3 .hit { top: 25%; }
+    #tab4 .hit { top: 0;   }
+
+    /* 收回 */
+    .tab.collapsed {
+      transform: translateX(-95vw);
+    }
+  </style>
+</head>
+<body>
+  <div id="tab0" class="tab"></div>
+  <div id="tab1" class="tab"><label class="hit" data-index="1"></label></div>
+  <div id="tab2" class="tab"><label class="hit" data-index="2"></label></div>
+  <div id="tab3" class="tab"><label class="hit" data-index="3"></label></div>
+  <div id="tab4" class="tab"><label class="hit" data-index="4"></label></div>
+
+  <script>
+    const tabs = {
+      1: document.getElementById('tab1'),
+      2: document.getElementById('tab2'),
+      3: document.getElementById('tab3'),
+      4: document.getElementById('tab4'),
+    };
+
+    const open = { 1: true, 2: true, 3: true, 4: true };
+
+    function render() {
+      for (let i = 1; i <= 4; i++) {
+        tabs[i].classList.toggle('collapsed', !open[i]);
+      }
+    }
+
+    document.querySelectorAll('.hit').forEach(hit => {
+      hit.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const n = Number(hit.dataset.index);
+        // 1 ~ n 弹出
+        for (let i = 1; i <= n; i++) open[i] = true;
+        // n+1 ~ 4 收回
+        for (let i = n + 1; i <= 4; i++) open[i] = false;
+        render();
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>

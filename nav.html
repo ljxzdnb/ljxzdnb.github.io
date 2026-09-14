@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>叠层标签页 · 独立耳朵开关</title>
+  <title>叠层标签页 · 顶部耳朵 · 上下收放</title>
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -15,53 +15,54 @@
     }
 
     .tab {
-      height: 100%;
       position: absolute;
-      top: 0;
       left: 0;
-      box-shadow: 6px 0px 6px rgba(0, 0, 0, 0.3);
+      bottom: 0;               /* 底部对齐 */
+      width: 100vw;
+      box-shadow: 0 -6px 6px rgba(0, 0, 0, 0.3);
       transition: transform 0.5s ease;
       will-change: transform;
       overflow: visible;
     }
 
-    #tab0 { width: 100vw; background: black;    z-index: 5;  }
-    #tab1 { width: 95vw;  background: #31152B;  z-index: 10; }
-    #tab2 { width: 95vw;  background: #723147;  z-index: 15; }
-    #tab3 { width: 95vw;  background: #CC4452;  z-index: 20; }
-    #tab4 { width: 95vw;  background: #E6B098;  z-index: 25; }
+    /* 高度递减，顶边错开 */
+    #tab0 { height: 100vh; background: black;    z-index: 5;  }
+    #tab1 { height: 90vh;  background: #31152B;  z-index: 10; }
+    #tab2 { height: 90vh;  background: #723147;  z-index: 15; }
+    #tab3 { height: 90vh;  background: #CC4452;  z-index: 20; }
+    #tab4 { height: 90vh;  background: #E6B098;  z-index: 25; }
 
-    /* 耳朵 */
+    /* 耳朵：顶部，向上伸出 */
     #tab1::after, #tab2::after, #tab3::after, #tab4::after {
       content: '';
       position: absolute;
-      width: 5vw;
-      height: 25vh;
-      border-radius: 0 20px 20px 0;
-      right: -4vw;
+      width: 25vw;
+      height: 10vh;
+      top: -10vh;               /* 伸出顶边之外 */
+      border-radius: 8px 8px 0 0;
     }
-    #tab1::after { background: #31152B; top: 75%; }
-    #tab2::after { background: #723147; top: 50%; }
-    #tab3::after { background: #CC4452; top: 25%; }
-    #tab4::after { background: #E6B098; top: 0;   }
+    #tab1::after { background: #31152B; left: 75%; }
+    #tab2::after { background: #723147; left: 50%; }
+    #tab3::after { background: #CC4452; left: 25%; }
+    #tab4::after { background: #E6B098; left: 0%; }
 
-    /* 耳朵点击区 */
+    /* 点击区，和耳朵重合 */
     .hit {
       position: absolute;
-      width: 5vw;
-      height: 25vh;
-      right: -4vw;
+      width: 25vw;
+      height: 10vh;
+      top: -10vh;
       cursor: pointer;
       z-index: 2;
     }
-    #tab1 .hit { top: 75%; }
-    #tab2 .hit { top: 50%; }
-    #tab3 .hit { top: 25%; }
-    #tab4 .hit { top: 0;   }
+    #tab1 .hit { left: 75%; }
+    #tab2 .hit { left: 50%; }
+    #tab3 .hit { left: 25%; }
+    #tab4 .hit { left: 0%; }
 
-    /* 收起状态：整层（含耳朵）一起左移 */
+    /* 收回：向下移出 */
     .tab.collapsed {
-      transform: translateX(-95vw);
+      transform: translateY(90vh);
     }
   </style>
 </head>
@@ -80,17 +81,25 @@
       4: document.getElementById('tab4'),
     };
 
-    // 每层独立收起状态
-    const collapsed = { 1: false, 2: false, 3: false, 4: false };
+    const open = { 1: true, 2: true, 3: true, 4: true };
+
+    function render() {
+      for (let i = 1; i <= 4; i++) {
+        tabs[i].classList.toggle('collapsed', !open[i]);
+      }
+    }
 
     document.querySelectorAll('.hit').forEach(hit => {
       hit.addEventListener('click', (e) => {
-        e.stopPropagation(); // 防止事件冒泡到别的层
+        e.stopPropagation();
         const n = Number(hit.dataset.index);
-        collapsed[n] = !collapsed[n];           // 只切换自己
-        tabs[n].classList.toggle('collapsed', collapsed[n]);
+        for (let i = 1; i <= n; i++) open[i] = true;
+        for (let i = n + 1; i <= 4; i++) open[i] = false;
+        render();
       });
     });
+
+    render();
   </script>
 </body>
 </html>
