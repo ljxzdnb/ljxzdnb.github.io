@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+/* Android/offline: use system font instead of Google Fonts */
 
 body{
-	font-family: 'Roboto', sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 * {
 	margin: 0;

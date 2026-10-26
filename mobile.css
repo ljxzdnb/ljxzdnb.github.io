@@ -1,0 +1,83 @@
+/* Android / small-screen overrides for the desktop site. */
+html, body {
+    overflow-x: hidden;
+}
+
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+}
+
+.markdown-body pre {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+@media (max-width: 991px) {
+    .navbar-mainbg {
+        position: fixed;
+        z-index: 1000;
+    }
+
+    .navbar-mainbg .navbar-brand {
+        padding: 12px 14px;
+        font-size: 1rem;
+    }
+
+    .navbar-mainbg .navbar-nav .nav-link {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+
+    .navbar-collapse {
+        background: #1b1f27;
+        max-height: calc(100vh - 56px);
+        overflow-y: auto;
+        border-radius: 0 0 12px 12px;
+    }
+
+    .content .right {
+        margin-top: 56px;
+        padding: 14px;
+    }
+
+    #markdown {
+        padding: 12px;
+    }
+
+    #markdown,
+    .markdown-body {
+        font-size: 15px !important;
+        line-height: 1.65 !important;
+    }
+
+    #markdown h1,
+    .markdown-body h1 {
+        font-size: 1.75rem !important;
+        line-height: 1.25 !important;
+    }
+
+    #markdown h2,
+    .markdown-body h2 {
+        font-size: 1.4rem !important;
+    }
+
+    #markdown h3,
+    .markdown-body h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .markdown-body pre {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .markdown-body table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .lang-switch-wrapper {
+        padding: 10px 14px;
+    }
+}

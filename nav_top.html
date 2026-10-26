@@ -42,7 +42,7 @@
       position: absolute;
       top: -69px;
       width: 20%;
-      height: 10%;
+      height: 69px;              /* ← 从 10% 改为固定 69px，与 nav.html 一致 */
       border-radius: 12px 12px 0 0;
       cursor: pointer;
       font-size: 14px;
@@ -50,6 +50,7 @@
       z-index: 30;
     }
 
+    /* 底部外圆角伪元素 */
     .ear::before,
     .ear::after {
       position: absolute;
@@ -58,7 +59,7 @@
       width: 20px;
       height: 20px;
       border-radius: 100%;
-      box-shadow: 0 0 0 40px transparent;
+      box-shadow: 0 0 0 40px transparent;  /* 默认透明，下面各层覆盖 */
       transition: .2s;
     }
     .ear::before {
@@ -70,7 +71,6 @@
       clip-path: inset(50% 50% 0 -10px);
     }
 
-    /* 文字容器（无 hover 提亮） */
     .ear-label {
       position: absolute;
       inset: 10px;
@@ -80,7 +80,7 @@
       white-space: nowrap;
     }
 
-    /* 各层配色 */
+    /* 各层配色 + 给底部外圆角上色（这是让圆角显示出来的关键） */
     #tab1 .ear { left: 60%; background: #31152B; color: #fff; }
     #tab1 .ear::before,
     #tab1 .ear::after { box-shadow: 0 0 0 30px #31152B; }
