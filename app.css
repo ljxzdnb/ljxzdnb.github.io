@@ -1,0 +1,76 @@
+/*
+ * Application layout:
+ * - the tab bar is part of the window layout, not the scrolling document;
+ * - only the content area gets a vertical scrollbar;
+ * - a stable scrollbar gutter avoids width jitter when switching tabs.
+ */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* Override the page's old fixed/sticky header behavior. */
+.headcontent {
+    position: relative !important;
+    top: auto !important;
+    flex: 0 0 auto;
+    z-index: 1000;
+}
+
+.navbar-mainbg {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100%;
+}
+
+/* The only vertical scroll container in the app. */
+.content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    -webkit-overflow-scrolling: touch;
+}
+
+.content .right {
+    margin-top: 0 !important;
+    padding: 20px;
+}
+
+/* Keep the scrollbar from changing the tab widths when content height changes. */
+.content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.45);
+    border-radius: 5px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 100, 100, 0.65);
+}
+
+@media (max-width: 991px) {
+    .content .right {
+        margin-top: 0 !important;
+        padding: 14px;
+    }
+}

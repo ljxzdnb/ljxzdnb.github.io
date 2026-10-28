@@ -182,6 +182,7 @@
         }
     </style>
     <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="app.css">
 </head>
 <body>
 
@@ -243,7 +244,7 @@
 
 <!-- 依赖 -->
 <script src='jquery.min.js'></script>
-<script src='latex/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+<script>window.MathJax={Hub:{Typeset:function(){},Queue:function(){}},typesetPromise:function(){return Promise.resolve();}};</script>
 <script src='popper.min.js'></script>
 <script src='bootstrap.min.js'></script>
 <script src="script.js"></script>
