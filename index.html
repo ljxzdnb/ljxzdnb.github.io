@@ -188,7 +188,8 @@
            app.css is cached or unavailable. */
         html, body { height: 100%; overflow: hidden; }
         body { display: flex; flex-direction: column; min-height: 0; }
-        .headcontent { position: relative !important; top: auto !important; flex: 0 0 auto; z-index: 1000; }
+        .headcontent { position: relative !important; top: auto !important; flex: 0 0 auto; z-index: 1000; max-height: 100px; overflow: hidden; transition: max-height 0.22s ease; }
+        .headcontent.nav-hidden { max-height: 0; }
         .navbar-mainbg { position: relative !important; top: auto !important; width: 100%; }
         .navbar-mainbg.hide-nav-bar { transform: none !important; }
         .content { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; }
@@ -258,7 +259,7 @@
 <script>window.MathJax={Hub:{Typeset:function(){},Queue:function(){}},typesetPromise:function(){return Promise.resolve();}};</script>
 <script src='popper.min.js'></script>
 <script src='bootstrap.min.js'></script>
-<script src="script.js"></script>
+<script src="script.js?v=3"></script>
 <script src='marked.js'></script>
 <script src='highlight.min.js'></script>
 <script src="markdown.js"></script>

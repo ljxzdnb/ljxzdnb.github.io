@@ -47,19 +47,29 @@ function test(){
 	});
 }
 $(document).ready(function(){
-		$('html').on('DOMMouseScroll mousewheel', function (e) {
-  	if(e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) { //alternative options for wheelData: wheelDeltaX & wheelDeltaY
-    //scroll down
-    console.log('Down');
-    $( ".navbar-mainbg" ).addClass( "hide-nav-bar" );
-  	} else {
-    //scroll up
-    console.log('Up');
-    $( ".navbar-mainbg" ).removeClass( "hide-nav-bar" );
-  	}
-  	//prevent page fom scrolling
-  	//return false;
-	});
+	// Collapse the header when scrolling down, reveal it when scrolling up.
+	// Listening on the content element works for mouse wheel, touch and
+	// programmatic scrolling, and never lets content scroll under the header.
+	var header = document.querySelector('.headcontent');
+	var content = document.querySelector('.content');
+	var lastScrollTop = 0;
+
+	if (header && content) {
+		content.addEventListener('scroll', function () {
+			var top = content.scrollTop;
+
+			if (top <= 8) {
+				header.classList.remove('nav-hidden');
+			} else if (top > lastScrollTop + 4) {
+				header.classList.add('nav-hidden');
+			} else if (top < lastScrollTop - 4) {
+				header.classList.remove('nav-hidden');
+			}
+
+			lastScrollTop = top;
+		}, { passive: true });
+	}
+
 	setTimeout(function(){ test(); });
 });
 $(window).on('resize', function(){

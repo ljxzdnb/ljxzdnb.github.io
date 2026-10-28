@@ -26,6 +26,13 @@ body {
     top: auto !important;
     flex: 0 0 auto;
     z-index: 1000;
+    max-height: 100px;
+    overflow: hidden;
+    transition: max-height 0.22s ease;
+}
+
+.headcontent.nav-hidden {
+    max-height: 0;
 }
 
 .navbar-mainbg {
