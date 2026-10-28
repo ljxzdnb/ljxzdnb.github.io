@@ -35,6 +35,19 @@ body {
     width: 100%;
 }
 
+.navbar-mainbg.hide-nav-bar {
+    transform: none !important;
+}
+
+.navbar-brand .brand-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+    object-fit: contain;
+    vertical-align: middle;
+    border-radius: 6px;
+}
+
 /* The only vertical scroll container in the app. */
 .content {
     flex: 1 1 auto;

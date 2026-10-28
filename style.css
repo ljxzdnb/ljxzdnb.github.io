@@ -19,8 +19,8 @@ i {
 .navbar-mainbg{
 	background-color: #5161ce;
 	padding: 0px;
-	position: fixed;
-  	top: 0;
+	position: relative;
+  	top: auto;
 	width: 100%;
 	-webkit-transition: -webkit-transform 0.7s 0.3s ease;
   	-moz-transition: -moz-transform 0.7s 0.3s ease;
@@ -31,10 +31,11 @@ i {
 }
 
 .navbar-mainbg.hide-nav-bar {
-  -webkit-transform: translate(0, -100%);
-  -moz-transform: translate(0, -100%);
-  -ms-transform: translate(0, -100%);
-  transform: translate(0, -100%);
+  /* Keep the tab bar in place while the content scrolls. */
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  transform: none;
   -webkit-backface-visibility: hidden;
 }
 
