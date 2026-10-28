@@ -194,6 +194,12 @@
         .navbar-mainbg.hide-nav-bar { transform: none !important; }
         .content { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; }
         .content .right { margin-top: 0 !important; }
+        @media (max-width: 991px) {
+            .headcontent { max-height: 100vh; }
+            #navbarSupportedContent { overflow: visible; }
+            #navbarSupportedContent ul { display: flex; flex-direction: column; width: 100%; }
+            #navbarSupportedContent li { float: none; width: 100%; }
+        }
     </style>
 </head>
 <body>
